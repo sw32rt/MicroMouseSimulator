@@ -46,6 +46,7 @@ public:
 	floatPoint rightbottom;
 	floatPoint righttop(void) const { return lefttop + floatPoint(rightbottom.x, 0); };
 	floatPoint leftbottom(void) const { return lefttop + floatPoint(0, rightbottom.y); };
+	floatPoint center(void) const { return lefttop + ((rightbottom - lefttop) /2.0); };
 	double width(void) const { return (rightbottom.x - lefttop.x); };
 	double height(void) const { return (rightbottom.y - lefttop.y); };
 	floatRect scale(double scale) const { return floatRect((lefttop * scale), (rightbottom * scale)); }

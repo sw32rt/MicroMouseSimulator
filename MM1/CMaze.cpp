@@ -59,6 +59,4 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale)
 		dc.MoveTo(VPoint_from);
 		dc.LineTo(VPoint_to);
 	}
-
-
 }

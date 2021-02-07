@@ -79,7 +79,7 @@ floatPoint floatPoint::operator*(const double multi) const
 
 floatPoint floatPoint::operator/(const double division) const
 {
-	return floatPoint(this->x * division, this->y * division);
+	return floatPoint(this->x / division, this->y / division);
 }
 
 floatRect::floatRect()
@@ -126,8 +126,8 @@ CField::CField(floatSize size, floatPoint center)
 	m_AbsoluteMap.rightbottom = floatPoint(size.width, size.height);
 
 	/* ÉZÉìÉ^Å[çáÇÌÇπ */
-	m_RelativeMap.lefttop = m_AbsoluteMap.lefttop - (m_MapOrigin / 2.0);
-	m_RelativeMap.rightbottom = m_AbsoluteMap.rightbottom - (m_MapOrigin / 2.0);
+	m_RelativeMap.lefttop = m_AbsoluteMap.lefttop - (m_AbsoluteMap.rightbottom / 2.0);
+	m_RelativeMap.rightbottom = m_AbsoluteMap.rightbottom - (m_AbsoluteMap.rightbottom / 2.0);
 
 }
 
