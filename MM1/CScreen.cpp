@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "CScreen.h"
+#include "MM1Dlg.h"
 
-CScreen::CScreen(CWnd* hwnd)
+CScreen::CScreen(CMM1Dlg* hwnd)
 	: m_hWnd(hwnd)
+	, m_maze(9)
 {
 	InitMaze();
 }
@@ -13,18 +15,7 @@ CScreen::~CScreen()
 
 void CScreen::Update(void)
 {
-	/* ˆê’èŽžŠÔ‚²‚Æ‚ÉŒÄ‚Î‚ê‚é */
-	CClientDC dc(m_hWnd);
-
-	CPoint pointLertTop(100, 100);
-	CSize rectSize(100, 100);
-	CRect rect(pointLertTop, rectSize);
-
-	dc.MoveTo(rect.TopLeft());
-	dc.LineTo(rect.TopLeft() + CPoint(rect.Width(), 0));
-	dc.LineTo(rect.BottomRight());
-	dc.LineTo(rect.BottomRight() + CPoint(-rect.Width(), 0));
-	dc.LineTo(rect.TopLeft());
+	m_maze.Draw(m_hWnd, m_DisplayOffset, m_DisplayScale);
 }
 
 void CScreen::InitMaze(void)

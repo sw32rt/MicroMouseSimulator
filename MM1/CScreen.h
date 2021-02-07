@@ -1,15 +1,24 @@
 #pragma once
+#include "CField.h"
+#include "CMaze.h"
+
+class CMM1Dlg;
+
 class CScreen
 {
 public:
-	CScreen(CWnd *hwnd);
+	CScreen(CMM1Dlg* hwnd);
 	~CScreen();
 
 	void Update(void);
 	void InitMaze(void);
 
+	floatPoint m_DisplayOffset = floatPoint(250, 250);
+	double m_DisplayScale = 0.5;
+	CMaze m_maze;
+
 private:
-	CWnd* m_hWnd;
+	CMM1Dlg* m_hWnd;
 
 
 

@@ -68,6 +68,11 @@ BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CMM1Dlg::OnBnClickedOk)
 	ON_WM_TIMER()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
+	ON_WM_MOUSELEAVE()
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 
@@ -103,7 +108,9 @@ BOOL CMM1Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 小さいアイコンの設定
 
 	// TODO: 初期化をここに追加します。
-	SetTimer(m_TickTimerID, m_TickTimerInterval, NULL);
+	//SetTimer(m_TickTimerID, m_TickTimerInterval, NULL);
+	/* 前回位置を初期値にしておく */
+	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
@@ -146,8 +153,10 @@ void CMM1Dlg::OnPaint()
 	}
 	else
 	{
+
 		CDialogEx::OnPaint();
 	}
+		m_Screen.Update();
 }
 
 // ユーザーが最小化したウィンドウをドラッグしているときに表示するカーソルを取得するために、
@@ -168,7 +177,73 @@ void CMM1Dlg::OnBnClickedOk()
 void CMM1Dlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-	m_Screen.Update();
+	//Invalidate(FALSE);
 
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CMM1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	m_IsMouseLButtonDown = true;
+	m_MouseMoveStart = point;
+	CDialogEx::OnLButtonDown(nFlags, point);
+}
+
+
+void CMM1Dlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	m_IsMouseLButtonDown = false;
+	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+	CDialogEx::OnLButtonUp(nFlags, point);
+}
+
+
+void CMM1Dlg::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	if (m_IsMouseLButtonDown)
+	{
+		m_Screen.m_DisplayOffset = m_SCreenDisplayPreOffset + (point - m_MouseMoveStart);
+		Invalidate(TRUE); /* 再描画させる */
+	}
+	CDialogEx::OnMouseMove(nFlags, point);
+}
+
+
+void CMM1Dlg::OnMouseLeave()
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	m_IsMouseLButtonDown = false;
+	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+	CDialogEx::OnMouseLeave();
+}
+
+
+BOOL CMM1Dlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	if (zDelta > 0)
+	{ /* Up */
+		//m_Screen.m_DisplayScale += 0.05;
+		m_Screen.m_DisplayScale *= 1.1;
+	}
+	else
+	{ /* Down */
+		m_Screen.m_DisplayScale *= 0.9;
+		//m_Screen.m_DisplayScale -= 0.05;
+	}
+
+	if (m_Screen.m_DisplayScale <= 0.1)
+	{
+		m_Screen.m_DisplayScale = 0.1;
+	}
+	else if(m_Screen.m_DisplayScale > 10.0)
+	{
+		m_Screen.m_DisplayScale = 10.0;
+	}
+	Invalidate(TRUE); /* 再描画させる */
+	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }

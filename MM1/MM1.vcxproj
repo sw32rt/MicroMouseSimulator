@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CField.h" />
+    <ClInclude Include="CMaze.h" />
     <ClInclude Include="CScreen.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MM1.h" />
@@ -194,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CField.cpp" />
+    <ClCompile Include="CMaze.cpp" />
     <ClCompile Include="CScreen.cpp" />
     <ClCompile Include="MM1.cpp" />
     <ClCompile Include="MM1Dlg.cpp" />
