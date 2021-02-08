@@ -15,6 +15,7 @@ public:
 	floatSize m_mazeSize;
 	std::vector<floatRect> m_wallList;
 	CField *m_pField;
-
+private:
+	void DrawWall(CWnd* hwnd, floatPoint point, double scale);
 };
 
