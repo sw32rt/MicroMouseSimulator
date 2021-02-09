@@ -89,13 +89,17 @@ floatPoint floatPoint::operator/(const double division) const
 
 floatRect::floatRect()
 	: lefttop()
+	, righttop()
 	, rightbottom()
+	, leftbottom()
 {
 }
 
 floatRect::floatRect(floatPoint lefttop, floatPoint rightbottom)
 	: lefttop(lefttop)
+	, righttop(rightbottom.x, lefttop.y)
 	, rightbottom(rightbottom)
+	, leftbottom(lefttop.x, rightbottom.y)
 {
 }
 
@@ -107,7 +111,9 @@ floatRect floatRect::operator+(const floatPoint fpoint) const
 {
 	floatRect ret;
 	ret.lefttop = lefttop + fpoint;
+	ret.righttop = righttop + fpoint;
 	ret.rightbottom = rightbottom + fpoint;
+	ret.leftbottom = leftbottom + fpoint;
 
 	return ret;
 }
@@ -116,7 +122,9 @@ floatRect floatRect::operator-(const floatPoint fpoint) const
 {
 	floatRect ret;
 	ret.lefttop = lefttop - fpoint;
+	ret.righttop = righttop - fpoint;
 	ret.rightbottom = rightbottom - fpoint;
+	ret.leftbottom = leftbottom - fpoint;
 
 	return ret;
 }
@@ -125,7 +133,9 @@ floatRect floatRect::operator+(const floatRect frect) const
 {
 	floatRect ret;
 	ret.lefttop = lefttop + frect.lefttop;
+	ret.righttop = righttop + frect.righttop;
 	ret.rightbottom = rightbottom + frect.rightbottom;
+	ret.leftbottom = leftbottom + frect.leftbottom;
 
 	return ret;
 }
@@ -133,15 +143,19 @@ floatRect floatRect::operator+(const floatRect frect) const
 floatRect floatRect::operator-(const floatRect frect) const
 {
 	floatRect ret;
-	ret.lefttop = this->lefttop - frect.lefttop;
-	ret.rightbottom = this->rightbottom - frect.rightbottom;
+	ret.lefttop = lefttop - frect.lefttop;
+	ret.righttop = righttop - frect.righttop;
+	ret.rightbottom = rightbottom - frect.rightbottom;
+	ret.leftbottom = leftbottom - frect.leftbottom;
 
 	return ret;
 }
 
 floatRect floatRect::offset(const int x, const int y)
 {
-	this->lefttop += floatPoint(x, y);
-	this->rightbottom += floatPoint(x, y);
+	lefttop += floatPoint(x, y);
+	righttop += floatPoint(x, y);
+	rightbottom += floatPoint(x, y);
+	leftbottom += floatPoint(x, y);
 	return *this;
 }

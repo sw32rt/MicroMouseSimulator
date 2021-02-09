@@ -73,8 +73,19 @@ BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSELEAVE()
 	ON_WM_MOUSEWHEEL()
+	ON_WM_MBUTTONDBLCLK()
 	ON_WM_MBUTTONDOWN()
 	ON_WM_MBUTTONUP()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_RBUTTONUP()
+	ON_WM_RBUTTONDBLCLK()
+	ON_WM_NCLBUTTONDOWN()
+	ON_WM_NCLBUTTONUP()
+	ON_WM_NCMBUTTONDOWN()
+	ON_WM_NCMBUTTONUP()
+	ON_WM_NCRBUTTONDOWN()
+	ON_WM_NCRBUTTONUP()
+	ON_WM_NCMOUSELEAVE()
 END_MESSAGE_MAP()
 
 
@@ -188,6 +199,19 @@ void CMM1Dlg::OnTimer(UINT_PTR nIDEvent)
 void CMM1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	TRACKMOUSEEVENT track;
+
+	track.cbSize = sizeof(track);
+	track.hwndTrack = *this;
+	track.dwHoverTime = HOVER_DEFAULT;
+
+	// WM_MOUSEHOVER，WM_MOUSELEAVE をリクエストする．
+	track.dwFlags = TME_HOVER | TME_LEAVE;
+	TrackMouseEvent(&track);
+
+	m_IsMouseLButtonDown = true;
+	m_MouseMoveStart = point;
+
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
@@ -195,18 +219,43 @@ void CMM1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CMM1Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	m_IsMouseLButtonDown = false;
+	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
 
+
+void CMM1Dlg::OnMButtonDblClk(UINT nFlags, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnMButtonDblClk(nFlags, point);
+}
+
+
 void CMM1Dlg::OnMButtonDown(UINT nFlags, CPoint point)
 {
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	TRACKMOUSEEVENT track;
+
+	track.cbSize = sizeof(track);
+	track.hwndTrack = *this;
+	track.dwHoverTime = HOVER_DEFAULT;
+
+	// WM_MOUSEHOVER，WM_MOUSELEAVE をリクエストする．
+	track.dwFlags = TME_HOVER | TME_LEAVE;
+	TrackMouseEvent(&track);
+
 	m_IsMouseLButtonDown = true;
 	m_MouseMoveStart = point;
 	CDialogEx::OnMButtonDown(nFlags, point);
 }
 
+
 void CMM1Dlg::OnMButtonUp(UINT nFlags, CPoint point)
 {
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
 	m_IsMouseLButtonDown = false;
 	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
 	CDialogEx::OnMButtonUp(nFlags, point);
@@ -228,9 +277,94 @@ void CMM1Dlg::OnMouseMove(UINT nFlags, CPoint point)
 void CMM1Dlg::OnMouseLeave()
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-	m_IsMouseLButtonDown = false;
-	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+	if (m_IsMouseLButtonDown)
+	{
+		m_IsMouseLButtonDown = false;
+		m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+	}
 	CDialogEx::OnMouseLeave();
+}
+
+
+void CMM1Dlg::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnRButtonDown(nFlags, point);
+}
+
+
+void CMM1Dlg::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnRButtonUp(nFlags, point);
+}
+
+
+void CMM1Dlg::OnRButtonDblClk(UINT nFlags, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnRButtonDblClk(nFlags, point);
+}
+
+
+void CMM1Dlg::OnNcLButtonDown(UINT nHitTest, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnNcLButtonDown(nHitTest, point);
+}
+
+
+void CMM1Dlg::OnNcLButtonUp(UINT nHitTest, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnNcLButtonUp(nHitTest, point);
+}
+
+
+void CMM1Dlg::OnNcMButtonDown(UINT nHitTest, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnNcMButtonDown(nHitTest, point);
+}
+
+
+void CMM1Dlg::OnNcMButtonUp(UINT nHitTest, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnNcMButtonUp(nHitTest, point);
+}
+
+
+void CMM1Dlg::OnNcRButtonDown(UINT nHitTest, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnNcRButtonDown(nHitTest, point);
+}
+
+
+void CMM1Dlg::OnNcRButtonUp(UINT nHitTest, CPoint point)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnNcRButtonUp(nHitTest, point);
+}
+
+
+void CMM1Dlg::OnNcMouseLeave()
+{
+	// この機能は Windows 2000 かそれ以降のバージョンを必要とします。
+	// シンボル _WIN32_WINNTと WINVER は >= 0x0500 にならなければなりません。
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	CDialogEx::OnNcMouseLeave();
 }
 
 
@@ -267,3 +401,4 @@ BOOL CMM1Dlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	Invalidate(TRUE); /* 再描画させる */
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }
+
