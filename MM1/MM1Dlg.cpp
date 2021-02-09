@@ -73,6 +73,8 @@ BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSELEAVE()
 	ON_WM_MOUSEWHEEL()
+	ON_WM_MBUTTONDOWN()
+	ON_WM_MBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -186,8 +188,6 @@ void CMM1Dlg::OnTimer(UINT_PTR nIDEvent)
 void CMM1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-	m_IsMouseLButtonDown = true;
-	m_MouseMoveStart = point;
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
@@ -195,9 +195,21 @@ void CMM1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CMM1Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	CDialogEx::OnLButtonUp(nFlags, point);
+}
+
+void CMM1Dlg::OnMButtonDown(UINT nFlags, CPoint point)
+{
+	m_IsMouseLButtonDown = true;
+	m_MouseMoveStart = point;
+	CDialogEx::OnMButtonDown(nFlags, point);
+}
+
+void CMM1Dlg::OnMButtonUp(UINT nFlags, CPoint point)
+{
 	m_IsMouseLButtonDown = false;
 	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
-	CDialogEx::OnLButtonUp(nFlags, point);
+	CDialogEx::OnMButtonUp(nFlags, point);
 }
 
 
