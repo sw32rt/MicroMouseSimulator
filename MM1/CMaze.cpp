@@ -66,6 +66,9 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale)
 void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 {
 	CClientDC dc(hwnd);
+	CPoint pointList[4] = {0};
+	int pointCount = 4; /* ŽlŠp‚È‚Ì‚Å4ŒÅ’è */
+
 	for (auto hWall_x : m_pField->m_MazeWall.hWallList)
 	{
 		for (wall_t wall : hWall_x)
@@ -74,9 +77,12 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 			offset.x = m_pField->m_RelativeMap.lefttop.x * scale;
 			offset.y = m_pField->m_RelativeMap.lefttop.y * scale;
 			offset += m_pField->m_MapOrigin;
-			CRect rect = wall.rect.scale(scale) + offset;
-			//dc.Rectangle(rect);
-			dc.FillSolidRect(rect, RGB(150, 150, 150));
+			floatRect polyRect = wall.rect.scale(scale) + offset;
+			pointList[0] = polyRect.lefttop;
+			pointList[1] = polyRect.righttop;
+			pointList[2] = polyRect.rightbottom;
+			pointList[3] = polyRect.leftbottom;
+			dc.Polygon(pointList, pointCount);
 		}
 	}
 
@@ -88,9 +94,12 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 			offset.x = m_pField->m_RelativeMap.lefttop.x * scale;
 			offset.y = m_pField->m_RelativeMap.lefttop.y * scale;
 			offset += m_pField->m_MapOrigin;
-			CRect rect = wall.rect.scale(scale) + offset;
-			//dc.Rectangle(rect);
-			dc.FillSolidRect(rect, RGB(150, 150, 150));
+			floatRect polyRect = wall.rect.scale(scale) + offset;
+			pointList[0] = polyRect.lefttop;
+			pointList[1] = polyRect.righttop;
+			pointList[2] = polyRect.rightbottom;
+			pointList[3] = polyRect.leftbottom;
+			dc.Polygon(pointList, pointCount);
 		}
 	}
 
@@ -102,9 +111,12 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 			offset.x = m_pField->m_RelativeMap.lefttop.x * scale;
 			offset.y = m_pField->m_RelativeMap.lefttop.y * scale;
 			offset += m_pField->m_MapOrigin;
-			CRect rect = pillar.rect.scale(scale) + offset;
-			dc.Rectangle(rect);
-			//dc.FillSolidRect(rect, RGB(50, 50, 50));
+			floatRect polyRect = pillar.rect.scale(scale) + offset;
+			pointList[0] = polyRect.lefttop;
+			pointList[1] = polyRect.righttop;
+			pointList[2] = polyRect.rightbottom;
+			pointList[3] = polyRect.leftbottom;
+			dc.Polygon(pointList, pointCount);
 		}
 	}
 
