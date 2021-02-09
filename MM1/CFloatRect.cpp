@@ -23,6 +23,11 @@ floatPoint::floatPoint()
 {
 }
 
+floatPoint::floatPoint(const CPoint point)
+{
+	*this = point;
+}
+
 floatPoint::floatPoint(double x, double y)
 	: x(x)
 	, y(y)

@@ -19,7 +19,7 @@ class CMazeWall
 
 	CMazeWall() = delete;
 public:
-	CMazeWall(int size);
+	CMazeWall(size_t size);
 	~CMazeWall();
 	std::vector<std::vector<wall_t>> vWallList; /* 壁リスト */
 	std::vector<std::vector<wall_t>> hWallList; /* 壁リスト */

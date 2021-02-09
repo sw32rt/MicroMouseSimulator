@@ -5,7 +5,7 @@
 #define WALL_WIDTH  6.0
 #define WALL_LENGTH 84.0
 
-CMazeWall::CMazeWall(int size)
+CMazeWall::CMazeWall(size_t size)
 {
 	vWallList.clear();
 	hWallList.clear();

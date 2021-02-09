@@ -13,6 +13,7 @@ CMaze::CMaze(int mazeSize)
 
 CMaze::~CMaze()
 {
+	delete m_pField;
 }
 
 void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale)

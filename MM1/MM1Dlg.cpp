@@ -225,25 +225,33 @@ void CMM1Dlg::OnMouseLeave()
 BOOL CMM1Dlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	ScreenToClient(&pt);
+	static double pre = 0;
+	floatPoint cursorPoint = pt;
+	pre = m_Screen.m_DisplayScale;
 	if (zDelta > 0)
 	{ /* Up */
-		//m_Screen.m_DisplayScale += 0.05;
-		m_Screen.m_DisplayScale *= 1.1;
+		m_Screen.m_DisplayScale *= ZOOMIN_RATE;
+		if(m_Screen.m_DisplayScale > 10.0)
+		{
+			m_Screen.m_DisplayScale = 10.0;
+		}
+		/* マウスカーソルの位置を中心にズームするように見せるため、ズームした後位置調整する */
+		m_Screen.m_DisplayOffset += (m_Screen.m_DisplayOffset - cursorPoint) * ((m_Screen.m_DisplayScale / pre) - 1);
 	}
 	else
 	{ /* Down */
-		m_Screen.m_DisplayScale *= 0.9;
-		//m_Screen.m_DisplayScale -= 0.05;
+		m_Screen.m_DisplayScale *= ZOOMOUT_RATE;
+		if (m_Screen.m_DisplayScale <= 0.1)
+		{
+			m_Screen.m_DisplayScale = 0.1;
+		}
+		/* マウスカーソルの位置を中心にズームするように見せるため、ズームした後位置調整する */
+		m_Screen.m_DisplayOffset -= (m_Screen.m_DisplayOffset - cursorPoint) * (1 - (m_Screen.m_DisplayScale / pre));
 	}
 
-	if (m_Screen.m_DisplayScale <= 0.1)
-	{
-		m_Screen.m_DisplayScale = 0.1;
-	}
-	else if(m_Screen.m_DisplayScale > 10.0)
-	{
-		m_Screen.m_DisplayScale = 10.0;
-	}
+	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+
 	Invalidate(TRUE); /* 再描画させる */
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }

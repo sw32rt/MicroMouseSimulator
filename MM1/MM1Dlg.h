@@ -5,6 +5,9 @@
 #pragma once
 #include "CScreen.h"
 
+#define ZOOMIN_RATE ((double)1.2)
+#define ZOOMOUT_RATE ((double)0.8)
+
 // CMM1Dlg ダイアログ
 class CMM1Dlg : public CDialogEx
 {

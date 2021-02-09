@@ -14,6 +14,7 @@ class floatPoint
 {
 public:
 	floatPoint();
+	floatPoint(const CPoint point);
 	floatPoint(double x, double y);
 	~floatPoint();
 	floatPoint& operator=(const CPoint& point);
