@@ -28,6 +28,7 @@ public:
 	floatPoint operator/(const double division) const;
 	operator POINT() const { return CPoint((int)x, (int)y); }
 	operator CPoint() const { return CPoint((int)x, (int)y); }
+	floatPoint rotate(double digree);
 	double x = 0;
 	double y = 0;
 };
@@ -40,6 +41,8 @@ public:
 	~floatRect();
 	floatRect operator+(const floatPoint fpoint) const;
 	floatRect operator-(const floatPoint fpoint) const;
+	floatRect& operator+=(const floatPoint& fpoint);
+	floatRect& operator-=(const floatPoint& fpoint);
 	floatRect operator+(const floatRect frect) const;
 	floatRect operator-(const floatRect frect) const;
 	operator RECT() const { return CRect((POINT)lefttop, (POINT)rightbottom); }
@@ -52,4 +55,5 @@ public:
 	floatPoint center(void) const { return lefttop + ((rightbottom - lefttop) / 2.0); };
 	floatRect scale(double scale) const { return floatRect((lefttop * scale), (rightbottom * scale)); }
 	floatRect offset(const int x, const int y);
+	floatRect rotate(double degree);
 };

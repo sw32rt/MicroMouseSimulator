@@ -53,6 +53,7 @@ END_MESSAGE_MAP()
 CMM1Dlg::CMM1Dlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MM1_DIALOG, pParent)
 	, m_Screen(this)
+	, m_rotateSlider(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -60,6 +61,9 @@ CMM1Dlg::CMM1Dlg(CWnd* pParent /*=nullptr*/)
 void CMM1Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Slider(pDX, IDC_SLIDER1, m_rotateSlider);
+	DDV_MinMaxInt(pDX, m_rotateSlider, 0, 360);
+	DDX_Control(pDX, IDC_SLIDER1, m_rotateSliderCtrl);
 }
 
 BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
@@ -86,6 +90,8 @@ BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
 	ON_WM_NCRBUTTONDOWN()
 	ON_WM_NCRBUTTONUP()
 	ON_WM_NCMOUSELEAVE()
+	ON_NOTIFY(TRBN_THUMBPOSCHANGING, IDC_SLIDER1, &CMM1Dlg::OnTRBNThumbPosChangingSlider1)
+	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
 
@@ -402,3 +408,32 @@ BOOL CMM1Dlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }
 
+
+
+void CMM1Dlg::OnTRBNThumbPosChangingSlider1(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	// この機能には Windows Vista 以降のバージョンが必要です。
+	// シンボル _WIN32_WINNT は >= 0x0600 にする必要があります。
+	NMTRBTHUMBPOSCHANGING* pNMTPC = reinterpret_cast<NMTRBTHUMBPOSCHANGING*>(pNMHDR);
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+
+	UpdateData(FALSE);
+	m_Screen.m_DisplayRotate = m_rotateSlider;
+	UpdateData(TRUE);
+
+	*pResult = 0;
+}
+
+
+void CMM1Dlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	if (pScrollBar == (CScrollBar*)&m_rotateSliderCtrl)
+	{
+		m_Screen.m_DisplayRotate = m_rotateSliderCtrl.GetPos();
+		Invalidate(TRUE); /* 再描画させる */
+	}
+
+	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}

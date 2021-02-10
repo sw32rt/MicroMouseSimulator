@@ -2,6 +2,12 @@
 #include <vector>
 #include "CField.h"
 
+typedef struct stLine
+{
+	floatPoint from;
+	floatPoint to;
+}stLine_t;
+
 class CMaze
 {
 	CMaze() = delete;
@@ -9,13 +15,15 @@ public:
 	CMaze(int mazeSize);
 	~CMaze();
 
-	void Draw(CWnd* hwnd, floatPoint point, double scale);
+	void Draw(CWnd* hwnd, floatPoint point, double scale, double rotateDeg);
 
 	int m_mazeCells = 0;
 	floatSize m_mazeSize;
 	std::vector<floatRect> m_wallList;
 	CField *m_pField;
+	std::vector<stLine_t> m_HorizontalLineList;
+	std::vector<stLine_t> m_VerticalLineList;
 private:
-	void DrawWall(CWnd* hwnd, floatPoint point, double scale);
+	void DrawWall(CWnd* hwnd, floatPoint point, double scale, double rotateDeg);
 };
 

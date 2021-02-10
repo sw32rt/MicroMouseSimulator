@@ -15,7 +15,7 @@ CScreen::~CScreen()
 
 void CScreen::Update(void)
 {
-	m_maze.Draw(m_hWnd, m_DisplayOffset, m_DisplayScale);
+	m_maze.Draw(m_hWnd, m_DisplayOffset, m_DisplayScale, m_DisplayRotate);
 }
 
 void CScreen::InitMaze(void)

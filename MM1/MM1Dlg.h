@@ -67,4 +67,8 @@ public:
 	afx_msg void OnNcRButtonDown(UINT nHitTest, CPoint point);
 	afx_msg void OnNcRButtonUp(UINT nHitTest, CPoint point);
 	afx_msg void OnNcMouseLeave();
+	int m_rotateSlider;
+	afx_msg void OnTRBNThumbPosChangingSlider1(NMHDR* pNMHDR, LRESULT* pResult);
+	CSliderCtrl m_rotateSliderCtrl;
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };

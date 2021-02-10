@@ -15,6 +15,7 @@ public:
 
 	floatPoint m_DisplayOffset = floatPoint(250, 250);
 	double m_DisplayScale = 0.5;
+	double m_DisplayRotate = 0.0;
 	CMaze m_maze;
 
 private:

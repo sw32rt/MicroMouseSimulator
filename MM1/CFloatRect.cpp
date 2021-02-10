@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "CFloatRect.h"
+#include <cmath>
+
+constexpr double PI = 3.141592653589793;
 
 floatSize::floatSize()
 	: width(0)
@@ -87,6 +90,16 @@ floatPoint floatPoint::operator/(const double division) const
 	return floatPoint(this->x / division, this->y / division);
 }
 
+floatPoint floatPoint::rotate(double digree)
+{
+	double radian = digree * (PI / 180.0);
+	floatPoint tempfp;
+	tempfp.x = (x * std::sin(radian) + (y * std::cos(radian)));
+	tempfp.y = (x * std::cos(radian) - (y * std::sin(radian)));
+	*this = tempfp;
+	return *this;
+}
+
 floatRect::floatRect()
 	: lefttop()
 	, righttop()
@@ -129,6 +142,20 @@ floatRect floatRect::operator-(const floatPoint fpoint) const
 	return ret;
 }
 
+floatRect& floatRect::operator+=(const floatPoint& fpoint)
+{
+	// TODO: return ステートメントをここに挿入します
+	*this = *this + fpoint;
+	return *this;
+}
+
+floatRect& floatRect::operator-=(const floatPoint& fpoint)
+{
+	// TODO: return ステートメントをここに挿入します
+	*this = *this - fpoint;
+	return *this;
+}
+
 floatRect floatRect::operator+(const floatRect frect) const
 {
 	floatRect ret;
@@ -157,5 +184,14 @@ floatRect floatRect::offset(const int x, const int y)
 	righttop += floatPoint(x, y);
 	rightbottom += floatPoint(x, y);
 	leftbottom += floatPoint(x, y);
+	return *this;
+}
+
+floatRect floatRect::rotate(double degree)
+{
+	lefttop.rotate(degree);
+	righttop.rotate(degree);
+	rightbottom.rotate(degree);
+	leftbottom.rotate(degree);
 	return *this;
 }

@@ -9,6 +9,31 @@ CMaze::CMaze(int mazeSize)
 	floatPoint center(200, 200);
 	m_pField = new CField(m_mazeCells, m_mazeSize, center);
 
+	//m_HorizontalLineList
+
+	/* ‰¡ü•`‰æ */
+	stLine_t HLine;
+	HLine.from = floatPoint((m_pField->m_RelativeMap.lefttop.x + (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.lefttop.y + (WALL_WIDTH / 2.0));
+	HLine.to = floatPoint((m_pField->m_RelativeMap.rightbottom.x - (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.lefttop.y + (WALL_WIDTH / 2.0));
+
+	for (int i = 0; i < m_mazeCells + 1; i++)
+	{
+		m_HorizontalLineList.push_back(HLine);
+		HLine.from.y += CELL_LENGTH;
+		HLine.to.y += CELL_LENGTH;
+	}
+
+	/* cü•`‰æ */
+	stLine_t VLine;
+	VLine.from = floatPoint((m_pField->m_RelativeMap.lefttop.x + (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.lefttop.y + (WALL_WIDTH / 2.0));
+	VLine.to = floatPoint((m_pField->m_RelativeMap.lefttop.x + (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.rightbottom.y - (WALL_WIDTH / 2.0));
+
+	for (int i = 0; i < m_mazeCells + 1; i++)
+	{
+		m_VerticalLineList.push_back(VLine);
+		VLine.from.x += CELL_LENGTH;
+		VLine.to.x += CELL_LENGTH;
+	}
 }
 
 CMaze::~CMaze()
@@ -16,7 +41,7 @@ CMaze::~CMaze()
 	delete m_pField;
 }
 
-void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale)
+void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
 {
 	m_pField->m_MapOrigin = point;
 	CClientDC dc(hwnd);
@@ -26,38 +51,24 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale)
 	dc.LineTo(m_pField->m_MapOrigin);
 
 	/* ‰¡ü•`‰æ */
-	floatPoint HPoint_from = floatPoint((m_pField->m_RelativeMap.lefttop.x + (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.lefttop.y + (WALL_WIDTH / 2.0)) * scale;
-	floatPoint HPoint_to = floatPoint((m_pField->m_RelativeMap.rightbottom.x - (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.lefttop.y + (WALL_WIDTH / 2.0)) * scale;
-	HPoint_from += m_pField->m_MapOrigin;
-	HPoint_to += m_pField->m_MapOrigin;
-
 	for (int i = 0; i < m_mazeCells + 1; i++)
 	{
-		dc.MoveTo(HPoint_from);
-		dc.LineTo(HPoint_to);
-		HPoint_from.y += ((CELL_LENGTH) * scale);
-		HPoint_to.y = HPoint_from.y;
+		dc.MoveTo((m_HorizontalLineList[i].from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
+		dc.LineTo((m_HorizontalLineList[i].to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
 	}
 
 	/* cü•`‰æ */
-	floatPoint VPoint_from = floatPoint((m_pField->m_RelativeMap.lefttop.x + (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.lefttop.y + (WALL_WIDTH / 2.0)) * scale;
-	floatPoint VPoint_to = floatPoint((m_pField->m_RelativeMap.lefttop.x + (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.rightbottom.y - (WALL_WIDTH / 2.0)) * scale;
-	VPoint_from += m_pField->m_MapOrigin;
-	VPoint_to += m_pField->m_MapOrigin;
-
 	for (int i = 0; i < m_mazeCells + 1; i++)
 	{
-		dc.MoveTo(VPoint_from);
-		dc.LineTo(VPoint_to);
-		VPoint_from.x += ((CELL_LENGTH) * scale);
-		VPoint_to.x = VPoint_from.x;
+		dc.MoveTo((m_VerticalLineList[i].from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
+		dc.LineTo((m_VerticalLineList[i].to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
 	}
 
 /* •Ç•`‰æ */
-	DrawWall(hwnd, point, scale);
+	DrawWall(hwnd, point, scale, rotateDeg);
 }
 
-void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
+void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
 {
 	CClientDC dc(hwnd);
 	CPoint pointList[4] = {0};
@@ -67,7 +78,9 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 	{
 		for (wall_t wall : hWall_x)
 		{
-			floatRect polyRect = wall.rect.scale(scale) + m_pField->m_MapOrigin;
+			floatRect polyRect = wall.rect.scale(scale);
+			polyRect = polyRect.rotate(rotateDeg);
+			polyRect += m_pField->m_MapOrigin;
 			pointList[0] = polyRect.lefttop;
 			pointList[1] = polyRect.righttop;
 			pointList[2] = polyRect.rightbottom;
@@ -80,7 +93,9 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 	{
 		for (wall_t wall : vWall_x)
 		{
-			floatRect polyRect = wall.rect.scale(scale) + m_pField->m_MapOrigin;
+			floatRect polyRect = wall.rect.scale(scale);
+			polyRect = polyRect.rotate(rotateDeg);
+			polyRect += m_pField->m_MapOrigin;
 			pointList[0] = polyRect.lefttop;
 			pointList[1] = polyRect.righttop;
 			pointList[2] = polyRect.rightbottom;
@@ -93,7 +108,9 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 	{
 		for (pillar_t pillar : pillar_x)
 		{
-			floatRect polyRect = pillar.rect.scale(scale) + m_pField->m_MapOrigin;
+			floatRect polyRect = pillar.rect.scale(scale);
+			polyRect = polyRect.rotate(rotateDeg);
+			polyRect += m_pField->m_MapOrigin;
 			pointList[0] = polyRect.lefttop;
 			pointList[1] = polyRect.righttop;
 			pointList[2] = polyRect.rightbottom;
