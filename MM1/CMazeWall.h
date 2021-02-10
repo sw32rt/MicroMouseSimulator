@@ -2,6 +2,10 @@
 #include <vector>
 #include "CFloatRect.h"
 
+#define WALL_WIDTH  6.0
+#define WALL_LENGTH 84.0
+#define CELL_LENGTH (WALL_LENGTH + WALL_WIDTH)
+
 typedef struct stWall
 {
 	floatRect rect;

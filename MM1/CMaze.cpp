@@ -4,8 +4,8 @@
 CMaze::CMaze(int mazeSize)
 {
 	m_mazeCells = mazeSize;
-	m_mazeSize.width = (90.0 * mazeSize) + 6.0; /* ’PˆÊ‚Ímm ‹æ‰æ90mm, •ÇŒú‚³6mm */
-	m_mazeSize.height = (90.0 * mazeSize) + 6.0; /* ’PˆÊ‚Ímm ‹æ‰æ90mm, •ÇŒú‚³6mm ³•ûŒ`‚È‚Ì‚Åx‚Æy“¯‚¶ */
+	m_mazeSize.width = (CELL_LENGTH * mazeSize) + WALL_WIDTH; /* ’PˆÊ‚Ímm ‹æ‰æ90mm, •ÇŒú‚³6mm */
+	m_mazeSize.height = (CELL_LENGTH * mazeSize) + WALL_WIDTH; /* ’PˆÊ‚Ímm ‹æ‰æ90mm, •ÇŒú‚³6mm ³•ûŒ`‚È‚Ì‚Åx‚Æy“¯‚¶ */
 	floatPoint center(200, 200);
 	m_pField = new CField(m_mazeCells, m_mazeSize, center);
 
@@ -25,41 +25,35 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale)
 	dc.MoveTo(CPoint(0, 0));
 	dc.LineTo(m_pField->m_MapOrigin);
 
-	floatRect scaledRect = m_pField->m_RelativeMap.scale(scale);
-
 	/* ‰¡ü•`‰æ */
-	floatPoint HPoint_from;
-	floatPoint HPoint_to;
-	HPoint_from.x = m_pField->m_RelativeMap.lefttop.x * scale;
-	HPoint_to.x = (m_pField->m_RelativeMap.rightbottom.x - 6) * scale;
-	HPoint_to.y = HPoint_from.y = (m_pField->m_RelativeMap.lefttop.y + 3) * scale;
-	HPoint_to += m_pField->m_MapOrigin;
+	floatPoint HPoint_from = floatPoint((m_pField->m_RelativeMap.lefttop.x + (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.lefttop.y + (WALL_WIDTH / 2.0)) * scale;
+	floatPoint HPoint_to = floatPoint((m_pField->m_RelativeMap.rightbottom.x - (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.lefttop.y + (WALL_WIDTH / 2.0)) * scale;
 	HPoint_from += m_pField->m_MapOrigin;
+	HPoint_to += m_pField->m_MapOrigin;
 
 	for (int i = 0; i < m_mazeCells + 1; i++)
 	{
-		HPoint_from.y = ((m_pField->m_RelativeMap.lefttop.y + (i * 90.0)) * scale) + m_pField->m_MapOrigin.y;
-		HPoint_to.y = HPoint_from.y;
 		dc.MoveTo(HPoint_from);
 		dc.LineTo(HPoint_to);
+		HPoint_from.y += ((CELL_LENGTH) * scale);
+		HPoint_to.y = HPoint_from.y;
 	}
 
 	/* cü•`‰æ */
-	floatPoint VPoint_from;
-	floatPoint VPoint_to;
-	VPoint_from.y = m_pField->m_RelativeMap.lefttop.y * scale;
-	VPoint_to.y = (m_pField->m_RelativeMap.rightbottom.y - 6) * scale;
-	VPoint_to.x = VPoint_from.x = (m_pField->m_RelativeMap.lefttop.x + 3) * scale;
-	VPoint_to += m_pField->m_MapOrigin;
+	floatPoint VPoint_from = floatPoint((m_pField->m_RelativeMap.lefttop.x + (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.lefttop.y + (WALL_WIDTH / 2.0)) * scale;
+	floatPoint VPoint_to = floatPoint((m_pField->m_RelativeMap.lefttop.x + (WALL_WIDTH / 2.0)), m_pField->m_RelativeMap.rightbottom.y - (WALL_WIDTH / 2.0)) * scale;
 	VPoint_from += m_pField->m_MapOrigin;
+	VPoint_to += m_pField->m_MapOrigin;
 
 	for (int i = 0; i < m_mazeCells + 1; i++)
 	{
-		VPoint_from.x = ((m_pField->m_RelativeMap.lefttop.x + (i * 90.0)) * scale) + m_pField->m_MapOrigin.x;
-		VPoint_to.x = VPoint_from.x;
 		dc.MoveTo(VPoint_from);
 		dc.LineTo(VPoint_to);
+		VPoint_from.x += ((CELL_LENGTH) * scale);
+		VPoint_to.x = VPoint_from.x;
 	}
+
+/* •Ç•`‰æ */
 	DrawWall(hwnd, point, scale);
 }
 
@@ -73,11 +67,7 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 	{
 		for (wall_t wall : hWall_x)
 		{
-			floatPoint offset;
-			offset.x = m_pField->m_RelativeMap.lefttop.x * scale;
-			offset.y = m_pField->m_RelativeMap.lefttop.y * scale;
-			offset += m_pField->m_MapOrigin;
-			floatRect polyRect = wall.rect.scale(scale) + offset;
+			floatRect polyRect = wall.rect.scale(scale) + m_pField->m_MapOrigin;
 			pointList[0] = polyRect.lefttop;
 			pointList[1] = polyRect.righttop;
 			pointList[2] = polyRect.rightbottom;
@@ -90,11 +80,7 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 	{
 		for (wall_t wall : vWall_x)
 		{
-			floatPoint offset;
-			offset.x = m_pField->m_RelativeMap.lefttop.x * scale;
-			offset.y = m_pField->m_RelativeMap.lefttop.y * scale;
-			offset += m_pField->m_MapOrigin;
-			floatRect polyRect = wall.rect.scale(scale) + offset;
+			floatRect polyRect = wall.rect.scale(scale) + m_pField->m_MapOrigin;
 			pointList[0] = polyRect.lefttop;
 			pointList[1] = polyRect.righttop;
 			pointList[2] = polyRect.rightbottom;
@@ -107,11 +93,7 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale)
 	{
 		for (pillar_t pillar : pillar_x)
 		{
-			floatPoint offset;
-			offset.x = m_pField->m_RelativeMap.lefttop.x * scale;
-			offset.y = m_pField->m_RelativeMap.lefttop.y * scale;
-			offset += m_pField->m_MapOrigin;
-			floatRect polyRect = pillar.rect.scale(scale) + offset;
+			floatRect polyRect = pillar.rect.scale(scale) + m_pField->m_MapOrigin;
 			pointList[0] = polyRect.lefttop;
 			pointList[1] = polyRect.righttop;
 			pointList[2] = polyRect.rightbottom;
