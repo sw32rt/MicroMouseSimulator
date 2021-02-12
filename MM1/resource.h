@@ -9,6 +9,10 @@
 #define IDR_MAINFRAME                   128
 #define IDC_SLIDER1                     1000
 
+#ifndef WS_EX_COMPOSITED
+#define WS_EX_COMPOSITED 0x02000000L
+#endif
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
