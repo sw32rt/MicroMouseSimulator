@@ -14,6 +14,10 @@
 #define IDC_RADIO2                      1002
 #define IDC_RADIO3                      1003
 
+#ifndef WS_EX_COMPOSITED
+#define WS_EX_COMPOSITED 0x02000000L
+#endif
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
