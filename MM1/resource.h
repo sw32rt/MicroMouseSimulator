@@ -11,12 +11,8 @@
 #define IDB_HANDTOOL_OFF                131
 #define IDC_SLIDER1                     1000
 #define IDC_RADIO_CURSORMODE_HAND       1001
-#define IDC_RADIO2                      1002
-#define IDC_RADIO3                      1003
-
-#ifndef WS_EX_COMPOSITED
-#define WS_EX_COMPOSITED 0x02000000L
-#endif
+#define IDC_RADIO_CURSORMODE_MEASURE    1002
+#define IDC_RADIO_CURSORMODE_CURSOR     1003
 
 // Next default values for new objects
 // 

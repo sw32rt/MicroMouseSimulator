@@ -38,6 +38,14 @@ public:
 	CBitmap m_bmpCursorModeHandOn;
 	CBitmap m_bmpCursorModeHandOff;
 
+	enum
+	{
+		E_CursorMode_Hand    = 0,
+		E_CursorMode_Measure    ,
+		E_CursorMode_Cursor     ,
+	};
+
+	void OnCursorModeRadioClick(int mode);
 
 // 実装
 protected:
@@ -75,9 +83,11 @@ public:
 	afx_msg void OnTRBNThumbPosChangingSlider1(NMHDR* pNMHDR, LRESULT* pResult);
 	CSliderCtrl m_rotateSliderCtrl;
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	CButton m_ddx_CursorModeHandRdioCtrl;
 	afx_msg void OnBnClickedRadioCursormodeHand();
-	afx_msg void OnBnClickedRadio2();
+	afx_msg void OnBnClickedRadioCursormodeMeasure();
+	afx_msg void OnBnClickedRadioCursormodeCursor();
+	CButton m_ddx_CursorModeHandRdioCtrl;
 	CButton m_ddx_CursorModeMeasureRdioCtrl;
 	CButton m_ddx_CursorModeCursorRdioCtrl;
+	virtual void OnCancel();
 };

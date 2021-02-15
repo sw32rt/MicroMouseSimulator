@@ -65,8 +65,8 @@ void CMM1Dlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, m_rotateSlider, 0, 360);
 	DDX_Control(pDX, IDC_SLIDER1, m_rotateSliderCtrl);
 	DDX_Control(pDX, IDC_RADIO_CURSORMODE_HAND, m_ddx_CursorModeHandRdioCtrl);
-	DDX_Control(pDX, IDC_RADIO2, m_ddx_CursorModeMeasureRdioCtrl);
-	DDX_Control(pDX, IDC_RADIO3, m_ddx_CursorModeCursorRdioCtrl);
+	DDX_Control(pDX, IDC_RADIO_CURSORMODE_MEASURE, m_ddx_CursorModeMeasureRdioCtrl);
+	DDX_Control(pDX, IDC_RADIO_CURSORMODE_CURSOR, m_ddx_CursorModeCursorRdioCtrl);
 }
 
 BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
@@ -96,11 +96,37 @@ BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
 	ON_NOTIFY(TRBN_THUMBPOSCHANGING, IDC_SLIDER1, &CMM1Dlg::OnTRBNThumbPosChangingSlider1)
 	ON_WM_HSCROLL()
 	ON_BN_CLICKED(IDC_RADIO_CURSORMODE_HAND, &CMM1Dlg::OnBnClickedRadioCursormodeHand)
-	ON_BN_CLICKED(IDC_RADIO2, &CMM1Dlg::OnBnClickedRadio2)
+	ON_BN_CLICKED(IDC_RADIO_CURSORMODE_MEASURE, &CMM1Dlg::OnBnClickedRadioCursormodeMeasure)
+	ON_BN_CLICKED(IDC_RADIO_CURSORMODE_CURSOR, &CMM1Dlg::OnBnClickedRadioCursormodeCursor)
 END_MESSAGE_MAP()
 
 
 // CMM1Dlg メッセージ ハンドラー
+
+void CMM1Dlg::OnCursorModeRadioClick(int mode)
+{
+	m_ddx_CursorModeHandRdioCtrl.SetBitmap(m_bmpCursorModeHandOff);
+	m_ddx_CursorModeMeasureRdioCtrl.SetBitmap(m_bmpCursorModeHandOff);
+	m_ddx_CursorModeCursorRdioCtrl.SetBitmap(m_bmpCursorModeHandOff);
+
+	switch (mode)
+	{
+	case E_CursorMode_Hand:
+		m_ddx_CursorModeHandRdioCtrl.SetBitmap(m_bmpCursorModeHandOn);
+		m_ddx_CursorModeHandRdioCtrl.Invalidate(TRUE);
+		break;
+	case E_CursorMode_Measure:
+		m_ddx_CursorModeMeasureRdioCtrl.SetBitmap(m_bmpCursorModeHandOn);
+		m_ddx_CursorModeMeasureRdioCtrl.Invalidate(TRUE);
+		break;
+	case E_CursorMode_Cursor:
+		m_ddx_CursorModeCursorRdioCtrl.SetBitmap(m_bmpCursorModeHandOn);
+		m_ddx_CursorModeCursorRdioCtrl.Invalidate(TRUE);
+		break;
+	default:
+		break;
+	}
+}
 
 BOOL CMM1Dlg::OnInitDialog()
 {
@@ -466,15 +492,27 @@ void CMM1Dlg::OnBnClickedRadioCursormodeHand()
 {
 	// TODO: ここにコントロール通知ハンドラー コードを追加します。
 	// 従来の CButton の場合、ボタンにビットマップを割り当てると、強制的にクラシック スタイルになる。
-	m_ddx_CursorModeHandRdioCtrl.SetBitmap(m_bmpCursorModeHandOn);
-	m_ddx_CursorModeHandRdioCtrl.Invalidate(TRUE);
+	OnCursorModeRadioClick(E_CursorMode_Hand);
 }
 
 
-void CMM1Dlg::OnBnClickedRadio2()
+void CMM1Dlg::OnBnClickedRadioCursormodeMeasure()
 {
 	// TODO: ここにコントロール通知ハンドラー コードを追加します。
-	// 従来の CButton の場合、ボタンにビットマップを割り当てると、強制的にクラシック スタイルになる。
-	m_ddx_CursorModeHandRdioCtrl.SetBitmap(m_bmpCursorModeHandOff);
+	OnCursorModeRadioClick(E_CursorMode_Measure);
+}
 
+
+void CMM1Dlg::OnBnClickedRadioCursormodeCursor()
+{
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+	OnCursorModeRadioClick(E_CursorMode_Cursor);
+}
+
+
+void CMM1Dlg::OnCancel()
+{
+	// TODO: ここに特定なコードを追加するか、もしくは基底クラスを呼び出してください。
+
+	CDialogEx::OnCancel();
 }
