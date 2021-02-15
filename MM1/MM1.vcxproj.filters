@@ -89,5 +89,11 @@
     <Image Include="res\MM1.ico">
       <Filter>リソース ファイル</Filter>
     </Image>
+    <Image Include="res\HandToolOff.bmp">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="res\HandToolOn.bmp">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
 </Project>

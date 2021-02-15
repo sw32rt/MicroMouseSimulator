@@ -64,6 +64,9 @@ void CMM1Dlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Slider(pDX, IDC_SLIDER1, m_rotateSlider);
 	DDV_MinMaxInt(pDX, m_rotateSlider, 0, 360);
 	DDX_Control(pDX, IDC_SLIDER1, m_rotateSliderCtrl);
+	DDX_Control(pDX, IDC_RADIO_CURSORMODE_HAND, m_ddx_CursorModeHandRdioCtrl);
+	DDX_Control(pDX, IDC_RADIO2, m_ddx_CursorModeMeasureRdioCtrl);
+	DDX_Control(pDX, IDC_RADIO3, m_ddx_CursorModeCursorRdioCtrl);
 }
 
 BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
@@ -92,6 +95,8 @@ BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
 	ON_WM_NCMOUSELEAVE()
 	ON_NOTIFY(TRBN_THUMBPOSCHANGING, IDC_SLIDER1, &CMM1Dlg::OnTRBNThumbPosChangingSlider1)
 	ON_WM_HSCROLL()
+	ON_BN_CLICKED(IDC_RADIO_CURSORMODE_HAND, &CMM1Dlg::OnBnClickedRadioCursormodeHand)
+	ON_BN_CLICKED(IDC_RADIO2, &CMM1Dlg::OnBnClickedRadio2)
 END_MESSAGE_MAP()
 
 
@@ -130,6 +135,24 @@ BOOL CMM1Dlg::OnInitDialog()
 	//SetTimer(m_TickTimerID, m_TickTimerInterval, NULL);
 	/* 前回位置を初期値にしておく */
 	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+
+	m_bmpCursorModeHandOn.LoadBitmap(IDB_HANDTOOL_ON);
+	m_bmpCursorModeHandOff.LoadBitmap(IDB_HANDTOOL_OFF);
+
+	// 従来の CButton の場合、ボタンにビットマップを割り当てると、強制的にクラシック スタイルになる。
+	CRect checkButtonRect;
+	m_ddx_CursorModeHandRdioCtrl.SetBitmap(m_bmpCursorModeHandOff);
+	m_ddx_CursorModeHandRdioCtrl.SetWindowPos(NULL, 0, 0, 24, 24, SWP_NOMOVE | SWP_NOZORDER);
+	m_ddx_CursorModeHandRdioCtrl.SetCheck(BST_CHECKED);
+	OnBnClickedRadioCursormodeHand();
+	m_ddx_CursorModeHandRdioCtrl.GetWindowRect(checkButtonRect);
+	ScreenToClient(checkButtonRect);
+	m_ddx_CursorModeMeasureRdioCtrl.SetBitmap(m_bmpCursorModeHandOff);
+	m_ddx_CursorModeMeasureRdioCtrl.SetWindowPos(NULL, checkButtonRect.right, checkButtonRect.top, 24, 24, SWP_NOZORDER);
+	m_ddx_CursorModeMeasureRdioCtrl.GetWindowRect(checkButtonRect);
+	ScreenToClient(checkButtonRect);
+	m_ddx_CursorModeCursorRdioCtrl.SetBitmap(m_bmpCursorModeHandOff);
+	m_ddx_CursorModeCursorRdioCtrl.SetWindowPos(NULL, checkButtonRect.right, checkButtonRect.top, 24, 24, SWP_NOZORDER);
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
@@ -436,4 +459,22 @@ void CMM1Dlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	}
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+void CMM1Dlg::OnBnClickedRadioCursormodeHand()
+{
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+	// 従来の CButton の場合、ボタンにビットマップを割り当てると、強制的にクラシック スタイルになる。
+	m_ddx_CursorModeHandRdioCtrl.SetBitmap(m_bmpCursorModeHandOn);
+	m_ddx_CursorModeHandRdioCtrl.Invalidate(TRUE);
+}
+
+
+void CMM1Dlg::OnBnClickedRadio2()
+{
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+	// 従来の CButton の場合、ボタンにビットマップを割り当てると、強制的にクラシック スタイルになる。
+	m_ddx_CursorModeHandRdioCtrl.SetBitmap(m_bmpCursorModeHandOff);
+
 }

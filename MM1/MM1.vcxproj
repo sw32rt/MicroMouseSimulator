@@ -217,6 +217,8 @@
     <None Include="res\MM1.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\HandToolOff.bmp" />
+    <Image Include="res\HandToolOn.bmp" />
     <Image Include="res\MM1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
