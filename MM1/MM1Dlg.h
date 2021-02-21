@@ -32,19 +32,23 @@ public:
 	CScreen m_Screen;
 	bool m_IsMouseLButtonDown = false;
 	CPoint m_MouseMoveStart;
+	CPoint m_MeasureStartPoint;
 
 	CPoint m_SCreenDisplayPreOffset;
 
 	CBitmap m_bmpCursorModeHandOn;
 	CBitmap m_bmpCursorModeHandOff;
 
-	enum
+	enum E_CursorMode_t
 	{
 		E_CursorMode_Hand    = 0,
 		E_CursorMode_Measure    ,
 		E_CursorMode_Cursor     ,
 	};
 
+	E_CursorMode_t m_CursorMode = E_CursorMode_Hand;
+
+	bool m_MeasureStart = false;
 	void OnCursorModeRadioClick(int mode);
 
 // 実装

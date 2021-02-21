@@ -14,6 +14,8 @@
 #define IDC_RADIO_CURSORMODE_MEASURE    1002
 #define IDC_RADIO_CURSORMODE_CURSOR     1003
 
+#define WS_EX_COMPOSITED 0x02000000L
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED

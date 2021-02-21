@@ -112,14 +112,17 @@ void CMM1Dlg::OnCursorModeRadioClick(int mode)
 	switch (mode)
 	{
 	case E_CursorMode_Hand:
+		m_CursorMode = E_CursorMode_Hand;
 		m_ddx_CursorModeHandRdioCtrl.SetBitmap(m_bmpCursorModeHandOn);
 		m_ddx_CursorModeHandRdioCtrl.Invalidate(TRUE);
 		break;
 	case E_CursorMode_Measure:
+		m_CursorMode = E_CursorMode_Measure;
 		m_ddx_CursorModeMeasureRdioCtrl.SetBitmap(m_bmpCursorModeHandOn);
 		m_ddx_CursorModeMeasureRdioCtrl.Invalidate(TRUE);
 		break;
 	case E_CursorMode_Cursor:
+		m_CursorMode = E_CursorMode_Cursor;
 		m_ddx_CursorModeCursorRdioCtrl.SetBitmap(m_bmpCursorModeHandOn);
 		m_ddx_CursorModeCursorRdioCtrl.Invalidate(TRUE);
 		break;
@@ -179,6 +182,9 @@ BOOL CMM1Dlg::OnInitDialog()
 	ScreenToClient(checkButtonRect);
 	m_ddx_CursorModeCursorRdioCtrl.SetBitmap(m_bmpCursorModeHandOff);
 	m_ddx_CursorModeCursorRdioCtrl.SetWindowPos(NULL, checkButtonRect.right, checkButtonRect.top, 24, 24, SWP_NOZORDER);
+
+	// debug
+	m_Screen.m_MeasureLines.resize(1);
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
@@ -254,18 +260,40 @@ void CMM1Dlg::OnTimer(UINT_PTR nIDEvent)
 void CMM1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-	TRACKMOUSEEVENT track;
-
-	track.cbSize = sizeof(track);
-	track.hwndTrack = *this;
-	track.dwHoverTime = HOVER_DEFAULT;
-
-	// WM_MOUSEHOVER，WM_MOUSELEAVE をリクエストする．
-	track.dwFlags = TME_HOVER | TME_LEAVE;
-	TrackMouseEvent(&track);
-
 	m_IsMouseLButtonDown = true;
-	m_MouseMoveStart = point;
+	switch (m_CursorMode)
+	{
+	case E_CursorMode_Hand:
+		TRACKMOUSEEVENT track;
+
+		track.cbSize = sizeof(track);
+		track.hwndTrack = *this;
+		track.dwHoverTime = HOVER_DEFAULT;
+
+		// WM_MOUSEHOVER，WM_MOUSELEAVE をリクエストする．
+		track.dwFlags = TME_HOVER | TME_LEAVE;
+		TrackMouseEvent(&track);
+		m_MouseMoveStart = point;
+		break;
+	case E_CursorMode_Measure:
+		if (m_MeasureStart)
+		{// 終点処理
+			m_MeasureStart = !m_MeasureStart; //falseにする　=falseとか書くとケアレスミスしやすい
+			CPoint diffp = point - m_MeasureStartPoint;
+			m_Screen.m_MeasureLines.at(0) = (stLine_t{ point, m_MeasureStartPoint });
+			Invalidate(FALSE);
+		}
+		else
+		{// 始点処理
+			m_MeasureStart = !m_MeasureStart;
+			m_MeasureStartPoint = point;
+		}
+		break;
+	case E_CursorMode_Cursor:
+		break;
+	default:
+		break;
+	}
 
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -274,8 +302,20 @@ void CMM1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CMM1Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-	m_IsMouseLButtonDown = false;
-	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+	switch (m_CursorMode)
+	{
+	case E_CursorMode_Hand:
+		m_IsMouseLButtonDown = false;
+		m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+		break;
+	case E_CursorMode_Measure:
+		break;
+	case E_CursorMode_Cursor:
+		break;
+	default:
+		break;
+	}
+
 
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
@@ -320,11 +360,30 @@ void CMM1Dlg::OnMButtonUp(UINT nFlags, CPoint point)
 void CMM1Dlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-	if (m_IsMouseLButtonDown)
+	
+	switch (m_CursorMode)
 	{
-		m_Screen.m_DisplayOffset = m_SCreenDisplayPreOffset + (point - m_MouseMoveStart);
-		Invalidate(TRUE); /* 再描画させる */
+	case E_CursorMode_Hand:
+		if (m_IsMouseLButtonDown)
+		{
+			m_Screen.m_DisplayOffset = m_SCreenDisplayPreOffset + (point - m_MouseMoveStart);
+			Invalidate(TRUE); /* 再描画させる */
+		}
+		break;
+	case E_CursorMode_Measure:
+		if (m_MeasureStart)
+		{
+			m_Screen.m_MeasureLines.at(0) = (stLine_t{ point, m_MeasureStartPoint });
+			Invalidate(TRUE); /* 再描画させる */
+		}
+		break;
+	case E_CursorMode_Cursor:
+		break;
+	default:
+		break;
 	}
+
+
 	CDialogEx::OnMouseMove(nFlags, point);
 }
 
@@ -332,10 +391,21 @@ void CMM1Dlg::OnMouseMove(UINT nFlags, CPoint point)
 void CMM1Dlg::OnMouseLeave()
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-	if (m_IsMouseLButtonDown)
+	switch (m_CursorMode)
 	{
-		m_IsMouseLButtonDown = false;
-		m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+	case E_CursorMode_Hand:
+		if (m_IsMouseLButtonDown)
+		{
+			m_IsMouseLButtonDown = false;
+			m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
+		}
+		break;
+	case E_CursorMode_Measure:
+		break;
+	case E_CursorMode_Cursor:
+		break;
+	default:
+		break;
 	}
 	CDialogEx::OnMouseLeave();
 }
