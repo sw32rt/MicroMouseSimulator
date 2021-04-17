@@ -94,4 +94,5 @@ public:
 	CButton m_ddx_CursorModeMeasureRdioCtrl;
 	CButton m_ddx_CursorModeCursorRdioCtrl;
 	virtual void OnCancel();
+	afx_msg void OnBnClickedButton1();
 };

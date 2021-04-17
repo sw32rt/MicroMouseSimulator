@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO_CURSORMODE_HAND, &CMM1Dlg::OnBnClickedRadioCursormodeHand)
 	ON_BN_CLICKED(IDC_RADIO_CURSORMODE_MEASURE, &CMM1Dlg::OnBnClickedRadioCursormodeMeasure)
 	ON_BN_CLICKED(IDC_RADIO_CURSORMODE_CURSOR, &CMM1Dlg::OnBnClickedRadioCursormodeCursor)
+	ON_BN_CLICKED(IDC_BUTTON1, &CMM1Dlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -230,7 +231,7 @@ void CMM1Dlg::OnPaint()
 
 		CDialogEx::OnPaint();
 	}
-		m_Screen.Update();
+	m_Screen.Update();
 }
 
 // ユーザーが最小化したウィンドウをドラッグしているときに表示するカーソルを取得するために、
@@ -585,4 +586,19 @@ void CMM1Dlg::OnCancel()
 	// TODO: ここに特定なコードを追加するか、もしくは基底クラスを呼び出してください。
 
 	CDialogEx::OnCancel();
+}
+
+
+void CMM1Dlg::OnBnClickedButton1()
+{
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+	bool end = m_Screen.m_maze.m_Search->SearchNext();
+	if (end)
+	{
+		int count = m_Screen.m_maze.m_Search->GetShortestPathDistance();
+		//CString str;
+		//str.Format(L"Searched shortest path : %3d", count);
+		//m_ddx_ShortestPathText1.SetWindowTextW(str);
+	}
+	Invalidate(FALSE);
 }

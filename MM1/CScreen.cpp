@@ -4,7 +4,7 @@
 
 CScreen::CScreen(CMM1Dlg* hwnd)
 	: m_hWnd(hwnd)
-	, m_maze(8)
+	, m_maze(MAZE_SIZE)
 {
 	InitMaze();
 }

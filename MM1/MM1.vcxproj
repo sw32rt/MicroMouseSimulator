@@ -183,12 +183,15 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AdachiHo.h" />
     <ClInclude Include="CField.h" />
     <ClInclude Include="CFloatRect.h" />
     <ClInclude Include="CMaze.h" />
     <ClInclude Include="CMazeWall.h" />
     <ClInclude Include="CScreen.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Graph.h" />
+    <ClInclude Include="GraphSearch.h" />
     <ClInclude Include="MM1.h" />
     <ClInclude Include="MM1Dlg.h" />
     <ClInclude Include="pch.h" />
@@ -196,11 +199,14 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AdachiHo.cpp" />
     <ClCompile Include="CField.cpp" />
     <ClCompile Include="CFloatRect.cpp" />
     <ClCompile Include="CMaze.cpp" />
     <ClCompile Include="CMazeWall.cpp" />
     <ClCompile Include="CScreen.cpp" />
+    <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="GraphSearch.cpp" />
     <ClCompile Include="MM1.cpp" />
     <ClCompile Include="MM1Dlg.cpp" />
     <ClCompile Include="pch.cpp">

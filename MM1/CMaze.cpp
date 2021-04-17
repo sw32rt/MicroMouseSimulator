@@ -34,6 +34,11 @@ CMaze::CMaze(int mazeSize)
 		VLine.from.x += CELL_LENGTH;
 		VLine.to.x += CELL_LENGTH;
 	}
+
+	m_Search = new AdachiHo();
+	int Start = to_1d(0, 31);
+	int Goal = to_1d(26, 3);
+	m_Search->init(Start, Goal);
 }
 
 CMaze::~CMaze()
@@ -66,6 +71,174 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
 
 /* •Ç•`‰æ */
 	DrawWall(hwnd, point, scale, rotateDeg);
+
+	// ƒyƒ“‚ðì¬‚µ‚Ü‚·B
+	// ƒyƒ“‚ÌƒXƒ^ƒCƒ‹ : ŽÀü
+	// ƒyƒ“‚Ì‘¾‚³    : 1
+	// ƒyƒ“‚ÌF     : •
+	CPen pen;
+
+	// V‚µ‚¢ƒyƒ“(pen)‚ðÝ’è‚µAÝ’è‚³‚ê‚Ä‚¢‚½Œ³‚Ìƒyƒ“‚ðpOldPen‚É•Û‘¶‚µ‚Ü‚·B
+	CPen* pOldPen;
+	// •Ó‚ð•`‰æ
+	for (auto v : m_Search->vlist)
+	{
+		do { // ƒm[ƒh‚Ì‰E‘¤‚Ìü‚ð•`‰æ
+			int color = 0;
+
+			// switch‚É‚·‚é‚Æbreak‚Ådo{}‚ð’Eo‚Å‚«‚È‚­‚È‚é‚Ì‚Åif‚É‚µ‚½
+			if (v.Wall_East == WallStatus::E_KS_Exists)
+			{ // ‘¶Ý‚·‚é
+				color = RGB(255, 100, 0);
+			}
+			else if (v.Wall_East == WallStatus::E_KS_NotExist)
+			{ // ‘¶Ý‚µ‚È‚¢
+				color = RGB(240, 240, 240);
+			}
+			else if (v.Wall_East == WallStatus::E_KS_Unknown)
+			{ // •s–¾(–¢’Tõ)
+				color = RGB(0, 0, 0);
+			}
+			else if (v.Wall_East == WallStatus::E_KS_OutSide)
+			{ // –À˜HŠO
+				//color = RGB(255, 0, 0);
+				break;
+			}
+			CPen pen(PS_SOLID, 3, color);
+			CPen* pOldPen = dc.SelectObject(&pen);
+			floatPoint from = v;
+			floatPoint to = *(v.GetVertex_East());
+			from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+			to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+
+			dc.MoveTo(from);
+			dc.LineTo(to);
+
+			// ƒyƒ“‚ð‚à‚Æ‚É–ß‚·
+			dc.SelectObject(pOldPen);
+		} while (0);
+
+		do { // ƒm[ƒh‚Ì‰º‘¤‚Ìü‚ð•`‰æ
+			int color = 0;
+
+			// switch‚É‚·‚é‚Æbreak‚Ådo{}‚ð’Eo‚Å‚«‚È‚­‚È‚é‚Ì‚Åif‚É‚µ‚½
+			if (v.Wall_South == WallStatus::E_KS_Exists)
+			{ // ‘¶Ý‚·‚é
+				color = RGB(255, 100, 0);
+			}
+			else if (v.Wall_South == WallStatus::E_KS_NotExist)
+			{ // ‘¶Ý‚µ‚È‚¢
+				//break; // ü‚ð‘‚©‚È‚¢
+				color = RGB(240, 240, 240);
+			}
+			else if (v.Wall_South == WallStatus::E_KS_Unknown)
+			{ // •s–¾(–¢’Tõ)
+				color = RGB(0, 0, 0);
+			}
+			else if (v.Wall_South == WallStatus::E_KS_OutSide)
+			{ // –À˜HŠO
+				//color = RGB(255, 0, 0);
+				break;
+			}
+			CPen pen(PS_SOLID, 3, color);
+			CPen* pOldPen = dc.SelectObject(&pen);
+
+			floatPoint from = v;
+			floatPoint to = *(v.GetVertex_South());
+			from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+			to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+
+			dc.MoveTo(from);
+			dc.LineTo(to);
+
+			// ƒyƒ“‚ð‚à‚Æ‚É–ß‚·
+			dc.SelectObject(pOldPen);
+		} while (0);
+	}
+
+	int index = 0;
+	// ’¸“_‚ð•`‰æ
+	for (auto v : m_Search->vlist)
+	{
+		int color = 0;
+
+		switch (v.SStatus)
+		{
+		case E_Status_UnExplored:
+			// –¢’Tõ
+			color = RGB(255, 255, 255);
+			break;
+		case E_Status_Looked:
+			// ”F’m
+			color = RGB(0, 255, 255);
+			break;
+		case E_Status_Exploring:
+			// ’Tõ’†
+			color = RGB(200, 200, 0);
+			break;
+		case E_Status_Searched:
+			// ’TõÏ‚Ý
+			color = RGB(100, 100, 100);
+			break;
+		case E_Status_ShortestPath:
+			// Å’ZŒo˜H
+			color = RGB(0, 200, 0);
+			break;
+		default:
+			break;
+		}
+
+		switch (v.SupposeSearchStatus)
+		{
+		case E_Status_ShortestPath:
+			// Å’ZŒo˜H
+			color = RGB(0, 200, 0);
+			break;
+		case E_Status_UnExplored:
+		case E_Status_Looked:
+		case E_Status_Exploring:
+		case E_Status_Searched:
+		default:
+			break;
+		}
+
+
+		if (m_Search->GoalVertexIndex == index)
+		{ // ƒS[ƒ‹
+			color = RGB(200, 100, 0);
+		}
+
+		// “h‚è‚Â‚Ô‚µF
+		CBrush brush(color);
+		// V‚µ‚¢ƒuƒ‰ƒV(brush)‚ðÝ’è‚µAÝ’è‚³‚ê‚Ä‚¢‚½Œ³‚Ìƒuƒ‰ƒV‚ðpOldBrush‚É•Û‘¶‚µ‚Ü‚·B
+		CBrush* pOldBrush = dc.SelectObject(&brush);
+
+		floatPoint fpoint = v;
+		fpoint = (fpoint * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+
+		CSize size(10, 10);
+		CPoint point(fpoint.x - (size.cx / 2), fpoint.y - (size.cy / 2));
+		CRect rect(point, size);
+		dc.Ellipse(rect);
+
+		dc.SelectObject(pOldBrush);
+
+		//// î•ñtext
+		//CFont font;
+		//CFont* pOldfont;
+		//font.CreateFontW(10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, L"consolas");
+		//pOldfont = dc.SelectObject(&font);
+		//CString str;
+		//point.Offset(10, -5);
+		//str.Format(L"%d", index);
+		//dc.TextOutW(point.x, point.y, str);
+		//str.Format(L"%2d", m_Search->routelist[index]);
+		//point.Offset(0, 10);
+		//dc.TextOutW(point.x, point.y, str);
+		//dc.SelectObject(pOldfont);
+		index++;
+	}
+
 }
 
 void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
