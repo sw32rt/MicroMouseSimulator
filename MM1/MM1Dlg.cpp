@@ -252,8 +252,15 @@ void CMM1Dlg::OnBnClickedOk()
 void CMM1Dlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-	//Invalidate(FALSE);
-
+	bool end = m_Screen.m_maze.m_Search->SearchNext();
+	if (end)
+	{
+		int count = m_Screen.m_maze.m_Search->GetShortestPathDistance();
+		//CString str;
+		//str.Format(L"Searched shortest path : %3d", count);
+		//m_ddx_ShortestPathText1.SetWindowTextW(str);
+	}
+	Invalidate(FALSE);
 	CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -592,13 +599,7 @@ void CMM1Dlg::OnCancel()
 void CMM1Dlg::OnBnClickedButton1()
 {
 	// TODO: ここにコントロール通知ハンドラー コードを追加します。
-	bool end = m_Screen.m_maze.m_Search->SearchNext();
-	if (end)
-	{
-		int count = m_Screen.m_maze.m_Search->GetShortestPathDistance();
-		//CString str;
-		//str.Format(L"Searched shortest path : %3d", count);
-		//m_ddx_ShortestPathText1.SetWindowTextW(str);
-	}
-	Invalidate(FALSE);
+
+	m_TimerID = SetTimer(1, 200, NULL);
 }
+ 

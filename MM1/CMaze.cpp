@@ -54,7 +54,7 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
 	/* テスト　迷路中心まで線を描く */
 	dc.MoveTo(CPoint(0, 0));
 	dc.LineTo(m_pField->m_MapOrigin);
-
+#if 0
 	/* 横線描画 */
 	for (int i = 0; i < m_mazeCells + 1; i++)
 	{
@@ -68,9 +68,7 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
 		dc.MoveTo((m_VerticalLineList[i].from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
 		dc.LineTo((m_VerticalLineList[i].to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
 	}
-
-/* 壁描画 */
-	DrawWall(hwnd, point, scale, rotateDeg);
+#endif
 
 	// ペンを作成します。
 	// ペンのスタイル : 実線
@@ -104,7 +102,7 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
 				//color = RGB(255, 0, 0);
 				break;
 			}
-			CPen pen(PS_SOLID, 3, color);
+			CPen pen(PS_SOLID, 1, color);
 			CPen* pOldPen = dc.SelectObject(&pen);
 			floatPoint from = v;
 			floatPoint to = *(v.GetVertex_East());
@@ -140,7 +138,7 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
 				//color = RGB(255, 0, 0);
 				break;
 			}
-			CPen pen(PS_SOLID, 3, color);
+			CPen pen(PS_SOLID, 1, color);
 			CPen* pOldPen = dc.SelectObject(&pen);
 
 			floatPoint from = v;
@@ -239,6 +237,9 @@ void CMaze::Draw(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
 		index++;
 	}
 
+	/* 壁描画 */
+	DrawWall(hwnd, point, scale, rotateDeg);
+
 }
 
 void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale, double rotateDeg)
@@ -247,10 +248,22 @@ void CMaze::DrawWall(CWnd* hwnd, floatPoint point, double scale, double rotateDe
 	CPoint pointList[4] = {0};
 	int pointCount = 4; /* 四角なので4固定 */
 
+	int color = RGB(50, 50, 50);
+
+	CPen pen(PS_SOLID, 0, color);
+	CPen* pOldPen = dc.SelectObject(&pen);
+
+	// 塗りつぶし色
+	CBrush brush(color);
+	// 新しいブラシ(brush)を設定し、設定されていた元のブラシをpOldBrushに保存します。
+	CBrush* pOldBrush = dc.SelectObject(&brush);
+
+	int d = 0;
 	for (auto hWall_x : m_pField->m_MazeWall.hWallList)
 	{
 		for (wall_t wall : hWall_x)
 		{
+			if (d == 0) { d++; continue; }
 			floatRect polyRect = wall.rect.scale(scale);
 			polyRect = polyRect.rotate(rotateDeg);
 			polyRect += m_pField->m_MapOrigin;

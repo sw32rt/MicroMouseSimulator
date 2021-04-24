@@ -50,6 +50,7 @@ public:
 
 	bool m_MeasureStart = false;
 	void OnCursorModeRadioClick(int mode);
+	int m_TimerID = 0;
 
 // 実装
 protected:
