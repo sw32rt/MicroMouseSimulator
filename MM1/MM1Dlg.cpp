@@ -375,14 +375,14 @@ void CMM1Dlg::OnMouseMove(UINT nFlags, CPoint point)
 		if (m_IsMouseLButtonDown)
 		{
 			m_Screen.m_DisplayOffset = m_SCreenDisplayPreOffset + (point - m_MouseMoveStart);
-			Invalidate(TRUE); /* 再描画させる */
+			Invalidate(FALSE); /* 再描画させる */ /* Onpaint時にbitbltですべて描画しなおされるのでTRUEで全消しする必要ない */
 		}
 		break;
 	case E_CursorMode_Measure:
 		if (m_MeasureStart)
 		{
 			m_Screen.m_MeasureLines.at(0) = (stLine_t{ point, m_MeasureStartPoint });
-			Invalidate(TRUE); /* 再描画させる */
+			Invalidate(FALSE); /* 再描画させる */ /* Onpaint時にbitbltですべて描画しなおされるのでTRUEで全消しする必要ない */
 		}
 		break;
 	case E_CursorMode_Cursor:
@@ -531,7 +531,7 @@ BOOL CMM1Dlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 	m_SCreenDisplayPreOffset = m_Screen.m_DisplayOffset;
 
-	Invalidate(TRUE); /* 再描画させる */
+	Invalidate(FALSE); /* 再描画させる */ /* Onpaint時にbitbltですべて描画しなおされるのでTRUEで全消しする必要ない */
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }
 
@@ -559,7 +559,7 @@ void CMM1Dlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	if (pScrollBar == (CScrollBar*)&m_rotateSliderCtrl)
 	{
 		m_Screen.m_DisplayRotate = m_rotateSliderCtrl.GetPos();
-		Invalidate(TRUE); /* 再描画させる */
+		Invalidate(FALSE); /* 再描画させる */ /* Onpaint時にbitbltですべて描画しなおされるのでTRUEで全消しする必要ない */
 	}
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);

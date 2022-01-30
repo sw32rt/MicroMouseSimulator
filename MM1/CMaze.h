@@ -16,7 +16,7 @@ public:
 	CMaze(int mazeSize);
 	~CMaze();
 
-	void Draw(CWnd* hwnd, floatPoint point, double scale, double rotateDeg);
+	void Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg);
 	int to_1d(int x, int y)
 	{
 		return y + (x * m_mazeCells);
@@ -31,6 +31,6 @@ public:
 	GraphSearch* m_Search = nullptr;
 
 private:
-	void DrawWall(CWnd* hwnd, floatPoint point, double scale, double rotateDeg);
+	void DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg);
 };
 
