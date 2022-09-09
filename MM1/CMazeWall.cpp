@@ -7,43 +7,43 @@ CMazeWall::CMazeWall(size_t size)
 	/* íPà ÇÕmm ãÊâÊ90mm, ï«å˙Ç≥6mm ê≥ï˚å`Ç»ÇÃÇ≈xÇ∆yìØÇ∂ */
 	floatPoint centerZeroOffset( (CELL_LENGTH * size) / 2.0, (CELL_LENGTH * size) / 2.0);
 
-	vWallList.clear();
 	hWallList.clear();
+	vWallList.clear();
 	pillarList.clear();
-	vWallList.resize(size + 1);
-	hWallList.resize(size);
+	hWallList.resize(size + 1);
+	vWallList.resize(size);
 	pillarList.resize(size + 1);
 
-	for (int x = 0; x < size; x++)
-	{ /* â° */
+	for (int y = 0; y < size + 1; y++)
+	{ /* èc */
 		floatRect horizontalWallRect = floatRect(floatPoint(0, 0), floatPoint(WALL_LENGTH, WALL_WIDTH)) - centerZeroOffset;
-		hWallList[x].resize(size + 1);
-		for (int y = 0; y < size + 1; y++)
-		{ /* èc */
-			hWallList[x][y].rect = horizontalWallRect + floatPoint((x * CELL_LENGTH) + (WALL_WIDTH / 2.0), (y * CELL_LENGTH) - (WALL_WIDTH / 2.0));
-			hWallList[x][y].yes = true;
+		hWallList[y].resize(size);
+		for (int x = 0; x < size; x++)
+		{ /* â° */
+			hWallList[y][x].rect = horizontalWallRect + floatPoint((x * CELL_LENGTH) + (WALL_WIDTH / 2.0), (y * CELL_LENGTH) - (WALL_WIDTH / 2.0));
+			hWallList[y][x].yes = true;
 		}
 	}
 
-	for (int x = 0; x < size + 1; x++)
-	{ /* â° */
+	for (int y = 0; y < size; y++)
+	{ /* èc */
 		floatRect verticalWallRect = floatRect(floatPoint(0, 0), floatPoint(WALL_WIDTH, WALL_LENGTH)) - centerZeroOffset;
-		vWallList[x].resize(size);
-		for (int y = 0; y < size; y++)
-		{ /* èc */
-			vWallList[x][y].rect = verticalWallRect + floatPoint((x * CELL_LENGTH) - (WALL_WIDTH / 2.0), (y * CELL_LENGTH) + (WALL_WIDTH / 2.0));
-			vWallList[x][y].yes = true;
+		vWallList[y].resize(size + 1);
+		for (int x = 0; x < size + 1; x++)
+		{ /* â° */
+			vWallList[y][x].rect = verticalWallRect + floatPoint((x * CELL_LENGTH) - (WALL_WIDTH / 2.0), (y * CELL_LENGTH) + (WALL_WIDTH / 2.0));
+			vWallList[y][x].yes = true;
 		}
 	}
 
-	for (int x = 0; x < size + 1; x++)
-	{ /* â° */
+	for (int y = 0; y < size + 1; y++)
+	{ /* èc */
 		floatRect pillarRect = floatRect(floatPoint(0, 0), floatPoint(WALL_WIDTH, WALL_WIDTH)) - centerZeroOffset;
-		pillarList[x].resize(size + 1);
-		for (int y = 0; y < size + 1; y++)
-		{ /* èc */
-			pillarList[x][y].rect = pillarRect + floatPoint((x * CELL_LENGTH) - (WALL_WIDTH / 2.0), (y * CELL_LENGTH) - (WALL_WIDTH / 2.0));
-			pillarList[x][y].yes = true;
+		pillarList[y].resize(size + 1);
+		for (int x = 0; x < size + 1; x++)
+		{ /* â° */
+			pillarList[y][x].rect = pillarRect + floatPoint((x * CELL_LENGTH) - (WALL_WIDTH / 2.0), (y * CELL_LENGTH) - (WALL_WIDTH / 2.0));
+			pillarList[y][x].yes = true;
 		}
 	}
 }

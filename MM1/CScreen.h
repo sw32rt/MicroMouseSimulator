@@ -2,8 +2,7 @@
 #include "CField.h"
 #include "CMaze.h"
 #include <vector>
-
-#define MAZE_SIZE 32
+#include "setting.h"
 
 class CMM1Dlg;
 

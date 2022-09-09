@@ -599,7 +599,22 @@ void CMM1Dlg::OnCancel()
 void CMM1Dlg::OnBnClickedButton1()
 {
 	// TODO: ここにコントロール通知ハンドラー コードを追加します。
-
-	m_TimerID = SetTimer(1, 200, NULL);
+#if 1 // 一気に探索する
+	do
+	{
+		bool end = m_Screen.m_maze.m_Search->SearchNext();
+		if (end)
+		{
+			int count = m_Screen.m_maze.m_Search->GetShortestPathDistance();
+			//CString str;
+			//str.Format(L"Searched shortest path : %3d", count);
+			//m_ddx_ShortestPathText1.SetWindowTextW(str);
+			break;
+		}
+	}while (1);
+	Invalidate(FALSE);
+#else
+	m_TimerID = SetTimer(1, 100, NULL);
+#endif
 }
  

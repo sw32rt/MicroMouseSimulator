@@ -10,6 +10,7 @@ class GraphSearch : public Graph
 {
 public:
 	using Graph::Graph;
+	virtual ~GraphSearch();
 	int CurrentVertexIndex = 0;
 	int StartVertexIndex = 0;
 	int GoalVertexIndex = 0;

@@ -17,11 +17,7 @@ public:
 	~CMaze();
 
 	void Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg);
-	int to_1d(int x, int y)
-	{
-		return y + (x * m_mazeCells);
-	}
-
+	
 	int m_mazeCells = 0;
 	floatSize m_mazeSize;
 	std::vector<floatRect> m_wallList;

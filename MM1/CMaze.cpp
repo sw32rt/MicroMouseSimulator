@@ -36,6 +36,7 @@ CMaze::CMaze(int mazeSize)
 	}
 
 	m_Search = new AdachiHo();
+	auto to_1d = [](int x, int y) -> int {return (x * 2) + ((y * 2) * ((32 * 2) - 1)); };
 	int Start = to_1d(0, 31);
 	int Goal = to_1d(26, 3);
 	m_Search->init(Start, Goal);
@@ -44,6 +45,7 @@ CMaze::CMaze(int mazeSize)
 CMaze::~CMaze()
 {
 	delete m_pField;
+	delete m_Search;
 }
 
 void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
@@ -78,10 +80,11 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 
 	// V‚µ‚¢ƒyƒ“(pen)‚ðÝ’è‚µAÝ’è‚³‚ê‚Ä‚¢‚½Œ³‚Ìƒyƒ“‚ðpOldPen‚É•Û‘¶‚µ‚Ü‚·B
 	CPen* pOldPen;
+#if 1
 	// •Ó‚ð•`‰æ
 	for (auto v : m_Search->vlist)
 	{
-		do { // ƒm[ƒh‚Ì‰E‘¤‚Ìü‚ð•`‰æ
+		do { // ƒm[ƒh‚Ì‰Eü‚ð•`‰æ
 			int color = 0;
 
 			// switch‚É‚·‚é‚Æbreak‚Ådo{}‚ð’Eo‚Å‚«‚È‚­‚È‚é‚Ì‚Åif‚É‚µ‚½
@@ -91,7 +94,7 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 			}
 			else if (v.Wall_East == WallStatus::E_KS_NotExist)
 			{ // ‘¶Ý‚µ‚È‚¢
-				color = RGB(240, 240, 240);
+				color = RGB(0, 0, 240);
 			}
 			else if (v.Wall_East == WallStatus::E_KS_Unknown)
 			{ // •s–¾(–¢’Tõ)
@@ -116,7 +119,7 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 			pDC->SelectObject(pOldPen);
 		} while (0);
 
-		do { // ƒm[ƒh‚Ì‰º‘¤‚Ìü‚ð•`‰æ
+		do { // ƒm[ƒh‚Ì‰ºü‚ð•`‰æ
 			int color = 0;
 
 			// switch‚É‚·‚é‚Æbreak‚Ådo{}‚ð’Eo‚Å‚«‚È‚­‚È‚é‚Ì‚Åif‚É‚µ‚½
@@ -127,7 +130,7 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 			else if (v.Wall_South == WallStatus::E_KS_NotExist)
 			{ // ‘¶Ý‚µ‚È‚¢
 				//break; // ü‚ð‘‚©‚È‚¢
-				color = RGB(240, 240, 240);
+				color = RGB(0, 0, 240);
 			}
 			else if (v.Wall_South == WallStatus::E_KS_Unknown)
 			{ // •s–¾(–¢’Tõ)
@@ -153,7 +156,9 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 			pDC->SelectObject(pOldPen);
 		} while (0);
 	}
+#endif
 
+#if 1
 	int index = 0;
 	// ’¸“_‚ð•`‰æ
 	for (auto v : m_Search->vlist)
@@ -200,7 +205,6 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 			break;
 		}
 
-
 		if (m_Search->GoalVertexIndex == index)
 		{ // ƒS[ƒ‹
 			color = RGB(200, 100, 0);
@@ -236,16 +240,15 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 		//pDC->SelectObject(pOldfont);
 		index++;
 	}
-
 	/* •Ç•`‰æ */
 	DrawWall(pDC, point, scale, rotateDeg);
 
+#endif
 
 }
 
 void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 {
-	//CClientDC dc(hwnd);
 	CPoint pointList[4] = {0};
 	int pointCount = 4; /* ŽlŠp‚È‚Ì‚Å4ŒÅ’è */
 
@@ -255,39 +258,118 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 	CPen* pOldPen = pDC->SelectObject(&pen);
 
 	// “h‚è‚Â‚Ô‚µF
-	CBrush brush(color);
+	CBrush defaultBrush(color);
 	// V‚µ‚¢ƒuƒ‰ƒV(brush)‚ðÝ’è‚µAÝ’è‚³‚ê‚Ä‚¢‚½Œ³‚Ìƒuƒ‰ƒV‚ðpOldBrush‚É•Û‘¶‚µ‚Ü‚·B
-	CBrush* pOldBrush = pDC->SelectObject(&brush);
+	CBrush* pOldBrush = pDC->SelectObject(&defaultBrush);
 
+	int kx = 0;
+	int ky = 0;
 	int d = 0;
+	bool IsDraw = true;
 	for (auto hWall_x : m_pField->m_MazeWall.hWallList)
 	{
+		if (ky == 16) { break; }
+		kx = 0;
 		for (wall_t wall : hWall_x)
 		{
-			floatRect polyRect = wall.rect.scale(scale);
-			polyRect = polyRect.rotate(rotateDeg);
-			polyRect += m_pField->m_MapOrigin;
-			pointList[0] = polyRect.lefttop;
-			pointList[1] = polyRect.righttop;
-			pointList[2] = polyRect.rightbottom;
-			pointList[3] = polyRect.leftbottom;
-			pDC->Polygon(pointList, pointCount);
+			IsDraw = true;
+			color = RGB(255, 255, 0);
+			if (ky != 0)
+			{
+				//const auto& v = m_Search->vlist[(kx * 2) + (((ky - 1) * ((MAZE_SIZE * 2) - 1)) * 2)];
+				const auto& v = m_Search->vAnswer[kx + ((ky - 1) * MAZE_SIZE)];
+				// switch‚É‚·‚é‚Æbreak‚Ådo{}‚ð’Eo‚Å‚«‚È‚­‚È‚é‚Ì‚Åif‚É‚µ‚½
+				if (v.Wall_East == WallStatus::E_KS_Exists)
+				{ // ‘¶Ý‚·‚é
+					IsDraw = false;
+				}
+				else if (v.Wall_East == WallStatus::E_KS_NotExist)
+				{ // ‘¶Ý‚µ‚È‚¢ •Ç‚ ‚è
+					color = RGB(240, 240, 240);
+				}
+				else if (v.Wall_East == WallStatus::E_KS_Unknown)
+				{ // •s–¾(–¢’Tõ)
+					//IsDraw = false;
+				}
+				else if (v.Wall_East == WallStatus::E_KS_OutSide)
+				{ // –À˜HŠO
+					IsDraw = false;
+					;
+				}
+			}
+			kx++;
+			if (IsDraw)
+			{
+				CBrush brush(color);
+				pOldBrush = pDC->SelectObject(&brush);
+				floatRect polyRect = wall.rect.scale(scale);
+				polyRect = polyRect.rotate(rotateDeg);
+				polyRect += m_pField->m_MapOrigin;
+				pointList[0] = polyRect.lefttop;
+				pointList[1] = polyRect.righttop;
+				pointList[2] = polyRect.rightbottom;
+				pointList[3] = polyRect.leftbottom;
+				pDC->Polygon(pointList, pointCount);
+				// ƒyƒ“‚ð‚à‚Æ‚É–ß‚·
+				pDC->SelectObject(pOldPen);
+				pDC->SelectObject(pOldBrush);
+			}
 		}
+		ky++;
 	}
 
+	kx = 0;
+	ky = 0;
 	for (auto vWall_x : m_pField->m_MazeWall.vWallList)
 	{
+		if (ky == 16) { break; }
+		kx = 0;
 		for (wall_t wall : vWall_x)
 		{
-			floatRect polyRect = wall.rect.scale(scale);
-			polyRect = polyRect.rotate(rotateDeg);
-			polyRect += m_pField->m_MapOrigin;
-			pointList[0] = polyRect.lefttop;
-			pointList[1] = polyRect.righttop;
-			pointList[2] = polyRect.rightbottom;
-			pointList[3] = polyRect.leftbottom;
-			pDC->Polygon(pointList, pointCount);
+			IsDraw = true;
+			color = RGB(0, 255, 0);
+			//color = RGB(50, 50, 50);
+			if (kx != 0)
+			{
+				//const auto& v = m_Search->vlist[((kx - 1) * 2) + ((ky * ((MAZE_SIZE * 2) - 1)) * 2)];
+				const auto& v = m_Search->vAnswer[(kx - 1) + (ky * MAZE_SIZE)];
+				// switch‚É‚·‚é‚Æbreak‚Ådo{}‚ð’Eo‚Å‚«‚È‚­‚È‚é‚Ì‚Åif‚É‚µ‚½
+				if (v.Wall_South == WallStatus::E_KS_Exists)
+				{ // ‘¶Ý‚·‚é
+					IsDraw = false;
+				}
+				else if (v.Wall_South == WallStatus::E_KS_NotExist)
+				{ // ‘¶Ý‚µ‚È‚¢
+					color = RGB(240, 240, 240);
+				}
+				else if (v.Wall_South == WallStatus::E_KS_Unknown)
+				{ // •s–¾(–¢’Tõ)
+					//IsDraw = false;
+				}
+				else if (v.Wall_South == WallStatus::E_KS_OutSide)
+				{ // –À˜HŠO
+					IsDraw = false;
+				}
+			}
+			kx++;
+			if (IsDraw)
+			{
+				CBrush brush(color);
+				pOldBrush = pDC->SelectObject(&brush);
+				floatRect polyRect = wall.rect.scale(scale);
+				polyRect = polyRect.rotate(rotateDeg);
+				polyRect += m_pField->m_MapOrigin;
+				pointList[0] = polyRect.lefttop;
+				pointList[1] = polyRect.righttop;
+				pointList[2] = polyRect.rightbottom;
+				pointList[3] = polyRect.leftbottom;
+				pDC->Polygon(pointList, pointCount);
+				// ƒyƒ“‚ð‚à‚Æ‚É–ß‚·
+				pDC->SelectObject(pOldPen);
+				pDC->SelectObject(pOldBrush);
+			}
 		}
+		ky++;
 	}
 
 	for (auto pillar_x : m_pField->m_MazeWall.pillarList)

@@ -94,8 +94,10 @@ floatPoint floatPoint::rotate(double digree)
 {
 	double radian = digree * (PI / 180.0);
 	floatPoint tempfp;
-	tempfp.x = (x * std::sin(radian) + (y * std::cos(radian)));
-	tempfp.y = (x * std::cos(radian) - (y * std::sin(radian)));
+	//tempfp.x = (x * std::cos(radian) - (y * std::sin(radian)));
+	//tempfp.y = (x * std::sin(radian) + (y * std::cos(radian)));
+	tempfp.x = x;
+	tempfp.y = y;
 	*this = tempfp;
 	return *this;
 }

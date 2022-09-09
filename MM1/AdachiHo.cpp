@@ -2,6 +2,10 @@
 #include "AdachiHo.h"
 #include <cmath>
 
+AdachiHo::~AdachiHo()
+{
+}
+
 void AdachiHo::init(int StartVertexIndex, int GoalVertexIndex)
 {
     this->CurrentVertexIndex = StartVertexIndex;
@@ -42,7 +46,8 @@ int AdachiHo::GetNextSearchVertex(int CurrentVertex)
 
     vSupposBFSstack.clear();
 
-    while (1)
+    //while (1)
+    do
     { /* goal -> startÇ…å¸Ç©Ç¡Çƒç≈íZåoòHÇãÅÇﬂÇÈ ïùóDêÊíTçıÇ≈ëSíTçıÇ∑ÇÈ */
         distans = INFINITY;
         cv = GetSupposeConnectionVertex(SupposeSearchCurrent);
@@ -53,6 +58,10 @@ int AdachiHo::GetNextSearchVertex(int CurrentVertex)
             vSupposBFSstack.push_back(v);
         }
         SupposeNext = vSupposBFSstack.front();
+        if (SupposeNext == 0xf41)
+        {
+            int debug = 0;
+        }
         vSupposBFSstack.pop_front();
         vlist[SupposeNext].pSupposeSearchFromVertexIndex = vlist[SupposeSearchCurrent].Index;
         SupposeSearchCurrent = SupposeNext;
@@ -71,7 +80,7 @@ int AdachiHo::GetNextSearchVertex(int CurrentVertex)
             }
             break;
         }
-    }
+    } while (1);
 
     if (CurrentVertex != GoalVertexIndex)
     {
@@ -81,6 +90,102 @@ int AdachiHo::GetNextSearchVertex(int CurrentVertex)
     {
         returnNext = CurrentVertex;
     }
+
+    // cv = GetConnectionVertex(CurrentVertex);
+    // distans = INFINITY;
+    // for (auto v : cv)
+    // {
+    //     // ãóó£ = sqrt( (p1.x - p2.x)^2 + (p1.y - p2.y)^2 )
+    //     dx = vlist[v].x - vlist[GoalVertexIndex].x;
+    //     dy = vlist[v].y - vlist[GoalVertexIndex].y;
+    //     float tempDist = std::sqrtf((dx * dx) + (dy * dy));
+    //     if (distans > tempDist)
+    //     {
+    //         distans = tempDist;
+    //         minimalNext = v;
+    //     }
+    // }
+    // returnNext = minimalNext;
+
+    // vlist[returnNext].pSearchFromVertexIndex = vlist[CurrentVertex].Index;
+
+    // éüÇÃí∏ì_ÇåvéZÇ∑ÇÈ
+    return returnNext;
+}
+
+
+int AdachiHo::GetNextSearchStep(int CurrentVertex)
+{
+    float dx = 0;
+    float dy = 0;
+    int minimalNext = 0;
+    int returnNext = 0;
+    std::vector<int> cv;
+
+    static int SupposeNext = GoalVertexIndex;
+    static int SupposeSearchCurrent = GoalVertexIndex;
+    static std::deque<int> vSupposBFSstack;
+
+    WallCheck(CurrentVertex);
+
+    static bool first = true;
+    if (first)
+    {
+        first = false;
+        // âºëzíTçıÉXÉeÅ[É^ÉXèâä˙âª
+        for (auto& v : vlist)
+        {
+            v.SupposeSearchStatus = SearchStatus::E_Status_UnExplored;
+        }
+
+        vSupposBFSstack.clear();
+    }
+
+    //while (1)
+    do
+    { /* goal -> startÇ…å¸Ç©Ç¡Çƒç≈íZåoòHÇãÅÇﬂÇÈ ïùóDêÊíTçıÇ≈ëSíTçıÇ∑ÇÈ */
+        cv = GetSupposeConnectionVertex(SupposeSearchCurrent);
+        for (auto v : cv)
+        {
+            SupposeeRoutelist[v] = SupposeSearchCurrent;
+            vlist[v].SupposeSearchStatus = SearchStatus::E_Status_Looked;
+            vSupposBFSstack.push_back(v);
+        }
+        SupposeNext = vSupposBFSstack.front();
+        if (SupposeNext == 0xf41)
+        {
+            int debug = 0;
+        }
+        vSupposBFSstack.pop_front();
+        vlist[SupposeNext].pSupposeSearchFromVertexIndex = vlist[SupposeSearchCurrent].Index;
+        SupposeSearchCurrent = SupposeNext;
+
+        if (SupposeNext == CurrentVertex) // Current -> Goal
+        { // ÉãÅ[Égå©Ç¬Ç©Ç¡ÇΩ
+            int SupposeShortestPathNext = CurrentVertex;
+            while (1)
+            {
+                vlist[SupposeShortestPathNext].SupposeSearchStatus = SearchStatus::E_Status_ShortestPath;
+                SupposeShortestPathNext = SupposeeRoutelist[SupposeShortestPathNext];
+                if (SupposeShortestPathNext == GoalVertexIndex)
+                {
+                    break;
+                }
+            }
+            break;
+        }
+    } while (0);
+    returnNext = SupposeSearchCurrent;
+
+    //if (CurrentVertex != GoalVertexIndex)
+    //{
+    //    returnNext = SupposeeRoutelist[CurrentVertex];
+    //}
+    //else
+    //{
+    //    returnNext = CurrentVertex;
+    //}
+
     // cv = GetConnectionVertex(CurrentVertex);
     // distans = INFINITY;
     // for (auto v : cv)
@@ -122,7 +227,8 @@ bool AdachiHo::SearchNext(void)
         StartVertexIndex = GoalVertexIndex;
         GoalVertexIndex = swap;
         vlist[CurrentVertexIndex].SStatus = E_Status_Searched;
-        CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
+        //CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
+        CurrentVertexIndex = GetNextSearchStep(CurrentVertexIndex);
         vlist[CurrentVertexIndex].SStatus = E_Status_Exploring;
 
         Finish = true;
@@ -130,7 +236,8 @@ bool AdachiHo::SearchNext(void)
     else
     {
         vlist[CurrentVertexIndex].SStatus = E_Status_Searched;
-        CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
+        //CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
+        CurrentVertexIndex = GetNextSearchStep(CurrentVertexIndex);
         vlist[CurrentVertexIndex].SStatus = E_Status_Exploring;
     }
 
