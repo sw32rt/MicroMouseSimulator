@@ -1,16 +1,49 @@
 #pragma once
 #include "pch.h"
 #include <vector>
+#include <map>
 #include <array>
 #include "setting.h"
+
+// 座標
+struct Coordinate
+{
+	Coordinate()
+		: x(0)
+		, y(0)
+	{
+	}
+
+	Coordinate(int x, int y)
+		: x(x)
+		, y(y)
+	{
+	}
+
+	int x;
+	int y;
+	bool operator ==(const Coordinate& b) const
+	{
+		return ((x == b.x) && (y == b.y));
+	}
+
+	bool operator !=(const Coordinate& b) const
+	{
+		return ((x != b.x) || (y != b.y));
+	}
+
+	operator std::pair<int, int>() const
+	{
+		return std::pair<int, int>(x, y);
+	}
+
+};
 
 struct MazeWall
 {
 	int right;
 	int bottom;
 };
-
-extern const MazeWall g_AnswewrMazeData[];
 
 enum SearchStatus {
 	E_Status_UnExplored = 0, // 未探索
@@ -23,8 +56,8 @@ enum SearchStatus {
 
 enum class WallStatus : int {
 	E_KS_Unknown = 0,
-	E_KS_Exists,
-	E_KS_NotExist,
+	E_KS_WallExists,
+	E_KS_WallNothing,
 	E_KS_OutSide,
 };
 
@@ -33,8 +66,8 @@ class Vertex
 {
 public:
 	Vertex();
-	Vertex(int x, int y, int Index, WallStatus& WN, WallStatus WE, WallStatus& WW, WallStatus WS);
-	Vertex(int x, int y, int Index, WallStatus& WN, WallStatus WE, WallStatus& WW, WallStatus WS, WallStatus& WNE, WallStatus WES, WallStatus& WWN, WallStatus WSW);
+	Vertex(CPoint dispPoint, Coordinate mazeCoordinate, WallStatus& WN, WallStatus WE, WallStatus& WW, WallStatus WS);
+	Vertex(CPoint dispPoint, Coordinate mazeCoordinate, WallStatus& WN, WallStatus WE, WallStatus& WW, WallStatus WS, WallStatus& WNE, WallStatus WES, WallStatus& WWN, WallStatus WSW);
 	void SetReferVertex_N(Vertex* VN);
 	void SetReferVertex_E(Vertex* VE);
 	void SetReferVertex_W(Vertex* VW);
@@ -52,9 +85,11 @@ public:
 	Vertex* GetVertex_WestNorth(void);
 	Vertex* GetVertex_SouthWest(void);
 	operator CPoint();
-	int x;
-	int y;
-	int Index = 0;
+	operator Coordinate();
+	CPoint displayPoint;
+	Coordinate mazeCoordinate;
+
+	/*int Index = 0;*/
 	SearchStatus SStatus = E_Status_UnExplored;
 	SearchStatus SupposeSearchStatus = E_Status_UnExplored;
 
@@ -68,8 +103,8 @@ public:
 	WallStatus Wall_SouthWest = WallStatus::E_KS_OutSide;
 	WallStatus& Wall_WestNorth;
 
-	int pSearchFromVertexIndex; // どこから見つけられたのか情報 後代入を可能にするためポインタにしている
-	int pSupposeSearchFromVertexIndex; // どこから見つけられたのか情報 後代入を可能にするためポインタにしている
+	Coordinate pSearchFromVertexIndex; // どこから見つけられたのか情報
+	Coordinate pSupposeSearchFromVertexIndex; // どこから見つけられたのか情報
 
 private:
 public:
@@ -89,18 +124,18 @@ class Graph
 public:
 	Graph();
 	virtual ~Graph();
-	std::vector<Vertex> vlist;
-	std::vector<Vertex> vAnswer;
-	std::vector<int> routelist;
-	std::vector<int> SupposeeRoutelist;	
+	std::vector<std::vector<Vertex>> vlist;
+	std::vector<std::vector<Vertex>> vAnswer;
+	//std::vector<Coordinate> routelist;
+	std::map<std::pair<int, int>, Coordinate> SupposeeRoutelist; // 最短経路検索メモ
 	const uint64_t m_MapSize = MAZE_SIZE;
 
 	void Initialize(void);
-	int Graph::WallCheck(int VertexIndex);
-	virtual std::vector<int> GetConnectionVertex(int VertexIndex);
-	virtual std::vector<int> GetSupposeConnectionVertex(int VertexIndex);
-	void CreateMap(std::vector<Vertex>& vl);
-	void SetAnswer(std::vector<Vertex>& vl);
+	int Graph::WallCheck(Coordinate VertexIndex);
+	virtual std::vector<Coordinate> GetConnectionVertex(Coordinate VertexIndex);
+	virtual std::vector<Coordinate> GetSupposeConnectionVertex(Coordinate VertexIndex);
+	void CreateMap(std::vector<std::vector<Vertex>>& vl);
+	void SetAnswer(std::vector<std::vector<Vertex>>& vl);
 };
 
 extern WallStatus g_Nothing;

@@ -599,7 +599,7 @@ void CMM1Dlg::OnCancel()
 void CMM1Dlg::OnBnClickedButton1()
 {
 	// TODO: ここにコントロール通知ハンドラー コードを追加します。
-#if 1 // 一気に探索する
+#if 0 // 一気に探索する
 	do
 	{
 		bool end = m_Screen.m_maze.m_Search->SearchNext();

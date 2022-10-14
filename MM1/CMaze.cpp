@@ -37,8 +37,8 @@ CMaze::CMaze(int mazeSize)
 
 	m_Search = new AdachiHo();
 	auto to_1d = [](int x, int y) -> int {return (x * 2) + ((y * 2) * ((32 * 2) - 1)); };
-	int Start = to_1d(0, 31);
-	int Goal = to_1d(26, 3);
+	Coordinate Start(0, 31 * 2);
+	Coordinate Goal(26 * 2, 3 * 2);
 	m_Search->init(Start, Goal);
 }
 
@@ -82,163 +82,168 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 	CPen* pOldPen;
 #if 1
 	// ï”Çï`âÊ
-	for (auto v : m_Search->vlist)
-	{
-		do { // ÉmÅ[ÉhÇÃâEê¸Çï`âÊ
-			int color = 0;
+	for (auto ylist : m_Search->vlist)
+	{ // yëñç∏
+		for (auto v : ylist)
+		{ // xëñç∏
 
-			// switchÇ…Ç∑ÇÈÇ∆breakÇ≈do{}ÇíEèoÇ≈Ç´Ç»Ç≠Ç»ÇÈÇÃÇ≈ifÇ…ÇµÇΩ
-			if (v.Wall_East == WallStatus::E_KS_Exists)
-			{ // ë∂ç›Ç∑ÇÈ
-				color = RGB(255, 100, 0);
-			}
-			else if (v.Wall_East == WallStatus::E_KS_NotExist)
-			{ // ë∂ç›ÇµÇ»Ç¢
-				color = RGB(0, 0, 240);
-			}
-			else if (v.Wall_East == WallStatus::E_KS_Unknown)
-			{ // ïsñæ(ñ¢íTçı)
-				color = RGB(0, 0, 0);
-			}
-			else if (v.Wall_East == WallStatus::E_KS_OutSide)
-			{ // ñ¿òHäO
-				//color = RGB(255, 0, 0);
-				break;
-			}
-			CPen pen(PS_SOLID, 1, color);
-			CPen* pOldPen = pDC->SelectObject(&pen);
-			floatPoint from = v;
-			floatPoint to = *(v.GetVertex_East());
-			from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
-			to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+			do { // ÉmÅ[ÉhÇÃâEê¸Çï`âÊ
+				int color = 0;
 
-			pDC->MoveTo(from);
-			pDC->LineTo(to);
+				// switchÇ…Ç∑ÇÈÇ∆breakÇ≈do{}ÇíEèoÇ≈Ç´Ç»Ç≠Ç»ÇÈÇÃÇ≈ifÇ…ÇµÇΩ
+				if (v.Wall_East == WallStatus::E_KS_WallExists)
+				{ // ï«Ç†ÇË
+					color = RGB(255, 100, 0);
+				}
+				else if (v.Wall_East == WallStatus::E_KS_WallNothing)
+				{ // ï«ñ≥Çµ
+					color = RGB(0, 0, 240);
+				}
+				else if (v.Wall_East == WallStatus::E_KS_Unknown)
+				{ // ïsñæ(ñ¢íTçı)
+					color = RGB(0, 0, 0);
+				}
+				else if (v.Wall_East == WallStatus::E_KS_OutSide)
+				{ // ñ¿òHäO
+					//color = RGB(255, 0, 0);
+					break;
+				}
+				CPen pen(PS_SOLID, 1, color);
+				CPen* pOldPen = pDC->SelectObject(&pen);
+				floatPoint from = v;
+				floatPoint to = *(v.GetVertex_East());
+				from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+				to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 
-			// ÉyÉìÇÇ‡Ç∆Ç…ñﬂÇ∑
-			pDC->SelectObject(pOldPen);
-		} while (0);
+				pDC->MoveTo(from);
+				pDC->LineTo(to);
 
-		do { // ÉmÅ[ÉhÇÃâ∫ê¸Çï`âÊ
-			int color = 0;
+				// ÉyÉìÇÇ‡Ç∆Ç…ñﬂÇ∑
+				pDC->SelectObject(pOldPen);
+			} while (0);
 
-			// switchÇ…Ç∑ÇÈÇ∆breakÇ≈do{}ÇíEèoÇ≈Ç´Ç»Ç≠Ç»ÇÈÇÃÇ≈ifÇ…ÇµÇΩ
-			if (v.Wall_South == WallStatus::E_KS_Exists)
-			{ // ë∂ç›Ç∑ÇÈ
-				color = RGB(255, 100, 0);
-			}
-			else if (v.Wall_South == WallStatus::E_KS_NotExist)
-			{ // ë∂ç›ÇµÇ»Ç¢
-				//break; // ê¸ÇèëÇ©Ç»Ç¢
-				color = RGB(0, 0, 240);
-			}
-			else if (v.Wall_South == WallStatus::E_KS_Unknown)
-			{ // ïsñæ(ñ¢íTçı)
-				color = RGB(0, 0, 0);
-			}
-			else if (v.Wall_South == WallStatus::E_KS_OutSide)
-			{ // ñ¿òHäO
-				//color = RGB(255, 0, 0);
-				break;
-			}
-			CPen pen(PS_SOLID, 1, color);
-			CPen* pOldPen = pDC->SelectObject(&pen);
+			do { // ÉmÅ[ÉhÇÃâ∫ê¸Çï`âÊ
+				int color = 0;
 
-			floatPoint from = v;
-			floatPoint to = *(v.GetVertex_South());
-			from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
-			to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+				// switchÇ…Ç∑ÇÈÇ∆breakÇ≈do{}ÇíEèoÇ≈Ç´Ç»Ç≠Ç»ÇÈÇÃÇ≈ifÇ…ÇµÇΩ
+				if (v.Wall_South == WallStatus::E_KS_WallExists)
+				{ // ï«Ç†ÇË
+					color = RGB(255, 100, 0);
+				}
+				else if (v.Wall_South == WallStatus::E_KS_WallNothing)
+				{ // ï«ñ≥Çµ
+					color = RGB(0, 0, 240);
+				}
+				else if (v.Wall_South == WallStatus::E_KS_Unknown)
+				{ // ïsñæ(ñ¢íTçı)
+					color = RGB(0, 0, 0);
+				}
+				else if (v.Wall_South == WallStatus::E_KS_OutSide)
+				{ // ñ¿òHäO
+					//color = RGB(255, 0, 0);
+					break;
+				}
+				CPen pen(PS_SOLID, 1, color);
+				CPen* pOldPen = pDC->SelectObject(&pen);
 
-			pDC->MoveTo(from);
-			pDC->LineTo(to);
+				floatPoint from = v;
+				floatPoint to = *(v.GetVertex_South());
+				from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+				to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 
-			// ÉyÉìÇÇ‡Ç∆Ç…ñﬂÇ∑
-			pDC->SelectObject(pOldPen);
-		} while (0);
+				pDC->MoveTo(from);
+				pDC->LineTo(to);
+
+				// ÉyÉìÇÇ‡Ç∆Ç…ñﬂÇ∑
+				pDC->SelectObject(pOldPen);
+			} while (0);
+		}
 	}
 #endif
 
 #if 1
-	int index = 0;
 	// í∏ì_Çï`âÊ
-	for (auto v : m_Search->vlist)
-	{
-		int color = 0;
+	for (auto ylist : m_Search->vlist)
+	{ // yëñç∏
+		for (auto v : ylist)
+		{ // xëñç∏
 
-		switch (v.SStatus)
-		{
-		case E_Status_UnExplored:
-			// ñ¢íTçı
-			color = RGB(255, 255, 255);
-			break;
-		case E_Status_Looked:
-			// îFím
-			color = RGB(0, 255, 255);
-			break;
-		case E_Status_Exploring:
-			// íTçıíÜ
-			color = RGB(200, 200, 0);
-			break;
-		case E_Status_Searched:
-			// íTçıçœÇ›
-			color = RGB(100, 100, 100);
-			break;
-		case E_Status_ShortestPath:
-			// ç≈íZåoòH
-			color = RGB(0, 255, 0);
-			break;
-		default:
-			break;
+			int color = 0;
+
+			switch (v.SStatus)
+			{
+			case E_Status_UnExplored:
+				// ñ¢íTçı
+				color = RGB(255, 255, 255);
+				break;
+			case E_Status_Looked:
+				// îFím
+				color = RGB(0, 255, 255);
+				break;
+			case E_Status_Exploring:
+				// íTçıíÜ
+				color = RGB(200, 200, 0);
+				break;
+			case E_Status_Searched:
+				// íTçıçœÇ›
+				color = RGB(100, 100, 100);
+				break;
+			case E_Status_ShortestPath:
+				// ç≈íZåoòH
+				color = RGB(0, 255, 0);
+				break;
+			default:
+				break;
+			}
+
+			switch (v.SupposeSearchStatus)
+			{
+			case E_Status_ShortestPath:
+				// ç≈íZåoòH
+				color = RGB(0, 255, 0);
+				break;
+			case E_Status_UnExplored:
+			case E_Status_Looked:
+			case E_Status_Exploring:
+			case E_Status_Searched:
+			default:
+				break;
+			}
+
+			if (m_Search->GoalVertexIndex == v.mazeCoordinate)
+			{ // ÉSÅ[Éã
+				color = RGB(200, 100, 0);
+			}
+
+			// ìhÇËÇ¬Ç‘ÇµêF
+			CBrush brush(color);
+			// êVÇµÇ¢ÉuÉâÉV(brush)Çê›íËÇµÅAê›íËÇ≥ÇÍÇƒÇ¢ÇΩå≥ÇÃÉuÉâÉVÇpOldBrushÇ…ï€ë∂ÇµÇ‹Ç∑ÅB
+			CBrush* pOldBrush = pDC->SelectObject(&brush);
+
+			floatPoint fpoint = v;
+			fpoint = (fpoint * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+
+			CSize size(10, 10);
+			CPoint point(fpoint.x - (size.cx / 2), fpoint.y - (size.cy / 2));
+			CRect rect(point, size);
+			pDC->Ellipse(rect);
+
+			pDC->SelectObject(pOldBrush);
+
+			//// èÓïÒtext
+			//CFont font;
+			//CFont* pOldfont;
+			//font.CreateFontW(10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, L"consolas");
+			//pOldfont = pDC->SelectObject(&font);
+			//CString str;
+			//point.Offset(10, -5);
+			//str.Format(L"%d", index);
+			//pDC->TextOutW(point.x, point.y, str);
+			//str.Format(L"%2d", m_Search->routelist[index]);
+			//point.Offset(0, 10);
+			//pDC->TextOutW(point.x, point.y, str);
+			//pDC->SelectObject(pOldfont);
 		}
-
-		switch (v.SupposeSearchStatus)
-		{
-		case E_Status_ShortestPath:
-			// ç≈íZåoòH
-			color = RGB(0, 255, 0);
-			break;
-		case E_Status_UnExplored:
-		case E_Status_Looked:
-		case E_Status_Exploring:
-		case E_Status_Searched:
-		default:
-			break;
-		}
-
-		if (m_Search->GoalVertexIndex == index)
-		{ // ÉSÅ[Éã
-			color = RGB(200, 100, 0);
-		}
-
-		// ìhÇËÇ¬Ç‘ÇµêF
-		CBrush brush(color);
-		// êVÇµÇ¢ÉuÉâÉV(brush)Çê›íËÇµÅAê›íËÇ≥ÇÍÇƒÇ¢ÇΩå≥ÇÃÉuÉâÉVÇpOldBrushÇ…ï€ë∂ÇµÇ‹Ç∑ÅB
-		CBrush* pOldBrush = pDC->SelectObject(&brush);
-
-		floatPoint fpoint = v;
-		fpoint = (fpoint * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
-
-		CSize size(10, 10);
-		CPoint point(fpoint.x - (size.cx / 2), fpoint.y - (size.cy / 2));
-		CRect rect(point, size);
-		pDC->Ellipse(rect);
-
-		pDC->SelectObject(pOldBrush);
-
-		//// èÓïÒtext
-		//CFont font;
-		//CFont* pOldfont;
-		//font.CreateFontW(10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, L"consolas");
-		//pOldfont = pDC->SelectObject(&font);
-		//CString str;
-		//point.Offset(10, -5);
-		//str.Format(L"%d", index);
-		//pDC->TextOutW(point.x, point.y, str);
-		//str.Format(L"%2d", m_Search->routelist[index]);
-		//point.Offset(0, 10);
-		//pDC->TextOutW(point.x, point.y, str);
-		//pDC->SelectObject(pOldfont);
-		index++;
 	}
 	/* ï«ï`âÊ */
 	DrawWall(pDC, point, scale, rotateDeg);
@@ -268,33 +273,35 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 	bool IsDraw = true;
 	for (auto hWall_x : m_pField->m_MazeWall.hWallList)
 	{
-		if (ky == 16) { break; }
+		//if (ky == 16) { break; }
 		kx = 0;
 		for (wall_t wall : hWall_x)
 		{
-			IsDraw = true;
-			color = RGB(255, 255, 0);
-			if (ky != 0)
+			if (ky == 0 || ky == MAZE_SIZE)
 			{
-				//const auto& v = m_Search->vlist[(kx * 2) + (((ky - 1) * ((MAZE_SIZE * 2) - 1)) * 2)];
-				const auto& v = m_Search->vAnswer[kx + ((ky - 1) * MAZE_SIZE)];
+				color = RGB(240, 240, 240);
+				IsDraw = true;
+			}
+			else
+			{
+				const auto& v = m_Search->vAnswer[(ky - 1) * 2][kx * 2];
 				// switchÇ…Ç∑ÇÈÇ∆breakÇ≈do{}ÇíEèoÇ≈Ç´Ç»Ç≠Ç»ÇÈÇÃÇ≈ifÇ…ÇµÇΩ
-				if (v.Wall_East == WallStatus::E_KS_Exists)
-				{ // ë∂ç›Ç∑ÇÈ
+				if (v.Wall_South == WallStatus::E_KS_WallExists)
+				{ // ï«Ç†ÇË
+					color = RGB(240, 240, 240);
+					IsDraw = true;
+				}
+				else if (v.Wall_South == WallStatus::E_KS_WallNothing)
+				{ // ï«Ç»Çµ
 					IsDraw = false;
 				}
-				else if (v.Wall_East == WallStatus::E_KS_NotExist)
-				{ // ë∂ç›ÇµÇ»Ç¢ ï«Ç†ÇË
-					color = RGB(240, 240, 240);
-				}
-				else if (v.Wall_East == WallStatus::E_KS_Unknown)
+				else if (v.Wall_South == WallStatus::E_KS_Unknown)
 				{ // ïsñæ(ñ¢íTçı)
-					//IsDraw = false;
+					IsDraw = false;
 				}
-				else if (v.Wall_East == WallStatus::E_KS_OutSide)
+				else if (v.Wall_South == WallStatus::E_KS_OutSide)
 				{ // ñ¿òHäO
 					IsDraw = false;
-					;
 				}
 			}
 			kx++;
@@ -322,31 +329,34 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 	ky = 0;
 	for (auto vWall_x : m_pField->m_MazeWall.vWallList)
 	{
-		if (ky == 16) { break; }
+		//if (ky == 16) { break; }
 		kx = 0;
 		for (wall_t wall : vWall_x)
 		{
-			IsDraw = true;
-			color = RGB(0, 255, 0);
 			//color = RGB(50, 50, 50);
-			if (kx != 0)
+			if (kx == 0 || kx == MAZE_SIZE)
 			{
-				//const auto& v = m_Search->vlist[((kx - 1) * 2) + ((ky * ((MAZE_SIZE * 2) - 1)) * 2)];
-				const auto& v = m_Search->vAnswer[(kx - 1) + (ky * MAZE_SIZE)];
+				color = RGB(240, 240, 240);
+				IsDraw = true;
+			}
+			else
+			{
+				const auto& v = m_Search->vAnswer[ky * 2][(kx - 1) * 2];
 				// switchÇ…Ç∑ÇÈÇ∆breakÇ≈do{}ÇíEèoÇ≈Ç´Ç»Ç≠Ç»ÇÈÇÃÇ≈ifÇ…ÇµÇΩ
-				if (v.Wall_South == WallStatus::E_KS_Exists)
-				{ // ë∂ç›Ç∑ÇÈ
+				if (v.Wall_East == WallStatus::E_KS_WallExists)
+				{ // ï«Ç†ÇË
+					color = RGB(240, 240, 240);
+					IsDraw = true;
+				}
+				else if (v.Wall_East == WallStatus::E_KS_WallNothing)
+				{ // ï«ñ≥Çµ
 					IsDraw = false;
 				}
-				else if (v.Wall_South == WallStatus::E_KS_NotExist)
-				{ // ë∂ç›ÇµÇ»Ç¢
-					color = RGB(240, 240, 240);
-				}
-				else if (v.Wall_South == WallStatus::E_KS_Unknown)
+				else if (v.Wall_East == WallStatus::E_KS_Unknown)
 				{ // ïsñæ(ñ¢íTçı)
-					//IsDraw = false;
+					IsDraw = false;
 				}
-				else if (v.Wall_South == WallStatus::E_KS_OutSide)
+				else if (v.Wall_East == WallStatus::E_KS_OutSide)
 				{ // ñ¿òHäO
 					IsDraw = false;
 				}

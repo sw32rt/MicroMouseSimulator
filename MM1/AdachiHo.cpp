@@ -6,7 +6,7 @@ AdachiHo::~AdachiHo()
 {
 }
 
-void AdachiHo::init(int StartVertexIndex, int GoalVertexIndex)
+void AdachiHo::init(Coordinate StartVertexIndex, Coordinate GoalVertexIndex)
 {
     this->CurrentVertexIndex = StartVertexIndex;
     this->StartVertexIndex = StartVertexIndex;
@@ -16,32 +16,35 @@ void AdachiHo::init(int StartVertexIndex, int GoalVertexIndex)
     NextSearchVertexStack.clear();
 
     // 探索済み情報クリア
-    for (int i = 0; i < routelist.size(); i++)
-    {
-        routelist.at(i) = -1;
-    }
+    //for (int i = 0; i < routelist.size(); i++)
+    //{
+    //    routelist.at(i) = -1;
+    //}
     Initialize();
 }
 
-int AdachiHo::GetNextSearchVertex(int CurrentVertex)
+Coordinate AdachiHo::GetNextSearchVertex(Coordinate CurrentVertex)
 {
     float dx = 0;
     float dy = 0;
     float distans = INFINITY;
-    int minimalNext = 0;
-    int returnNext = 0;
-    std::vector<int> cv;
+    //Coordinate minimalNext = 0;
+    Coordinate returnNext(0,0);
+    std::vector<Coordinate> cv;
 
-    int SupposeNext = GoalVertexIndex;
-    int SupposeSearchCurrent = GoalVertexIndex;
-    static std::deque<int> vSupposBFSstack;
+    Coordinate SupposeNext = GoalVertexIndex;
+    Coordinate SupposeSearchCurrent = GoalVertexIndex;
+    static std::deque<Coordinate> vSupposBFSstack;
 
     WallCheck(CurrentVertex);
 
     // 仮想探索ステータス初期化
-    for (auto& v : vlist)
+    for (auto& ylist : vlist)
     {
-        v.SupposeSearchStatus = SearchStatus::E_Status_UnExplored;
+        for (auto& x : ylist)
+        {
+            x.SupposeSearchStatus = SearchStatus::E_Status_UnExplored;
+        }
     }
 
     vSupposBFSstack.clear();
@@ -54,24 +57,20 @@ int AdachiHo::GetNextSearchVertex(int CurrentVertex)
         for (auto v : cv)
         {
             SupposeeRoutelist[v] = SupposeSearchCurrent;
-            vlist[v].SupposeSearchStatus = SearchStatus::E_Status_Looked;
+            vlist[v.y][v.x].SupposeSearchStatus = SearchStatus::E_Status_Looked;
             vSupposBFSstack.push_back(v);
         }
         SupposeNext = vSupposBFSstack.front();
-        if (SupposeNext == 0xf41)
-        {
-            int debug = 0;
-        }
         vSupposBFSstack.pop_front();
-        vlist[SupposeNext].pSupposeSearchFromVertexIndex = vlist[SupposeSearchCurrent].Index;
+        vlist[SupposeNext.y][SupposeNext.x].pSupposeSearchFromVertexIndex = vlist[SupposeSearchCurrent.y][SupposeSearchCurrent.x];
         SupposeSearchCurrent = SupposeNext;
 
         if (SupposeNext == CurrentVertex) // Current -> Goal
         { // ルート見つかった
-            int SupposeShortestPathNext = CurrentVertex;
+            Coordinate SupposeShortestPathNext = CurrentVertex;
             while (1)
             {
-                vlist[SupposeShortestPathNext].SupposeSearchStatus = SearchStatus::E_Status_ShortestPath;
+                vlist[SupposeShortestPathNext.y][SupposeShortestPathNext.x].SupposeSearchStatus = SearchStatus::E_Status_ShortestPath;
                 SupposeShortestPathNext = SupposeeRoutelist[SupposeShortestPathNext];
                 if (SupposeShortestPathNext == GoalVertexIndex)
                 {
@@ -114,17 +113,14 @@ int AdachiHo::GetNextSearchVertex(int CurrentVertex)
 }
 
 
-int AdachiHo::GetNextSearchStep(int CurrentVertex)
+Coordinate AdachiHo::GetNextSearchStep(Coordinate CurrentVertex)
 {
-    float dx = 0;
-    float dy = 0;
-    int minimalNext = 0;
-    int returnNext = 0;
-    std::vector<int> cv;
+    Coordinate returnNext(0,0);
+    std::vector<Coordinate> cv;
 
-    static int SupposeNext = GoalVertexIndex;
-    static int SupposeSearchCurrent = GoalVertexIndex;
-    static std::deque<int> vSupposBFSstack;
+    static Coordinate SupposeNext = GoalVertexIndex;
+    static Coordinate SupposeSearchCurrent = GoalVertexIndex;
+    static std::deque<Coordinate> vSupposBFSstack;
 
     WallCheck(CurrentVertex);
 
@@ -133,9 +129,12 @@ int AdachiHo::GetNextSearchStep(int CurrentVertex)
     {
         first = false;
         // 仮想探索ステータス初期化
-        for (auto& v : vlist)
+        for (auto& ylist : vlist)
         {
-            v.SupposeSearchStatus = SearchStatus::E_Status_UnExplored;
+            for (auto& x : ylist)
+            {
+                x.SupposeSearchStatus = SearchStatus::E_Status_UnExplored;
+            }
         }
 
         vSupposBFSstack.clear();
@@ -148,24 +147,20 @@ int AdachiHo::GetNextSearchStep(int CurrentVertex)
         for (auto v : cv)
         {
             SupposeeRoutelist[v] = SupposeSearchCurrent;
-            vlist[v].SupposeSearchStatus = SearchStatus::E_Status_Looked;
+            vlist[v.y][v.x].SupposeSearchStatus = SearchStatus::E_Status_Looked;
             vSupposBFSstack.push_back(v);
         }
         SupposeNext = vSupposBFSstack.front();
-        if (SupposeNext == 0xf41)
-        {
-            int debug = 0;
-        }
         vSupposBFSstack.pop_front();
-        vlist[SupposeNext].pSupposeSearchFromVertexIndex = vlist[SupposeSearchCurrent].Index;
+        vlist[SupposeNext.y][SupposeNext.x].pSupposeSearchFromVertexIndex = vlist[SupposeSearchCurrent.y][SupposeSearchCurrent.x];
         SupposeSearchCurrent = SupposeNext;
 
         if (SupposeNext == CurrentVertex) // Current -> Goal
         { // ルート見つかった
-            int SupposeShortestPathNext = CurrentVertex;
+            Coordinate SupposeShortestPathNext = CurrentVertex;
             while (1)
             {
-                vlist[SupposeShortestPathNext].SupposeSearchStatus = SearchStatus::E_Status_ShortestPath;
+                vlist[SupposeShortestPathNext.y][SupposeShortestPathNext.x].SupposeSearchStatus = SearchStatus::E_Status_ShortestPath;
                 SupposeShortestPathNext = SupposeeRoutelist[SupposeShortestPathNext];
                 if (SupposeShortestPathNext == GoalVertexIndex)
                 {
@@ -223,22 +218,22 @@ bool AdachiHo::SearchNext(void)
         //    count++;
         //}
         //ShortestPathDistance = count;
-        int swap = StartVertexIndex;
+        Coordinate swap = StartVertexIndex;
         StartVertexIndex = GoalVertexIndex;
         GoalVertexIndex = swap;
-        vlist[CurrentVertexIndex].SStatus = E_Status_Searched;
-        //CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
-        CurrentVertexIndex = GetNextSearchStep(CurrentVertexIndex);
-        vlist[CurrentVertexIndex].SStatus = E_Status_Exploring;
+        vlist[CurrentVertexIndex.y][CurrentVertexIndex.x].SStatus = E_Status_Searched;
+        CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
+        //CurrentVertexIndex = GetNextSearchStep(CurrentVertexIndex);
+        vlist[CurrentVertexIndex.y][CurrentVertexIndex.x].SStatus = E_Status_Exploring;
 
         Finish = true;
     }
     else
     {
-        vlist[CurrentVertexIndex].SStatus = E_Status_Searched;
-        //CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
-        CurrentVertexIndex = GetNextSearchStep(CurrentVertexIndex);
-        vlist[CurrentVertexIndex].SStatus = E_Status_Exploring;
+        vlist[CurrentVertexIndex.y][CurrentVertexIndex.x].SStatus = E_Status_Searched;
+        CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
+        //CurrentVertexIndex = GetNextSearchStep(CurrentVertexIndex);
+        vlist[CurrentVertexIndex.y][CurrentVertexIndex.x].SStatus = E_Status_Exploring;
     }
 
     return Finish;

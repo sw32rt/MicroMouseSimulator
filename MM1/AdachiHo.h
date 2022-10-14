@@ -9,13 +9,13 @@ class AdachiHo : public GraphSearch
 public:
 	using GraphSearch::GraphSearch;
 	~AdachiHo();
-	void init(int StartVertexIndex, int GoalVertexIndex);
-	int GetNextSearchStep(int CurrentVertex);
+	void init(Coordinate StartVertexIndex, Coordinate GoalVertexIndex);
+	Coordinate GetNextSearchStep(Coordinate CurrentVertex);
 	bool SearchNext(void);
-	std::deque<int> NextSearchVertexStack;
+	std::deque<Coordinate> NextSearchVertexStack;
 	
 private:
-	int GetNextSearchVertex(int CurrentVertex);
+	Coordinate GetNextSearchVertex(Coordinate CurrentVertex);
 };
 
 

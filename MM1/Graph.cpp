@@ -5,42 +5,44 @@
 WallStatus g_Nothing = WallStatus::E_KS_OutSide;
 Vertex g_NothingVertex = Vertex();
 
-static const MazeWall g_AnswewrMazeData[] =
+static const MazeWall g_AnswewrMazeData[MAZE_SIZE][MAZE_SIZE] =
 #if 1
+
 {
-{ 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1},
-{ 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 0,  1},
-{ 0,  1}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  1},
-{ 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  0}, { 0,  1}, { 0,  1},
-{ 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 0,  1},
-{ 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1},
-{ 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 0,  1},
-{ 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1},
-{ 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  1},
-{ 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  1},
-{ 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1},
-{ 1,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1},
-{ 0,  1}, { 1,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  1},
-{ 0,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1},
-{ 1,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  1}, { 0,  1},
-{ 0,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  1},
-{ 0,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  1},
-{ 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1},
-{ 0,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  0}, { 1,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  1},
-{ 0,  1}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 0,  1},
-{ 1,  1}, { 0,  0}, { 1,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  1},
-{ 1,  1}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0},
-{ 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1},
-{ 1,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1},
-{ 1,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1},
-{ 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  1},
-{ 0,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1},
-{ 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  1},
-{ 0,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 0,  1},
-{ 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1},
-{ 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1},
-{ 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0},
+{ { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0},  },
+{ { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 1,  0},  },
+{ { 1,  0}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  0},  },
+{ { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  1}, { 1,  0}, { 1,  0},  },
+{ { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 1,  0},  },
+{ { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0},  },
+{ { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 1,  0},  },
+{ { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0},  },
+{ { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  0},  },
+{ { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  0},  },
+{ { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0},  },
+{ { 0,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0},  },
+{ { 1,  0}, { 0,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  0},  },
+{ { 1,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0},  },
+{ { 0,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  0}, { 1,  0},  },
+{ { 1,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  0},  },
+{ { 1,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  0},  },
+{ { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0},  },
+{ { 1,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  1}, { 0,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  0}, { 0,  1}, { 1,  1}, { 1,  0},  },
+{ { 1,  0}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 1,  0},  },
+{ { 0,  0}, { 1,  1}, { 0,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  0},  },
+{ { 0,  0}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1},  },
+{ { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0},  },
+{ { 0,  0}, { 1,  1}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 1,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0},  },
+{ { 0,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 1,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0},  },
+{ { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  0},  },
+{ { 1,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 1,  0}, { 1,  0}, { 1,  0},  },
+{ { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  0},  },
+{ { 1,  0}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 1,  0},  },
+{ { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  0}, { 1,  0}, { 0,  0}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  0},  },
+{ { 1,  0}, { 0,  0}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  0}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  0}, { 0,  1}, { 1,  0}, { 0,  1}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 1,  0}, { 1,  0}, { 1,  0}, { 0,  0}, { 0,  1}, { 0,  0}, { 1,  1}, { 0,  0}, { 1,  1}, { 1,  0},  },
+{ { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 0,  1}, { 1,  1},  },
 };
+
 
 #else
 {
@@ -82,9 +84,8 @@ static const MazeWall g_AnswewrMazeData[] =
 
 
 Vertex::Vertex()
-	: x(0)
-	, y(0)
-	, Index(0)
+	: mazeCoordinate(0, 0)
+	, displayPoint(0, 0)
 	, Wall_North(g_Nothing)
 	, Wall_East(g_Nothing)
 	, Wall_West(g_Nothing)
@@ -97,15 +98,14 @@ Vertex::Vertex()
 	, pVertex_East(this)
 	, pVertex_West(this)
 	, pVertex_South(this)
-	, pSearchFromVertexIndex(-1)
-	, pSupposeSearchFromVertexIndex(-1)
+	, pSearchFromVertexIndex(-1, -1)
+	, pSupposeSearchFromVertexIndex(-1, -1)
 {
 }
 
-Vertex::Vertex(int x, int y, int Index, WallStatus& WN, WallStatus WE, WallStatus& WW, WallStatus WS)
-	: x(x)
-	, y(y)
-	, Index(Index)
+Vertex::Vertex(CPoint dispPoint, Coordinate mazeCoordinate, WallStatus& WN, WallStatus WE, WallStatus& WW, WallStatus WS)
+	: mazeCoordinate(mazeCoordinate)
+	, displayPoint(dispPoint)
 	, Wall_North(WN)
 	, Wall_East(WE)
 	, Wall_West(WW)
@@ -118,15 +118,14 @@ Vertex::Vertex(int x, int y, int Index, WallStatus& WN, WallStatus WE, WallStatu
 	, pVertex_East(nullptr)
 	, pVertex_West(nullptr)
 	, pVertex_South(nullptr)
-	, pSearchFromVertexIndex(-1)
-	, pSupposeSearchFromVertexIndex(-1)
+	, pSearchFromVertexIndex(-1, -1)
+	, pSupposeSearchFromVertexIndex(-1, -1)
 {
 }
 
-Vertex::Vertex(int x, int y, int Index, WallStatus& WN, WallStatus WE, WallStatus& WW, WallStatus WS, WallStatus& WNE, WallStatus WES, WallStatus& WWN, WallStatus WSW)
-	: x(x)
-	, y(y)
-	, Index(Index)
+Vertex::Vertex(CPoint dispPoint, Coordinate mazeCoordinate, WallStatus& WN, WallStatus WE, WallStatus& WW, WallStatus WS, WallStatus& WNE, WallStatus WES, WallStatus& WWN, WallStatus WSW)
+	: mazeCoordinate(mazeCoordinate)
+	, displayPoint(dispPoint)
 	, Wall_North(WN)
 	, Wall_East(WE)
 	, Wall_West(WW)
@@ -139,8 +138,8 @@ Vertex::Vertex(int x, int y, int Index, WallStatus& WN, WallStatus WE, WallStatu
 	, pVertex_East(nullptr)
 	, pVertex_West(nullptr)
 	, pVertex_South(nullptr)
-	, pSearchFromVertexIndex(-1)
-	, pSupposeSearchFromVertexIndex(-1)
+	, pSearchFromVertexIndex(-1, -1)
+	, pSupposeSearchFromVertexIndex(-1, -1)
 {
 
 }
@@ -234,7 +233,12 @@ Vertex* Vertex::GetVertex_SouthWest(void)
 
 Vertex::operator CPoint()
 {
-	return CPoint(x, y);
+	return displayPoint;
+}
+
+Vertex::operator Coordinate()
+{
+	return mazeCoordinate;
 }
 
 Graph::Graph()
@@ -242,21 +246,19 @@ Graph::Graph()
 	// , vAnswer()
 {
 	CreateMap(vlist);
-	CreateMap(vAnswer);
 	SetAnswer(vAnswer);
 
-	routelist.resize(vlist.size());
-	for (auto& r : routelist)
-	{
-		r = 0;
-	}
-	int Index = 0;
+	//routelist.resize(vlist.size() * vlist[0].size());
+	//for (auto& r : routelist)
+	//{
+	//	r = Coordinate(0, 0);
+	//}
 
-	SupposeeRoutelist.resize(vlist.size());
-	for (auto& r : SupposeeRoutelist)
-	{
-		r = 0;
-	}
+	//SupposeeRoutelist.resize(vlist.size() * vlist[0].size());
+	//for (auto& r : SupposeeRoutelist)
+	//{
+	//	r = Coordinate(0, 0);
+	//}
 
 	//for (auto v : vlist)
 	//{
@@ -287,221 +289,222 @@ void Graph::Initialize(void)
 	//}
 }
 
-int Graph::WallCheck(int VertexIndex)
+int Graph::WallCheck(Coordinate VertexIndex)
 {
-	int wall_x = (VertexIndex % ((m_MapSize * 2) - 1)) / 2;
-	int wall_y = (VertexIndex / ((m_MapSize * 2) - 1)) / 2;
-	bool IsHalf_x = wall_x % 2;
-	bool IsHalf_y = wall_y % 2;
-	auto to_1d = [](int x, int y) -> int { return x + (y * ((32 * 2) - 1)); };
+	int wall_x = VertexIndex.x;
+	int wall_y = VertexIndex.y;
+	int half_x = wall_x;
+	int half_y = wall_y;
+	bool IsODD_x = wall_x % 2;
+	bool IsODD_y = wall_y % 2;
 
-	if (IsHalf_y)
+	if (IsODD_y)
 	{
-		vlist[VertexIndex].Wall_North = (vlist[VertexIndex].Wall_North == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_North);
-		vlist[VertexIndex].Wall_South = (vlist[VertexIndex].Wall_South == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_South);
+		vlist[wall_y][wall_x].Wall_North = (vlist[wall_y][wall_x].Wall_North == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_North);
+		vlist[wall_y][wall_x].Wall_South = (vlist[wall_y][wall_x].Wall_South == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_South);
 	}
 	else
 	{
-		vlist[VertexIndex].Wall_North = (vlist[VertexIndex].Wall_North == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_North);
-		vlist[VertexIndex].Wall_South = (vlist[VertexIndex].Wall_South == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_South);
+		vlist[wall_y][wall_x].Wall_North = (vlist[wall_y][wall_x].Wall_North == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_North);
+		vlist[wall_y][wall_x].Wall_South = (vlist[wall_y][wall_x].Wall_South == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_South);
 	}
 
-	if (IsHalf_x)
+	if (IsODD_x)
 	{
-		vlist[VertexIndex].Wall_East = (vlist[VertexIndex].Wall_East == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_East);
-		vlist[VertexIndex].Wall_West = (vlist[VertexIndex].Wall_West == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_West);
+		vlist[wall_y][wall_x].Wall_East = (vlist[wall_y][wall_x].Wall_East == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_East);
+		vlist[wall_y][wall_x].Wall_West = (vlist[wall_y][wall_x].Wall_West == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_West);
 	}
 	else
 	{
-		vlist[VertexIndex].Wall_East = (vlist[VertexIndex].Wall_East == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_East);
-		vlist[VertexIndex].Wall_West = (vlist[VertexIndex].Wall_West == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_West);
+		vlist[wall_y][wall_x].Wall_East = (vlist[wall_y][wall_x].Wall_East == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_East);
+		vlist[wall_y][wall_x].Wall_West = (vlist[wall_y][wall_x].Wall_West == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_West);
 	}
 
-	vlist[VertexIndex].Wall_NorthEast = (vlist[VertexIndex].Wall_NorthEast == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_NorthEast);
-	vlist[VertexIndex].Wall_EastSouth = (vlist[VertexIndex].Wall_EastSouth == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_EastSouth);
-	vlist[VertexIndex].Wall_WestNorth = (vlist[VertexIndex].Wall_WestNorth == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_WestNorth);
-	vlist[VertexIndex].Wall_SouthWest = (vlist[VertexIndex].Wall_SouthWest == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[to_1d(wall_x, wall_y)].Wall_SouthWest);
+	vlist[wall_y][wall_x].Wall_NorthEast = (vlist[wall_y][wall_x].Wall_NorthEast == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_NorthEast);
+	vlist[wall_y][wall_x].Wall_EastSouth = (vlist[wall_y][wall_x].Wall_EastSouth == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_EastSouth);
+	vlist[wall_y][wall_x].Wall_WestNorth = (vlist[wall_y][wall_x].Wall_WestNorth == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_WestNorth);
+	vlist[wall_y][wall_x].Wall_SouthWest = (vlist[wall_y][wall_x].Wall_SouthWest == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[half_y][half_x].Wall_SouthWest);
 	return 0;
 }
 
-std::vector<int> Graph::GetConnectionVertex(int VertexIndex)
+std::vector<Coordinate> Graph::GetConnectionVertex(Coordinate VertexIndex)
 {
-	std::vector<int> VertexList;
+	std::vector<Coordinate> VertexList;
 
-	if (vlist[VertexIndex].Wall_North == WallStatus::E_KS_Exists)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_North == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex].pSearchFromVertexIndex != vlist[VertexIndex].GetVertex_North()->Index)
+		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_North()->mazeCoordinate)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_North()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_North()->mazeCoordinate);
 		}
 	}
 
-	if (vlist[VertexIndex].Wall_East == WallStatus::E_KS_Exists)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_East == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex].pSearchFromVertexIndex != vlist[VertexIndex].GetVertex_East()->Index)
+		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_East()->mazeCoordinate)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_East()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_East()->mazeCoordinate);
 		}
 	}
 
-	if (vlist[VertexIndex].Wall_West == WallStatus::E_KS_Exists)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_West == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex].pSearchFromVertexIndex != vlist[VertexIndex].GetVertex_West()->Index)
+		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_West()->mazeCoordinate)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_West()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_West()->mazeCoordinate);
 		}
 	}
 
-	if (vlist[VertexIndex].Wall_South == WallStatus::E_KS_Exists)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_South == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex].pSearchFromVertexIndex != vlist[VertexIndex].GetVertex_South()->Index)
+		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_South()->mazeCoordinate)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_South()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_South()->mazeCoordinate);
 		}
 	}
 
-	if (vlist[VertexIndex].Wall_NorthEast == WallStatus::E_KS_Exists)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_NorthEast == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex].pSearchFromVertexIndex != vlist[VertexIndex].GetVertex_NorthEast()->Index)
+		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_NorthEast()->mazeCoordinate)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_NorthEast()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_NorthEast()->mazeCoordinate);
 		}
 	}
 
-	if (vlist[VertexIndex].Wall_EastSouth == WallStatus::E_KS_Exists)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_EastSouth == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex].pSearchFromVertexIndex != vlist[VertexIndex].GetVertex_EastSouth()->Index)
+		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_EastSouth()->mazeCoordinate)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_EastSouth()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_EastSouth()->mazeCoordinate);
 		}
 	}
 
-	if (vlist[VertexIndex].Wall_WestNorth == WallStatus::E_KS_Exists)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_WestNorth == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex].pSearchFromVertexIndex != vlist[VertexIndex].GetVertex_WestNorth()->Index)
+		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_WestNorth()->mazeCoordinate)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_WestNorth()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_WestNorth()->mazeCoordinate);
 		}
 	}
 
-	if (vlist[VertexIndex].Wall_SouthWest == WallStatus::E_KS_Exists)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_SouthWest == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex].pSearchFromVertexIndex != vlist[VertexIndex].GetVertex_SouthWest()->Index)
+		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_SouthWest()->mazeCoordinate)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_SouthWest()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_SouthWest()->mazeCoordinate);
 		}
 	}
 
 	return VertexList;
 }
 
-std::vector<int> Graph::GetSupposeConnectionVertex(int VertexIndex)
+std::vector<Coordinate> Graph::GetSupposeConnectionVertex(Coordinate VertexIndex)
 {
-	std::vector<int> VertexList;
+	std::vector<Coordinate> VertexList;
 
-	//vlist[VertexIndex].Wall_North = (vlist[VertexIndex].Wall_North == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[VertexIndex].Wall_North);
-	//vlist[VertexIndex].Wall_East = (vlist[VertexIndex].Wall_East == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[VertexIndex].Wall_East);
-	//vlist[VertexIndex].Wall_West = (vlist[VertexIndex].Wall_West == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[VertexIndex].Wall_West);
-	//vlist[VertexIndex].Wall_South = (vlist[VertexIndex].Wall_South == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[VertexIndex].Wall_South);
+	//vlist[VertexIndex.y][VertexIndex.x].Wall_North = (vlist[VertexIndex.y][VertexIndex.x].Wall_North == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[VertexIndex.y][VertexIndex.x].Wall_North);
+	//vlist[VertexIndex.y][VertexIndex.x].Wall_East = (vlist[VertexIndex.y][VertexIndex.x].Wall_East == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[VertexIndex.y][VertexIndex.x].Wall_East);
+	//vlist[VertexIndex.y][VertexIndex.x].Wall_West = (vlist[VertexIndex.y][VertexIndex.x].Wall_West == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[VertexIndex.y][VertexIndex.x].Wall_West);
+	//vlist[VertexIndex.y][VertexIndex.x].Wall_South = (vlist[VertexIndex.y][VertexIndex.x].Wall_South == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : vAnswer[VertexIndex.y][VertexIndex.x].Wall_South);
 
 #if 1
-	if ((vlist[VertexIndex].Wall_North == WallStatus::E_KS_Exists)
-	|| (vlist[VertexIndex].Wall_North == WallStatus::E_KS_Unknown))
+	if ((vlist[VertexIndex.y][VertexIndex.x].Wall_North == WallStatus::E_KS_WallNothing)
+	|| (vlist[VertexIndex.y][VertexIndex.x].Wall_North == WallStatus::E_KS_Unknown))
 	{
-		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex].GetVertex_North()->SupposeSearchStatus)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_North()->SupposeSearchStatus)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_North()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_North()->mazeCoordinate);
 		}
 	}
 
-	if ((vlist[VertexIndex].Wall_East == WallStatus::E_KS_Exists)
-	|| (vlist[VertexIndex].Wall_East == WallStatus::E_KS_Unknown))
+	if ((vlist[VertexIndex.y][VertexIndex.x].Wall_East == WallStatus::E_KS_WallNothing)
+	|| (vlist[VertexIndex.y][VertexIndex.x].Wall_East == WallStatus::E_KS_Unknown))
 	{
-		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex].GetVertex_East()->SupposeSearchStatus)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_East()->SupposeSearchStatus)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_East()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_East()->mazeCoordinate);
 		}
 	}
 
-	if ((vlist[VertexIndex].Wall_West == WallStatus::E_KS_Exists)
-	|| (vlist[VertexIndex].Wall_West == WallStatus::E_KS_Unknown))
+	if ((vlist[VertexIndex.y][VertexIndex.x].Wall_West == WallStatus::E_KS_WallNothing)
+	|| (vlist[VertexIndex.y][VertexIndex.x].Wall_West == WallStatus::E_KS_Unknown))
 	{
-		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex].GetVertex_West()->SupposeSearchStatus)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_West()->SupposeSearchStatus)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_West()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_West()->mazeCoordinate);
 		}
 	}
 
-	if ((vlist[VertexIndex].Wall_South == WallStatus::E_KS_Exists)
-	|| (vlist[VertexIndex].Wall_South == WallStatus::E_KS_Unknown))
+	if ((vlist[VertexIndex.y][VertexIndex.x].Wall_South == WallStatus::E_KS_WallNothing)
+	|| (vlist[VertexIndex.y][VertexIndex.x].Wall_South == WallStatus::E_KS_Unknown))
 	{
-		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex].GetVertex_South()->SupposeSearchStatus)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_South()->SupposeSearchStatus)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_South()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_South()->mazeCoordinate);
 		}
 	}
 
-	if ((vlist[VertexIndex].Wall_NorthEast == WallStatus::E_KS_Exists)
-		|| (vlist[VertexIndex].Wall_NorthEast == WallStatus::E_KS_Unknown))
+	if ((vlist[VertexIndex.y][VertexIndex.x].Wall_NorthEast == WallStatus::E_KS_WallNothing)
+		|| (vlist[VertexIndex.y][VertexIndex.x].Wall_NorthEast == WallStatus::E_KS_Unknown))
 	{
-		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex].GetVertex_NorthEast()->SupposeSearchStatus)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_NorthEast()->SupposeSearchStatus)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_NorthEast()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_NorthEast()->mazeCoordinate);
 		}
 	}
 
-	if ((vlist[VertexIndex].Wall_EastSouth == WallStatus::E_KS_Exists)
-		|| (vlist[VertexIndex].Wall_EastSouth == WallStatus::E_KS_Unknown))
+	if ((vlist[VertexIndex.y][VertexIndex.x].Wall_EastSouth == WallStatus::E_KS_WallNothing)
+		|| (vlist[VertexIndex.y][VertexIndex.x].Wall_EastSouth == WallStatus::E_KS_Unknown))
 	{
-		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex].GetVertex_EastSouth()->SupposeSearchStatus)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_EastSouth()->SupposeSearchStatus)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_EastSouth()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_EastSouth()->mazeCoordinate);
 		}
 	}
 
-	if ((vlist[VertexIndex].Wall_WestNorth == WallStatus::E_KS_Exists)
-		|| (vlist[VertexIndex].Wall_WestNorth == WallStatus::E_KS_Unknown))
+	if ((vlist[VertexIndex.y][VertexIndex.x].Wall_WestNorth == WallStatus::E_KS_WallNothing)
+		|| (vlist[VertexIndex.y][VertexIndex.x].Wall_WestNorth == WallStatus::E_KS_Unknown))
 	{
-		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex].GetVertex_WestNorth()->SupposeSearchStatus)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_WestNorth()->SupposeSearchStatus)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_WestNorth()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_WestNorth()->mazeCoordinate);
 		}
 	}
 
-	if ((vlist[VertexIndex].Wall_SouthWest == WallStatus::E_KS_Exists)
-		|| (vlist[VertexIndex].Wall_SouthWest == WallStatus::E_KS_Unknown))
+	if ((vlist[VertexIndex.y][VertexIndex.x].Wall_SouthWest == WallStatus::E_KS_WallNothing)
+		|| (vlist[VertexIndex.y][VertexIndex.x].Wall_SouthWest == WallStatus::E_KS_Unknown))
 	{
-		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex].GetVertex_SouthWest()->SupposeSearchStatus)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_SouthWest()->SupposeSearchStatus)
 		{
-			VertexList.push_back(vlist[VertexIndex].GetVertex_SouthWest()->Index);
+			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_SouthWest()->mazeCoordinate);
 		}
 	}
 #else
 
-	if (vlist[VertexIndex].Wall_North == WallStatus::E_KS_Unknown)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_North == WallStatus::E_KS_Unknown)
 	{
-		VertexList.push_back(vlist[VertexIndex].GetVertex_North()->Index);
+		VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_North()->mazeCoordinate);
 	}
 
-	if (vlist[VertexIndex].Wall_East == WallStatus::E_KS_Unknown)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_East == WallStatus::E_KS_Unknown)
 	{
-		VertexList.push_back(vlist[VertexIndex].GetVertex_East()->Index);
+		VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_East()->mazeCoordinate);
 	}
 
-	if (vlist[VertexIndex].Wall_West == WallStatus::E_KS_Unknown)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_West == WallStatus::E_KS_Unknown)
 	{
-		VertexList.push_back(vlist[VertexIndex].GetVertex_West()->Index);
+		VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_West()->mazeCoordinate);
 	}
 
-	if (vlist[VertexIndex].Wall_South == WallStatus::E_KS_Unknown)
+	if (vlist[VertexIndex.y][VertexIndex.x].Wall_South == WallStatus::E_KS_Unknown)
 	{
-		VertexList.push_back(vlist[VertexIndex].GetVertex_South()->Index);
+		VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_South()->mazeCoordinate);
 	}
 #endif
 	return VertexList;
 }
 
-void Graph::CreateMap(std::vector<Vertex>& vl)
+void Graph::CreateMap(std::vector<std::vector<Vertex>>& vl)
 {
 	int Index = 0;
 #if 0 // 1マス1ノード
@@ -588,66 +591,68 @@ void Graph::CreateMap(std::vector<Vertex>& vl)
 
 #else
 
-	auto to_1d = [](int x, int y) -> int { return x + (y * ((32 * 2) - 1)); };
 	int maxNodes = (((m_MapSize * 2) - 1));
 	int nodeTerm = maxNodes - 1;
-	vl.reserve((uint64_t)maxNodes * (uint64_t)maxNodes);
+	vl.resize((uint64_t)maxNodes);
 	for (int y = 0; y < maxNodes; y++)
 	{
+		vl[y].reserve((uint64_t)maxNodes);
 		for (int x = 0; x < maxNodes; x++)
 		{
-			int xpoint = ((x * CELL_LENGTH) / 2) - (((CELL_LENGTH * m_MapSize) + WALL_WIDTH) / 2.0) + ((WALL_WIDTH + CELL_LENGTH) / 2);
-			int ypoint = ((y * CELL_LENGTH) / 2)- (((CELL_LENGTH * m_MapSize) + WALL_WIDTH) / 2.0) + ((WALL_WIDTH + CELL_LENGTH) / 2);
+			CPoint point;
+			point.x = ((x * CELL_LENGTH) / 2) - (((CELL_LENGTH * m_MapSize) + WALL_WIDTH) / 2.0) + ((WALL_WIDTH + CELL_LENGTH) / 2);
+			point.y = ((y * CELL_LENGTH) / 2)- (((CELL_LENGTH * m_MapSize) + WALL_WIDTH) / 2.0) + ((WALL_WIDTH + CELL_LENGTH) / 2);
+			Coordinate cord(x, y);
 			if (x == 0)
 			{ // 左
 				if (y == 0)
 				{ // 左上
-					vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+					vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
 				}
 				else if (y == (nodeTerm))
 				{ // 左下
-					vl.push_back(Vertex(xpoint, ypoint, Index, vl[to_1d(x, y - 1)].Wall_South, WallStatus::E_KS_Unknown, g_Nothing, g_Nothing));
-					vl[to_1d(x, y)].SetReferVertex_N(&vl[to_1d(x, y - 1)]); // このノードに上のノードを紐づけする North <-> Soouth
-					vl[to_1d(x, y - 1)].SetReferVertex_S(&vl[to_1d(x, y)]); // 上のノードにこのノードを紐づけする North <-> Soouth
+					vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, g_Nothing, g_Nothing));
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
 				}
 				else
 				{ // 左中
 					if (y % 2 == 0)
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, vl[to_1d(x, y - 1)].Wall_South, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
 					}
 					else if (y % 2 == 1)
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, vl[to_1d(x, y - 1)].Wall_South, g_Nothing, g_Nothing, WallStatus::E_KS_Unknown));
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, g_Nothing, g_Nothing, WallStatus::E_KS_Unknown));
 					}
-					vl[to_1d(x, y)].SetReferVertex_N(&vl[to_1d(x, y - 1)]); // このノードに上のノードを紐づけする North <-> Soouth
-					vl[to_1d(x, y - 1)].SetReferVertex_S(&vl[to_1d(x, y)]); // 上のノードにこのノードを紐づけする
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする
 				}
 			}
 			else if (x == (nodeTerm))
 			{ // 右
 				if (y == 0)
 				{ // 右上
-					vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, g_Nothing, vl[to_1d(x - 1, y)].Wall_East, WallStatus::E_KS_Unknown));
-					vl[to_1d(x, y)].SetReferVertex_W(&vl[to_1d(x - 1, y)]); // このノードに左のノードを紐づけする East <-> West
-					vl[to_1d(x - 1, y)].SetReferVertex_E(&vl[to_1d(x, y)]); // 左のノードにこのノードを紐づけする
+					vl[y].push_back(Vertex(point, cord, g_Nothing, g_Nothing, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする
 				}
 				else if (y == (nodeTerm))
 				{ // 右下
-					vl.push_back(Vertex(xpoint, ypoint, Index, vl[to_1d(x, y - 1)].Wall_South, g_Nothing, vl[to_1d(x - 1, y)].Wall_East, g_Nothing));
-					vl[to_1d(x, y)].SetReferVertex_N(&vl[to_1d(x, y - 1)]); // このノードに上のノードを紐づけする North <-> Soouth
-					vl[to_1d(x, y - 1)].SetReferVertex_S(&vl[to_1d(x, y)]); // 上のノードにこのノードを紐づけする North <-> Soouth
-					vl[to_1d(x, y)].SetReferVertex_W(&vl[to_1d(x - 1, y)]); // このノードに左のノードを紐づけする East <-> West
-					vl[to_1d(x - 1, y)].SetReferVertex_E(&vl[to_1d(x, y)]); // 左のノードにこのノードを紐づけする East <-> West
+					vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, g_Nothing, vl[y][x - 1].Wall_East, g_Nothing));
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
 				}
 				else
 				{ // 右中
 
-					vl.push_back(Vertex(xpoint, ypoint, Index, vl[to_1d(x, y - 1)].Wall_South, g_Nothing, vl[to_1d(x - 1, y)].Wall_East, WallStatus::E_KS_Unknown));
-					vl[to_1d(x, y)].SetReferVertex_N(&vl[to_1d(x, y - 1)]); // このノードに上のノードを紐づけする North <-> Soouth
-					vl[to_1d(x, y - 1)].SetReferVertex_S(&vl[to_1d(x, y)]); // 上のノードにこのノードを紐づけする North <-> Soouth
-					vl[to_1d(x, y)].SetReferVertex_W(&vl[to_1d(x - 1, y)]); // このノードに左のノードを紐づけする East <-> West
-					vl[to_1d(x - 1, y)].SetReferVertex_E(&vl[to_1d(x, y)]); // 左のノードにこのノードを紐づけする East <-> West
+					vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, g_Nothing, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
 				}
 			}
 			else
@@ -656,65 +661,65 @@ void Graph::CreateMap(std::vector<Vertex>& vl)
 				{ // 中上
 					if (x % 2 == 0)
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, WallStatus::E_KS_Unknown, vl[to_1d(x - 1, y)].Wall_East, WallStatus::E_KS_Unknown));
+						vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
 					}
 					else
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, WallStatus::E_KS_Unknown, vl[to_1d(x - 1, y)].Wall_East, g_Nothing));
+						vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, g_Nothing));
 					}
-					vl[to_1d(x, y)].SetReferVertex_W(&vl[to_1d(x - 1, y)]); // このノードに左のノードを紐づけする East <-> West
-					vl[to_1d(x - 1, y)].SetReferVertex_E(&vl[to_1d(x, y)]); // 左のノードにこのノードを紐づけする
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする
 				}
 				else if (y == (nodeTerm))
 				{ // 中下
 					if (x % 2 == 0)
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, vl[to_1d(x, y - 1)].Wall_South, WallStatus::E_KS_Unknown, vl[to_1d(x - 1, y)].Wall_East, g_Nothing));
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, g_Nothing));
 					}
 					else
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, WallStatus::E_KS_Unknown, vl[to_1d(x - 1, y)].Wall_East, g_Nothing));
+						vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, g_Nothing));
 					}
-					vl[to_1d(x, y)].SetReferVertex_N(&vl[to_1d(x, y - 1)]); // このノードに上のノードを紐づけする North <-> Soouth
-					vl[to_1d(x, y - 1)].SetReferVertex_S(&vl[to_1d(x, y)]); // 上のノードにこのノードを紐づけする North <-> Soouth
-					vl[to_1d(x, y)].SetReferVertex_W(&vl[to_1d(x - 1, y)]); // このノードに左のノードを紐づけする East <-> West
-					vl[to_1d(x - 1, y)].SetReferVertex_E(&vl[to_1d(x, y)]); // 左のノードにこのノードを紐づけする East <-> West
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
 				}
 				else
 				{ // 中中
 					if ((x % 2 == 0) && (y % 2 == 0))
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, vl[to_1d(x, y - 1)].Wall_South, WallStatus::E_KS_Unknown, vl[to_1d(x - 1, y)].Wall_East, WallStatus::E_KS_Unknown));
-						vl[to_1d(x, y)].SetReferVertex_N(&vl[to_1d(x, y - 1)]); // このノードに上のノードを紐づけする North <-> Soouth
-						vl[to_1d(x, y - 1)].SetReferVertex_S(&vl[to_1d(x, y)]); // 上のノードにこのノードを紐づけする North <-> Soouth
-						vl[to_1d(x, y)].SetReferVertex_W(&vl[to_1d(x - 1, y)]); // このノードに左のノードを紐づけする East <-> West
-						vl[to_1d(x - 1, y)].SetReferVertex_E(&vl[to_1d(x, y)]); // 左のノードにこのノードを紐づけする East <-> West
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
+						vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+						vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+						vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+						vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
 					}
 					else if ((x % 2 == 0) && (y % 2 == 1))
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, vl[to_1d(x, y - 1)].Wall_South, g_Nothing, g_Nothing, WallStatus::E_KS_Unknown));
-						//vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
-						//vl.push_back(Vertex(xpoint, ypoint, Index, vl[to_1d(x, y - 1)].Wall_South, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
-						vl[to_1d(x, y)].SetReferVertex_N(&vl[to_1d(x, y - 1)]); // このノードに上のノードを紐づけする North <-> Soouth
-						vl[to_1d(x, y - 1)].SetReferVertex_S(&vl[to_1d(x, y)]); // 上のノードにこのノードを紐づけする North <-> Soouth
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, g_Nothing, g_Nothing, WallStatus::E_KS_Unknown));
+						//vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+						//vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+						vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+						vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
 					}
 					else if ((x % 2 == 1) && (y % 2 == 0))
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, WallStatus::E_KS_Unknown, vl[to_1d(x - 1, y)].Wall_East, g_Nothing));
-						//vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
-						//vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, WallStatus::E_KS_Unknown, vl[to_1d(x - 1, y)].Wall_East, WallStatus::E_KS_Unknown));
-						vl[to_1d(x, y)].SetReferVertex_W(&vl[to_1d(x - 1, y)]); // このノードに左のノードを紐づけする East <-> West
-						vl[to_1d(x - 1, y)].SetReferVertex_E(&vl[to_1d(x, y)]); // 左のノードにこのノードを紐づけする East <-> West
+						vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, g_Nothing));
+						//vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+						//vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
+						vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+						vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
 					}
 					else if ((x % 2 == 1) && (y % 2 == 1))
 					{
-						vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, g_Nothing, g_Nothing, g_Nothing));
-						//vl.push_back(Vertex(xpoint, ypoint, Index, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+						vl[y].push_back(Vertex(point, cord, g_Nothing, g_Nothing, g_Nothing, g_Nothing));
+						//vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
 					}
 				}
 			}
 
-			Vertex& tempVertex = vl.back();
+			Vertex& tempVertex = vl[y].back();
 			if (tempVertex.Wall_North != WallStatus::E_KS_OutSide)
 			{
 				assert(tempVertex.GetVertex_North()->GetVertex_South() == &tempVertex);
@@ -739,15 +744,162 @@ void Graph::CreateMap(std::vector<Vertex>& vl)
 #endif
 }
 
-void Graph::SetAnswer(std::vector<Vertex>& vl)
+void Graph::SetAnswer(std::vector<std::vector<Vertex>>& vl)
 {
-	int index = 0;
-	for (auto &a : vl)
-	{	
-		//a.Wall_East = (g_AnswewrMazeData[index].right ? WallStatus::E_KS_Exists : WallStatus::E_KS_NotExist);
-		//a.Wall_South = (g_AnswewrMazeData[index].bottom ? WallStatus::E_KS_Exists : WallStatus::E_KS_NotExist);
-		a.Wall_East = (g_AnswewrMazeData[index].right ? WallStatus::E_KS_NotExist : WallStatus::E_KS_Exists);
-		a.Wall_South = (g_AnswewrMazeData[index].bottom ? WallStatus::E_KS_NotExist : WallStatus::E_KS_Exists);
-		index++;
+	int maxNodes = (((m_MapSize * 2) - 1));
+	int nodeTerm = maxNodes - 1;
+	vl.resize((uint64_t)maxNodes);
+	for (int y = 0; y < maxNodes; y++)
+	{
+		vl[y].reserve((uint64_t)maxNodes);
+		for (int x = 0; x < maxNodes; x++)
+		{
+			CPoint point;
+			point.x = ((x * CELL_LENGTH) / 2) - (((CELL_LENGTH * m_MapSize) + WALL_WIDTH) / 2.0) + ((WALL_WIDTH + CELL_LENGTH) / 2);
+			point.y = ((y * CELL_LENGTH) / 2) - (((CELL_LENGTH * m_MapSize) + WALL_WIDTH) / 2.0) + ((WALL_WIDTH + CELL_LENGTH) / 2);
+			Coordinate cord(x, y);
+			if (x == 0)
+			{ // 左
+				if (y == 0)
+				{ // 左上
+					vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+				}
+				else if (y == (nodeTerm))
+				{ // 左下
+					vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, g_Nothing, g_Nothing));
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+				}
+				else
+				{ // 左中
+					if (y % 2 == 0)
+					{
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+					}
+					else if (y % 2 == 1)
+					{
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, g_Nothing, g_Nothing, WallStatus::E_KS_Unknown));
+					}
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする
+				}
+			}
+			else if (x == (nodeTerm))
+			{ // 右
+				if (y == 0)
+				{ // 右上
+					vl[y].push_back(Vertex(point, cord, g_Nothing, g_Nothing, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする
+				}
+				else if (y == (nodeTerm))
+				{ // 右下
+					vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, g_Nothing, vl[y][x - 1].Wall_East, g_Nothing));
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
+				}
+				else
+				{ // 右中
+
+					vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, g_Nothing, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
+				}
+			}
+			else
+			{ // 中
+				if (y == 0)
+				{ // 中上
+					if (x % 2 == 0)
+					{
+						vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
+					}
+					else
+					{
+						vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, g_Nothing));
+					}
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする
+				}
+				else if (y == (nodeTerm))
+				{ // 中下
+					if (x % 2 == 0)
+					{
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, g_Nothing));
+					}
+					else
+					{
+						vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, g_Nothing));
+					}
+					vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+					vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+					vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+					vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
+				}
+				else
+				{ // 中中
+					if ((x % 2 == 0) && (y % 2 == 0))
+					{
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
+						vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+						vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+						vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+						vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
+					}
+					else if ((x % 2 == 0) && (y % 2 == 1))
+					{
+						vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, g_Nothing, g_Nothing, WallStatus::E_KS_Unknown));
+						//vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+						//vl[y].push_back(Vertex(point, cord, vl[y - 1][x].Wall_South, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+						vl[y][x].SetReferVertex_N(&vl[y - 1][x]); // このノードに上のノードを紐づけする North <-> Soouth
+						vl[y - 1][x].SetReferVertex_S(&vl[y][x]); // 上のノードにこのノードを紐づけする North <-> Soouth
+					}
+					else if ((x % 2 == 1) && (y % 2 == 0))
+					{
+						vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, g_Nothing));
+						//vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+						//vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, vl[y][x - 1].Wall_East, WallStatus::E_KS_Unknown));
+						vl[y][x].SetReferVertex_W(&vl[y][x - 1]); // このノードに左のノードを紐づけする East <-> West
+						vl[y][x - 1].SetReferVertex_E(&vl[y][x]); // 左のノードにこのノードを紐づけする East <-> West
+					}
+					else if ((x % 2 == 1) && (y % 2 == 1))
+					{
+						vl[y].push_back(Vertex(point, cord, g_Nothing, g_Nothing, g_Nothing, g_Nothing));
+						//vl[y].push_back(Vertex(point, cord, g_Nothing, WallStatus::E_KS_Unknown, g_Nothing, WallStatus::E_KS_Unknown));
+					}
+				}
+			}
+		} // for (int y = 0; y < m_MapSize; y++)
+	} // for (int x = 0; x < m_MapSize; x++)
+
+
+
+	//vl.resize((uint64_t)MAZE_SIZE);
+	for (int y = 0; y < MAZE_SIZE; y++)
+	{
+		//vl[y].resize((uint64_t)MAZE_SIZE);
+		for(int x = 0; x < MAZE_SIZE; x++)
+		{	
+			auto &E = vl[y * 2][x * 2].Wall_East;
+			auto &S = vl[y * 2][x * 2].Wall_South;
+			E = (E == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : (g_AnswewrMazeData[y][x].right ? WallStatus::E_KS_WallExists : WallStatus::E_KS_WallNothing));
+			S = (S == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : (g_AnswewrMazeData[y][x].bottom ? WallStatus::E_KS_WallExists : WallStatus::E_KS_WallNothing));
+
+			if (x < MAZE_SIZE - 1)
+			{
+				auto& Er = vl[y * 2][(x * 2) + 1].Wall_East;
+				Er = (Er == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : (g_AnswewrMazeData[y][x].right ? WallStatus::E_KS_WallExists : WallStatus::E_KS_WallNothing));
+			}
+
+			if (y < MAZE_SIZE - 1)
+			{
+				auto& Sb = vl[(y * 2) + 1][x * 2].Wall_South;
+				Sb = (Sb == WallStatus::E_KS_OutSide ? WallStatus::E_KS_OutSide : (g_AnswewrMazeData[y][x].bottom ? WallStatus::E_KS_WallExists : WallStatus::E_KS_WallNothing));
+			}
+		}
 	}
 }
