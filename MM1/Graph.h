@@ -84,6 +84,19 @@ public:
 	Vertex* GetVertex_EastSouth(void);
 	Vertex* GetVertex_WestNorth(void);
 	Vertex* GetVertex_SouthWest(void);
+	WallStatus GetWall_North(void);
+	WallStatus GetWall_East(void);
+	WallStatus GetWall_West(void);
+	WallStatus GetWall_South(void);
+	WallStatus GetWall_NorthEast(void);
+	WallStatus GetWall_EastSouth(void);
+	WallStatus GetWall_SouthWest(void);
+	WallStatus GetWall_WestNorth(void);
+	void SetWall_North(WallStatus ws);
+	void SetWall_East(WallStatus ws);
+	void SetWall_West(WallStatus ws);
+	void SetWall_South(WallStatus ws);
+
 	operator CPoint();
 	operator Coordinate();
 	CPoint displayPoint;
@@ -98,10 +111,6 @@ public:
 	WallStatus Wall_East = WallStatus::E_KS_OutSide;
 	WallStatus& Wall_West;
 	WallStatus Wall_South = WallStatus::E_KS_OutSide;
-	WallStatus & Wall_NorthEast;
-	WallStatus Wall_EastSouth = WallStatus::E_KS_OutSide;
-	WallStatus Wall_SouthWest = WallStatus::E_KS_OutSide;
-	WallStatus& Wall_WestNorth;
 
 	Coordinate pSearchFromVertexIndex; // Ç«Ç±Ç©ÇÁå©Ç¬ÇØÇÁÇÍÇΩÇÃÇ©èÓïÒ
 	Coordinate pSupposeSearchFromVertexIndex; // Ç«Ç±Ç©ÇÁå©Ç¬ÇØÇÁÇÍÇΩÇÃÇ©èÓïÒ
