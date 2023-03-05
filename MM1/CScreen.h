@@ -12,7 +12,7 @@ public:
 	CScreen(CMM1Dlg* hwnd);
 	~CScreen();
 
-	void Update(void);
+	void Update(CHwndRenderTarget* pRenderTarget);
 	void InitMaze(void);
 
 	floatPoint m_DisplayOffset = floatPoint(450, 470);

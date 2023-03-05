@@ -13,47 +13,46 @@ CScreen::~CScreen()
 {
 }
 
-void CScreen::Update(void)
+void CScreen::Update(CHwndRenderTarget* pRenderTarget)
 {
-	CClientDC cldc(m_hWnd);
-	// 対象コントロール(またはウィンドウ)のデバイスコンテキスト
-	CDC* pDC = m_hWnd->GetDC();
-	// 仮想デバイスコンテキスト
-	CDC memDC;
-	// 仮想デバイスコンテキスト用ビットマップ
-	CBitmap memBmp;
-	// 矩形
-	CRect rc;
+	//CClientDC cldc(m_hWnd);
+	//// 対象コントロール(またはウィンドウ)のデバイスコンテキスト
+	//CDC* pDC = m_hWnd->GetDC();
+	//// 仮想デバイスコンテキスト
+	//CDC memDC;
+	//// 仮想デバイスコンテキスト用ビットマップ
+	//CBitmap memBmp;
+	//// 矩形
+	//CRect rc;
 
-	// 対象コントロール(またはウィンドウ)の矩形取得
-	m_hWnd->GetClientRect(rc);
-	// 仮想デバイスコンテキスト生成
-	memDC.CreateCompatibleDC(pDC);
-	// 仮想デバイスコンテキスト用ビットマップ生成
-	memBmp.CreateCompatibleBitmap(pDC, rc.Width(), rc.Height());
-	// 仮想デバイスコンテキストにビットマップ割り当て
-	memDC.SelectObject(&memBmp);
+	//// 対象コントロール(またはウィンドウ)の矩形取得
+	//m_hWnd->GetClientRect(rc);
+	//// 仮想デバイスコンテキスト生成
+	//memDC.CreateCompatibleDC(pDC);
+	//// 仮想デバイスコンテキスト用ビットマップ生成
+	//memBmp.CreateCompatibleBitmap(pDC, rc.Width(), rc.Height());
+	//// 仮想デバイスコンテキストにビットマップ割り当て
+	//memDC.SelectObject(&memBmp);
 
-	memDC.FillSolidRect(rc, RGB(255, 255, 255));
+//pRenderTarget->FillSolidRect(rc, RGB(255, 255, 255));
 
 	// 描画処理(memDCに対して描画)
+	m_maze.Draw(pRenderTarget, m_DisplayOffset, m_DisplayScale, m_DisplayRotate);
 
-	m_maze.Draw(&memDC, m_DisplayOffset, m_DisplayScale, m_DisplayRotate);
-
+#if 0 /* 距離計測 描画 */
 	CString distance_xStr;
 	CString distance_yStr;
 	CString distance_rStr;
 	for (auto line : m_MeasureLines)
 	{
-		memDC.MoveTo(line.from);
-		memDC.LineTo(line.to);
+		pRenderTarget->MoveTo(line.from);
+		pRenderTarget->LineTo(line.to);
 		floatPoint distance = line.to - line.from;
 		distance = distance / m_DisplayScale;
 		distance_xStr.Format(L"x:%lf", abs(distance.x));
 		distance_yStr.Format(L"y:%lf", abs(distance.y));
 		distance_rStr.Format(L"r:%lf", abs(sqrt((distance.x * distance.x) + (distance.y * distance.y))));
 	}
-
 	CFont* pFont;
 	CFont font;
 	const int FontSize = 16;
@@ -90,13 +89,13 @@ void CScreen::Update(void)
 	textOffset_x += textSize.cx + 10;
 	memDC.TextOutW(textOffset_x, rect.bottom - FontSize, distance_rStr);
 	memDC.SelectObject(pFont);                // フォントを元に戻す。
-
+#endif
 	// デバイスコンテキストに仮想デバイスコンテキスト貼り付け
-	pDC->BitBlt(rc.left, rc.top, rc.Width(), rc.Height(), &memDC, 0, 0, SRCCOPY);
+	//pDC->BitBlt(rc.left, rc.top, rc.Width(), rc.Height(), &memDC, 0, 0, SRCCOPY);
 	// 解放処理
-	memDC.DeleteDC();
-	memBmp.DeleteObject();
-	m_hWnd->ReleaseDC(pDC);
+	//memDC.DeleteDC();
+	//memBmp.DeleteObject();
+	//m_hWnd->ReleaseDC(pDC);
 }
 
 void CScreen::InitMaze(void)

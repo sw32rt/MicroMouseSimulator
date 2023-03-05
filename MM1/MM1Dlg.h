@@ -96,4 +96,10 @@ public:
 	CButton m_ddx_CursorModeCursorRdioCtrl;
 	virtual void OnCancel();
 	afx_msg void OnBnClickedButton1();
+	CD2DTextFormat* m_pTextFormat;
+	CD2DSolidColorBrush* m_pBlackBrush;
+	CD2DLinearGradientBrush* m_pLinearGradientBrush;
+
+protected:
+	afx_msg LRESULT OnDraw2d(WPARAM wParam, LPARAM lParam);
 };

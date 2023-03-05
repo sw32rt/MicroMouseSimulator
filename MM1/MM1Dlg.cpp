@@ -56,6 +56,13 @@ CMM1Dlg::CMM1Dlg(CWnd* pParent /*=nullptr*/)
 	, m_rotateSlider(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+	// Enable D2D support for this window:
+	EnableD2DSupport();
+
+
+
+
 }
 
 void CMM1Dlg::DoDataExchange(CDataExchange* pDX)
@@ -99,6 +106,8 @@ BEGIN_MESSAGE_MAP(CMM1Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO_CURSORMODE_MEASURE, &CMM1Dlg::OnBnClickedRadioCursormodeMeasure)
 	ON_BN_CLICKED(IDC_RADIO_CURSORMODE_CURSOR, &CMM1Dlg::OnBnClickedRadioCursormodeCursor)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMM1Dlg::OnBnClickedButton1)
+//	ON_MESSAGE(AFX_WM_DRAW2D, &CMM1Dlg::OnDraw2D)
+ON_REGISTERED_MESSAGE(AFX_WM_DRAW2D, &CMM1Dlg::OnDraw2d)
 END_MESSAGE_MAP()
 
 
@@ -231,7 +240,6 @@ void CMM1Dlg::OnPaint()
 
 		CDialogEx::OnPaint();
 	}
-	m_Screen.Update();
 }
 
 // ユーザーが最小化したウィンドウをドラッグしているときに表示するカーソルを取得するために、
@@ -617,4 +625,23 @@ void CMM1Dlg::OnBnClickedButton1()
 	m_TimerID = SetTimer(1, 100, NULL);
 #endif
 }
- 
+
+
+afx_msg LRESULT CMM1Dlg::OnDraw2d(WPARAM wParam, LPARAM lParam)
+{
+	CHwndRenderTarget* pRenderTarget = (CHwndRenderTarget*)lParam;
+	ASSERT_VALID(pRenderTarget);
+	
+	/* 背景色 */
+	//CD2DSolidColorBrush bkBrush(pRenderTarget, D2D1::ColorF(D2D1::ColorF::GhostWhite, 1.0f));
+	//CRect rect;
+	//GetClientRect(rect);	
+	//pRenderTarget->FillRectangle(rect, &bkBrush);
+	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::GhostWhite));
+	
+	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(m_Screen.m_DisplayScale, m_Screen.m_DisplayScale, D2D1::Point2F(m_Screen.m_DisplayOffset.x, m_Screen.m_DisplayOffset.y));
+	pRenderTarget->SetTransform(scaleMatrix);
+	m_Screen.Update(pRenderTarget);
+
+	return TRUE;
+}

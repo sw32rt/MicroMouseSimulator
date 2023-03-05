@@ -45,35 +45,27 @@ CMaze::~CMaze()
 	delete m_Search;
 }
 
-void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
+void CMaze::Draw(CHwndRenderTarget* pRenderTarget, floatPoint point, double scale, double rotateDeg)
 {
 	m_pField->m_MapOrigin = point;
-	//CClientDC dc(hwnd);
+	CD2DSolidColorBrush blackBrush(pRenderTarget, D2D1::ColorF(D2D1::ColorF::Black, 1.0f));
 
 #if 0
 	/* 横線描画 */
 	for (int i = 0; i < m_mazeCells + 1; i++)
 	{
-		pDC->MoveTo((m_HorizontalLineList[i].from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
-		pDC->LineTo((m_HorizontalLineList[i].to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
+		pRenderTarget->MoveTo((m_HorizontalLineList[i].from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
+		pRenderTarget->LineTo((m_HorizontalLineList[i].to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
 	}
 
 	/* 縦線描画 */
 	for (int i = 0; i < m_mazeCells + 1; i++)
 	{
-		pDC->MoveTo((m_VerticalLineList[i].from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
-		pDC->LineTo((m_VerticalLineList[i].to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
+		pRenderTarget->MoveTo((m_VerticalLineList[i].from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
+		pRenderTarget->LineTo((m_VerticalLineList[i].to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin);
 	}
 #endif
 
-	// ペンを作成します。
-	// ペンのスタイル : 実線
-	// ペンの太さ    : 1
-	// ペンの色     : 黒
-	CPen pen;
-
-	// 新しいペン(pen)を設定し、設定されていた元のペンをpOldPenに保存します。
-	CPen* pOldPen;
 #if 0
 	// 辺を描画
 	for (auto ylist : m_Search->vlist)
@@ -103,17 +95,17 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 					break;
 				}
 				CPen pen(PS_SOLID, 1, color);
-				CPen* pOldPen = pDC->SelectObject(&pen);
+				CPen* pOldPen = pRenderTarget->SelectObject(&pen);
 				floatPoint from = v;
 				floatPoint to = *(v.GetVertex_East());
 				from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 				to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 
-				pDC->MoveTo(from);
-				pDC->LineTo(to);
+				pRenderTarget->MoveTo(from);
+				pRenderTarget->LineTo(to);
 
 				// ペンをもとに戻す
-				pDC->SelectObject(pOldPen);
+				pRenderTarget->SelectObject(pOldPen);
 			} while (0);
 
 			do { // ノードの下線を描画
@@ -137,18 +129,18 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 					break;
 				}
 				CPen pen(PS_SOLID, 1, color);
-				CPen* pOldPen = pDC->SelectObject(&pen);
+				CPen* pOldPen = pRenderTarget->SelectObject(&pen);
 
 				floatPoint from = v;
 				floatPoint to = *(v.GetVertex_South());
 				from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 				to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 
-				pDC->MoveTo(from);
-				pDC->LineTo(to);
+				pRenderTarget->MoveTo(from);
+				pRenderTarget->LineTo(to);
 
 				// ペンをもとに戻す
-				pDC->SelectObject(pOldPen);
+				pRenderTarget->SelectObject(pOldPen);
 			} while (0);
 
 			do { // ノードの左上斜め線を描画
@@ -172,18 +164,18 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 					break;
 				}
 				CPen pen(PS_SOLID, 1, color);
-				CPen* pOldPen = pDC->SelectObject(&pen);
+				CPen* pOldPen = pRenderTarget->SelectObject(&pen);
 
 				floatPoint from = v;
 				floatPoint to = *(v.GetVertex_WestNorth());
 				from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 				to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 
-				pDC->MoveTo(from);
-				pDC->LineTo(to);
+				pRenderTarget->MoveTo(from);
+				pRenderTarget->LineTo(to);
 
 				// ペンをもとに戻す
-				pDC->SelectObject(pOldPen);
+				pRenderTarget->SelectObject(pOldPen);
 			} while (0);
 
 			do { // ノードの右上斜め線を描画
@@ -207,18 +199,18 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 					break;
 				}
 				CPen pen(PS_SOLID, 1, color);
-				CPen* pOldPen = pDC->SelectObject(&pen);
+				CPen* pOldPen = pRenderTarget->SelectObject(&pen);
 
 				floatPoint from = v;
 				floatPoint to = *(v.GetVertex_NorthEast());
 				from = (from * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 				to = (to * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
 
-				pDC->MoveTo(from);
-				pDC->LineTo(to);
+				pRenderTarget->MoveTo(from);
+				pRenderTarget->LineTo(to);
 
 				// ペンをもとに戻す
-				pDC->SelectObject(pOldPen);
+				pRenderTarget->SelectObject(pOldPen);
 			} while (0);
 
 		}
@@ -226,114 +218,130 @@ void CMaze::Draw(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 #endif
 
 #if 1
+
+	bool IsDraw = false;
+	int color = 0;
 	// 頂点を描画
 	for (auto ylist : m_Search->vlist)
 	{ // y走査
 		for (auto v : ylist)
 		{ // x走査
 
-			int color = 0;
 
 			switch (v.SStatus)
 			{
 			case E_Status_UnExplored:
 				// 未探索
 				color = RGB(255, 255, 255);
+				IsDraw = false;
 				break;
 			case E_Status_Looked:
 				// 認知
 				color = RGB(0, 255, 255);
+				IsDraw = false;
 				break;
 			case E_Status_Exploring:
 				// 探索中
 				color = RGB(200, 0, 0);
+				IsDraw = true;
 				break;
 			case E_Status_Searched:
 				// 探索済み
 				color = RGB(100, 100, 100);
+				IsDraw = false;
 				break;
 			case E_Status_ShortestPath:
 				// 最短経路
 				color = RGB(0, 255, 0);
+				IsDraw = true;
 				break;
 			default:
+				IsDraw = false;
 				break;
 			}
 
 			switch (v.SupposeSearchStatus)
 			{
 			case E_Status_ShortestPath:
-				color = RGB(0, 255, 0);
+				color = RGB(200, 100, 0);
+				IsDraw = true;
 				// 最短経路
 				break;
 			case E_Status_UnExplored:
+				IsDraw = false;
 				break;
 			case E_Status_Looked:
+				IsDraw = false;
 				break;
 			case E_Status_Exploring:
+				IsDraw = false;
 				break;
 			case E_Status_Searched:
+				IsDraw = false;
 				break;
 			default:
+				IsDraw = false;
 				break;
 			}
 
 			if (m_Search->GoalVertexIndex == v.mazeCoordinate)
 			{ // ゴール
 				color = RGB(200, 100, 0);
+				IsDraw = true;
 			}
 
-			// 塗りつぶし色
-			CBrush brush(color);
-			// 新しいブラシ(brush)を設定し、設定されていた元のブラシをpOldBrushに保存します。
-			CBrush* pOldBrush = pDC->SelectObject(&brush);
+			if (IsDraw)
+			{
+				// 塗りつぶし色
+				CD2DSolidColorBrush brush(pRenderTarget, COLORREF(color));
 
-			floatPoint fpoint = v;
-			fpoint = (fpoint * scale).rotate(rotateDeg) + m_pField->m_MapOrigin;
+				floatPoint fpoint = v;
+				fpoint = fpoint + m_pField->m_MapOrigin;
 
-			CSize size(10, 10);
-			CPoint point(fpoint.x - (size.cx / 2), fpoint.y - (size.cy / 2));
-			CRect rect(point, size);
-			pDC->Ellipse(rect);
+				CSize size(10, 10);
+				CPoint point(fpoint.x - (size.cx / 2), fpoint.y - (size.cy / 2));
+				CRect rect(point, size);
+				CD2DEllipse ellipse(rect);
+				//pRenderTarget->FillEllipse(ellipse, &brush);
+				pRenderTarget->FillRectangle(rect, &brush);
+				//pRenderTarget->DrawEllipse(ellipse, &blackBrush);
+				//pRenderTarget->DrawRectangle(rect, &blackBrush);
+			}
 
-			pDC->SelectObject(pOldBrush);
 
 			//// 情報text
 			//CFont font;
 			//CFont* pOldfont;
 			//font.CreateFontW(10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, L"consolas");
-			//pOldfont = pDC->SelectObject(&font);
+			//pOldfont = pRenderTarget->SelectObject(&font);
 			//CString str;
 			//point.Offset(10, -5);
 			//str.Format(L"%d", index);
-			//pDC->TextOutW(point.x, point.y, str);
+			//pRenderTarget->TextOutW(point.x, point.y, str);
 			//str.Format(L"%2d", m_Search->routelist[index]);
 			//point.Offset(0, 10);
-			//pDC->TextOutW(point.x, point.y, str);
-			//pDC->SelectObject(pOldfont);
+			//pRenderTarget->TextOutW(point.x, point.y, str);
+			//pRenderTarget->SelectObject(pOldfont);
 		}
 	}
 	/* 壁描画 */
-	DrawWall(pDC, point, scale, rotateDeg);
+	DrawWall(pRenderTarget, point, scale, rotateDeg);
 
 #endif
 
 }
 
-void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
+void CMaze::DrawWall(CHwndRenderTarget* pRenderTarget, floatPoint point, double scale, double rotateDeg)
 {
 	CPoint pointList[4] = {0};
 	int pointCount = 4; /* 四角なので4固定 */
 
-	int color = RGB(50, 50, 50);
+	int color = RGB(240, 240, 240);
+	/* 縁の色 */
+	CD2DSolidColorBrush blackBrush(pRenderTarget, D2D1::ColorF(D2D1::ColorF::Black, 1.0f));
 
-	CPen pen(PS_SOLID, 0, color);
-	CPen* pOldPen = pDC->SelectObject(&pen);
-
-	// 塗りつぶし色
-	CBrush defaultBrush(color);
-	// 新しいブラシ(brush)を設定し、設定されていた元のブラシをpOldBrushに保存します。
-	CBrush* pOldBrush = pDC->SelectObject(&defaultBrush);
+	/* 塗りつぶし色 */
+	CD2DSolidColorBrush brush(pRenderTarget, COLORREF(color));
 
 	int kx = 0;
 	int ky = 0;
@@ -341,13 +349,11 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 	bool IsDraw = true;
 	for (auto hWall_x : m_pField->m_MazeWall.hWallList)
 	{
-		//if (ky == 16) { break; }
 		kx = 0;
 		for (wall_t wall : hWall_x)
 		{
 			if (ky == 0 || ky == MAZE_SIZE)
 			{
-				color = RGB(240, 240, 240);
 				IsDraw = true;
 			}
 			else
@@ -356,7 +362,6 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 				// switchにするとbreakでdo{}を脱出できなくなるのでifにした
 				if (v.GetWall_South() == WallStatus::E_KS_WallExists)
 				{ // 壁あり
-					color = RGB(240, 240, 240);
 					IsDraw = true;
 				}
 				else if (v.GetWall_South() == WallStatus::E_KS_WallNothing)
@@ -375,19 +380,10 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 			kx++;
 			if (IsDraw)
 			{
-				CBrush brush(color);
-				pOldBrush = pDC->SelectObject(&brush);
-				floatRect polyRect = wall.rect.scale(scale);
-				polyRect = polyRect.rotate(rotateDeg);
-				polyRect += m_pField->m_MapOrigin;
-				pointList[0] = polyRect.lefttop;
-				pointList[1] = polyRect.righttop;
-				pointList[2] = polyRect.rightbottom;
-				pointList[3] = polyRect.leftbottom;
-				pDC->Polygon(pointList, pointCount);
-				// ペンをもとに戻す
-				pDC->SelectObject(pOldPen);
-				pDC->SelectObject(pOldBrush);
+				CRect rect(wall.rect);
+				rect.OffsetRect(m_pField->m_MapOrigin);
+				//pRenderTarget->FillRectangle(rect, &brush);
+				pRenderTarget->DrawRectangle(rect, &blackBrush);
 			}
 		}
 		ky++;
@@ -397,14 +393,11 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 	ky = 0;
 	for (auto vWall_x : m_pField->m_MazeWall.vWallList)
 	{
-		//if (ky == 16) { break; }
 		kx = 0;
 		for (wall_t wall : vWall_x)
 		{
-			//color = RGB(50, 50, 50);
 			if (kx == 0 || kx == MAZE_SIZE)
 			{
-				color = RGB(240, 240, 240);
 				IsDraw = true;
 			}
 			else
@@ -413,7 +406,6 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 				// switchにするとbreakでdo{}を脱出できなくなるのでifにした
 				if (v.GetWall_East() == WallStatus::E_KS_WallExists)
 				{ // 壁あり
-					color = RGB(240, 240, 240);
 					IsDraw = true;
 				}
 				else if (v.GetWall_East() == WallStatus::E_KS_WallNothing)
@@ -432,19 +424,10 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 			kx++;
 			if (IsDraw)
 			{
-				CBrush brush(color);
-				pOldBrush = pDC->SelectObject(&brush);
-				floatRect polyRect = wall.rect.scale(scale);
-				polyRect = polyRect.rotate(rotateDeg);
-				polyRect += m_pField->m_MapOrigin;
-				pointList[0] = polyRect.lefttop;
-				pointList[1] = polyRect.righttop;
-				pointList[2] = polyRect.rightbottom;
-				pointList[3] = polyRect.leftbottom;
-				pDC->Polygon(pointList, pointCount);
-				// ペンをもとに戻す
-				pDC->SelectObject(pOldPen);
-				pDC->SelectObject(pOldBrush);
+				CRect rect(wall.rect);
+				rect.OffsetRect(m_pField->m_MapOrigin);
+				//pRenderTarget->FillRectangle(rect, &brush);
+				pRenderTarget->DrawRectangle(rect, &blackBrush);
 			}
 		}
 		ky++;
@@ -454,19 +437,10 @@ void CMaze::DrawWall(CDC* pDC, floatPoint point, double scale, double rotateDeg)
 	{
 		for (pillar_t pillar : pillar_x)
 		{
-			floatRect polyRect = pillar.rect.scale(scale);
-			polyRect = polyRect.rotate(rotateDeg);
-			polyRect += m_pField->m_MapOrigin;
-			pointList[0] = polyRect.lefttop;
-			pointList[1] = polyRect.righttop;
-			pointList[2] = polyRect.rightbottom;
-			pointList[3] = polyRect.leftbottom;
-			pDC->Polygon(pointList, pointCount);
+			CRect rect(pillar.rect);
+			rect.OffsetRect(m_pField->m_MapOrigin);
+			//pRenderTarget->FillRectangle(rect, &brush);
+			pRenderTarget->DrawRectangle(rect, &blackBrush);
 		}
 	}
-
-	pDC->SelectObject(pOldPen);
-	pDC->SelectObject(pOldBrush);
-
-
 }
