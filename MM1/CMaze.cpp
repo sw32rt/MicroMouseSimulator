@@ -216,6 +216,28 @@ void CMaze::Draw(CHwndRenderTarget* pRenderTarget, floatPoint point, double scal
 		}
 	}
 #endif
+	/* Œ»ÝŒ©‚Â‚©‚Á‚½Å’ZŒo˜H‚Ìü‚ð•`‰æ */
+	if (m_Search->CurrentShortestRoutelist.empty() == false) // Current -> Goal
+	{ // ƒ‹[ƒgŒ©‚Â‚©‚Á‚½
+		Coordinate from = m_Search->StartVertexIndex;
+		Coordinate to = m_Search->StartVertexIndex;
+		CD2DSolidColorBrush brush(pRenderTarget, COLORREF(RGB(136, 238, 170)));
+
+		while (1)
+		{
+			to = m_Search->CurrentShortestRoutelist[from];
+			CPoint fromPoint(m_Search->vlist[from.y][from.x]);
+			fromPoint += m_pField->m_MapOrigin;
+			CPoint toPoint(m_Search->vlist[to.y][to.x]);
+			toPoint += m_pField->m_MapOrigin;
+			pRenderTarget->DrawLine(fromPoint, toPoint, &brush, 2.0F);
+			if (to == m_Search->GoalVertexIndex)
+			{
+				break;
+			}
+			from = to;
+		}
+	}
 
 #if 1
 
@@ -243,7 +265,7 @@ void CMaze::Draw(CHwndRenderTarget* pRenderTarget, floatPoint point, double scal
 			case E_Status_Exploring:
 				// ’Tõ’†
 				color = RGB(200, 0, 0);
-				IsDraw = true;
+				IsDraw = false;
 				break;
 			case E_Status_Searched:
 				// ’TõÏ‚Ý
@@ -252,7 +274,7 @@ void CMaze::Draw(CHwndRenderTarget* pRenderTarget, floatPoint point, double scal
 				break;
 			case E_Status_ShortestPath:
 				// Å’ZŒo˜H
-				color = RGB(0, 255, 0);
+				color = RGB(156, 196, 88);
 				IsDraw = true;
 				break;
 			default:
@@ -263,24 +285,19 @@ void CMaze::Draw(CHwndRenderTarget* pRenderTarget, floatPoint point, double scal
 			switch (v.SupposeSearchStatus)
 			{
 			case E_Status_ShortestPath:
-				color = RGB(200, 100, 0);
+				color = RGB(218, 165, 32);
 				IsDraw = true;
 				// Å’ZŒo˜H
 				break;
 			case E_Status_UnExplored:
-				IsDraw = false;
 				break;
 			case E_Status_Looked:
-				IsDraw = false;
 				break;
 			case E_Status_Exploring:
-				IsDraw = false;
 				break;
 			case E_Status_Searched:
-				IsDraw = false;
 				break;
 			default:
-				IsDraw = false;
 				break;
 			}
 
@@ -336,12 +353,10 @@ void CMaze::DrawWall(CHwndRenderTarget* pRenderTarget, floatPoint point, double 
 	CPoint pointList[4] = {0};
 	int pointCount = 4; /* ŽlŠp‚È‚Ì‚Å4ŒÅ’è */
 
-	int color = RGB(240, 240, 240);
-	/* ‰‚ÌF */
 	CD2DSolidColorBrush blackBrush(pRenderTarget, D2D1::ColorF(D2D1::ColorF::Black, 1.0f));
-
-	/* “h‚è‚Â‚Ô‚µF */
-	CD2DSolidColorBrush brush(pRenderTarget, COLORREF(color));
+	CD2DSolidColorBrush grayBrush(pRenderTarget, COLORREF(RGB(180, 180, 180)));
+	CD2DSolidColorBrush redBrush(pRenderTarget, COLORREF(RGB(240, 140, 124)));
+	CD2DSolidColorBrush whiteBrush(pRenderTarget, COLORREF(RGB(240, 240, 240)));
 
 	int kx = 0;
 	int ky = 0;
@@ -353,24 +368,35 @@ void CMaze::DrawWall(CHwndRenderTarget* pRenderTarget, floatPoint point, double 
 		for (wall_t wall : hWall_x)
 		{
 			if (ky == 0 || ky == MAZE_SIZE)
-			{
+			{ /* ƒƒN */
+				CRect rect(wall.rect);
+				rect.OffsetRect(m_pField->m_MapOrigin);
+				pRenderTarget->FillRectangle(rect, &blackBrush);
 				IsDraw = true;
 			}
 			else
 			{
-				auto& v = m_Search->vAnswer[(ky - 1) * 2][kx * 2];
+				auto& vAns = m_Search->vAnswer[(ky - 1) * 2][kx * 2];
+				auto& v = m_Search->vlist[(ky - 1) * 2][kx * 2];
 				// switch‚É‚·‚é‚Æbreak‚Ådo{}‚ð’Eo‚Å‚«‚È‚­‚È‚é‚Ì‚Åif‚É‚µ‚½
 				if (v.GetWall_South() == WallStatus::E_KS_WallExists)
 				{ // •Ç‚ ‚è
+					CRect rect(wall.rect);
+					rect.OffsetRect(m_pField->m_MapOrigin);
+					pRenderTarget->FillRectangle(rect, &blackBrush);
 					IsDraw = true;
 				}
 				else if (v.GetWall_South() == WallStatus::E_KS_WallNothing)
 				{ // •Ç‚È‚µ
 					IsDraw = false;
 				}
-				else if (v.GetWall_South() == WallStatus::E_KS_Unknown)
+				else if ((v.GetWall_South() == WallStatus::E_KS_Unknown)
+					   &&(vAns.GetWall_South() == WallStatus::E_KS_WallExists))
 				{ // •s–¾(–¢’Tõ)
-					IsDraw = false;
+					CRect rect(wall.rect);
+					rect.OffsetRect(m_pField->m_MapOrigin);
+					pRenderTarget->DrawRectangle(rect, &grayBrush);
+					IsDraw = true;
 				}
 				else if (v.GetWall_South() == WallStatus::E_KS_OutSide)
 				{ // –À˜HŠO
@@ -378,13 +404,6 @@ void CMaze::DrawWall(CHwndRenderTarget* pRenderTarget, floatPoint point, double 
 				}
 			}
 			kx++;
-			if (IsDraw)
-			{
-				CRect rect(wall.rect);
-				rect.OffsetRect(m_pField->m_MapOrigin);
-				//pRenderTarget->FillRectangle(rect, &brush);
-				pRenderTarget->DrawRectangle(rect, &blackBrush);
-			}
 		}
 		ky++;
 	}
@@ -397,38 +416,37 @@ void CMaze::DrawWall(CHwndRenderTarget* pRenderTarget, floatPoint point, double 
 		for (wall_t wall : vWall_x)
 		{
 			if (kx == 0 || kx == MAZE_SIZE)
-			{
-				IsDraw = true;
+			{ /* ƒƒN */
+				CRect rect(wall.rect);
+				rect.OffsetRect(m_pField->m_MapOrigin);
+				pRenderTarget->FillRectangle(rect, &blackBrush);
 			}
 			else
 			{
-				auto& v = m_Search->vAnswer[ky * 2][(kx - 1) * 2];
+				auto& vAns = m_Search->vAnswer[ky * 2][(kx - 1) * 2];
+				auto& v = m_Search->vlist[ky * 2][(kx - 1) * 2];
 				// switch‚É‚·‚é‚Æbreak‚Ådo{}‚ð’Eo‚Å‚«‚È‚­‚È‚é‚Ì‚Åif‚É‚µ‚½
 				if (v.GetWall_East() == WallStatus::E_KS_WallExists)
 				{ // •Ç‚ ‚è
-					IsDraw = true;
+					CRect rect(wall.rect);
+					rect.OffsetRect(m_pField->m_MapOrigin);
+					pRenderTarget->FillRectangle(rect, &blackBrush);
 				}
 				else if (v.GetWall_East() == WallStatus::E_KS_WallNothing)
 				{ // •Ç–³‚µ
-					IsDraw = false;
 				}
-				else if (v.GetWall_East() == WallStatus::E_KS_Unknown)
+				else if ((v.GetWall_East() == WallStatus::E_KS_Unknown)
+					&& (vAns.GetWall_East() == WallStatus::E_KS_WallExists))
 				{ // •s–¾(–¢’Tõ)
-					IsDraw = false;
+					CRect rect(wall.rect);
+					rect.OffsetRect(m_pField->m_MapOrigin);
+					pRenderTarget->DrawRectangle(rect, &grayBrush);
 				}
 				else if (v.GetWall_East() == WallStatus::E_KS_OutSide)
 				{ // –À˜HŠO
-					IsDraw = false;
 				}
 			}
 			kx++;
-			if (IsDraw)
-			{
-				CRect rect(wall.rect);
-				rect.OffsetRect(m_pField->m_MapOrigin);
-				//pRenderTarget->FillRectangle(rect, &brush);
-				pRenderTarget->DrawRectangle(rect, &blackBrush);
-			}
 		}
 		ky++;
 	}
@@ -439,7 +457,6 @@ void CMaze::DrawWall(CHwndRenderTarget* pRenderTarget, floatPoint point, double 
 		{
 			CRect rect(pillar.rect);
 			rect.OffsetRect(m_pField->m_MapOrigin);
-			//pRenderTarget->FillRectangle(rect, &brush);
 			pRenderTarget->DrawRectangle(rect, &blackBrush);
 		}
 	}

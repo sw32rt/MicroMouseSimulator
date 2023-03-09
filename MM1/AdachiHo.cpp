@@ -44,6 +44,7 @@ Coordinate AdachiHo::GetNextSearchVertex(Coordinate CurrentVertex)
         for (auto& x : ylist)
         {
             x.SupposeSearchStatus = SearchStatus::E_Status_UnExplored;
+            x.SStatus = SearchStatus::E_Status_UnExplored;
         }
     }
 
@@ -90,23 +91,43 @@ Coordinate AdachiHo::GetNextSearchVertex(Coordinate CurrentVertex)
         returnNext = CurrentVertex;
     }
 
-    // cv = GetConnectionVertex(CurrentVertex);
-    // distans = INFINITY;
-    // for (auto v : cv)
-    // {
-    //     // 距離 = sqrt( (p1.x - p2.x)^2 + (p1.y - p2.y)^2 )
-    //     dx = vlist[v].x - vlist[GoalVertexIndex].x;
-    //     dy = vlist[v].y - vlist[GoalVertexIndex].y;
-    //     float tempDist = std::sqrtf((dx * dx) + (dy * dy));
-    //     if (distans > tempDist)
-    //     {
-    //         distans = tempDist;
-    //         minimalNext = v;
-    //     }
-    // }
-    // returnNext = minimalNext;
 
-    // vlist[returnNext].pSearchFromVertexIndex = vlist[CurrentVertex].Index;
+    Coordinate Next = GoalVertexIndex;
+    Coordinate Current = GoalVertexIndex;
+    vSupposBFSstack.clear();
+    /* 現状壁がないことを確認したルートで最短距離を求める */
+    do
+    {
+        cv = GetConnectionVertex(Current);
+        for (auto v : cv)
+        {
+            CurrentShortestRoutelist[v] = Current;
+            vlist[v.y][v.x].SStatus = SearchStatus::E_Status_Looked;
+            vSupposBFSstack.push_back(v);
+        }
+        if (vSupposBFSstack.empty() == true)
+        {
+            break;
+        }
+        Next = vSupposBFSstack.front();
+        vSupposBFSstack.pop_front();
+        Current = Next;
+
+        if (Next == StartVertexIndex) // Current -> Goal
+        { // ルート見つかった
+            Coordinate CurrentShortestPathNext = StartVertexIndex;
+            while (1)
+            {
+                vlist[CurrentShortestPathNext.y][CurrentShortestPathNext.x].SStatus = SearchStatus::E_Status_ShortestPath;
+                CurrentShortestPathNext = CurrentShortestRoutelist[CurrentShortestPathNext];
+                if (CurrentShortestPathNext == GoalVertexIndex)
+                {
+                    break;
+                }
+            }
+            break;
+        }
+    } while (1);
 
     // 次の頂点を計算する
     return returnNext;
@@ -210,11 +231,11 @@ bool AdachiHo::SearchNext(void)
     if (CurrentVertexIndex == GoalVertexIndex)
     { // 現在地と目的地が一緒なら探索完了
         //int count = 0;
-        //int shortRouteIndex = GoalVertexIndex;
+        //Coordinate shortRouteIndex = GoalVertexIndex;
         //while (shortRouteIndex != StartVertexIndex)
         //{ // ゴールからスタートまでたどる
-        //    vlist[shortRouteIndex].SStatus = E_Status_ShortestPath;
-        //    shortRouteIndex = routelist[shortRouteIndex];
+        //    vlist[shortRouteIndex.y][shortRouteIndex.x].SStatus = E_Status_ShortestPath;
+        //    shortRouteIndex = GetNextSearchVertex(shortRouteIndex);
         //    count++;
         //}
         //ShortestPathDistance = count;
@@ -223,7 +244,6 @@ bool AdachiHo::SearchNext(void)
         GoalVertexIndex = swap;
         vlist[CurrentVertexIndex.y][CurrentVertexIndex.x].SStatus = E_Status_Searched;
         CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
-        //CurrentVertexIndex = GetNextSearchStep(CurrentVertexIndex);
         vlist[CurrentVertexIndex.y][CurrentVertexIndex.x].SStatus = E_Status_Exploring;
 
         Finish = true;
@@ -232,7 +252,6 @@ bool AdachiHo::SearchNext(void)
     {
         vlist[CurrentVertexIndex.y][CurrentVertexIndex.x].SStatus = E_Status_Searched;
         CurrentVertexIndex = GetNextSearchVertex(CurrentVertexIndex);
-        //CurrentVertexIndex = GetNextSearchStep(CurrentVertexIndex);
         vlist[CurrentVertexIndex.y][CurrentVertexIndex.x].SStatus = E_Status_Exploring;
     }
 

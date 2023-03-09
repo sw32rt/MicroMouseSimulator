@@ -135,8 +135,8 @@ public:
 	virtual ~Graph();
 	std::vector<std::vector<Vertex>> vlist;
 	std::vector<std::vector<Vertex>> vAnswer;
-	//std::vector<Coordinate> routelist;
-	std::map<std::pair<int, int>, Coordinate> SupposeeRoutelist; // Å’ZŒo˜HŒŸõƒƒ‚
+	std::map<std::pair<int, int>, Coordinate> SupposeeRoutelist; // —\‘zÅ’ZŒo˜HŒŸõƒƒ‚
+	std::map<std::pair<int, int>, Coordinate> CurrentShortestRoutelist; // Œ»İŠm’èÅ’ZŒo˜HŒŸõƒƒ‚
 	const uint64_t m_MapSize = MAZE_SIZE;
 
 	void Initialize(void);

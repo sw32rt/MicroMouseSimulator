@@ -294,7 +294,7 @@ void CMM1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 	case E_CursorMode_Measure:
 		if (m_MeasureStart)
 		{// 終点処理
-			m_MeasureStart = !m_MeasureStart; //falseにする　=falseとか書くとケアレスミスしやすい
+			m_MeasureStart = !m_MeasureStart; //falseにする
 			CPoint diffp = point - m_MeasureStartPoint;
 			m_Screen.m_MeasureLines.at(0) = (stLine_t{ point, m_MeasureStartPoint });
 			Invalidate(FALSE);

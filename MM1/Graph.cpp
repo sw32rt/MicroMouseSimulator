@@ -507,7 +507,7 @@ std::vector<Coordinate> Graph::GetConnectionVertex(Coordinate VertexIndex)
 
 	if (vlist[VertexIndex.y][VertexIndex.x].GetWall_North()== WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_North()->mazeCoordinate)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_North()->SStatus)
 		{
 			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_North()->mazeCoordinate);
 		}
@@ -515,7 +515,7 @@ std::vector<Coordinate> Graph::GetConnectionVertex(Coordinate VertexIndex)
 
 	if (vlist[VertexIndex.y][VertexIndex.x].GetWall_East() == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_East()->mazeCoordinate)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_East()->SStatus)
 		{
 			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_East()->mazeCoordinate);
 		}
@@ -523,7 +523,7 @@ std::vector<Coordinate> Graph::GetConnectionVertex(Coordinate VertexIndex)
 
 	if (vlist[VertexIndex.y][VertexIndex.x].GetWall_West() == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_West()->mazeCoordinate)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_West()->SStatus)
 		{
 			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_West()->mazeCoordinate);
 		}
@@ -531,7 +531,7 @@ std::vector<Coordinate> Graph::GetConnectionVertex(Coordinate VertexIndex)
 
 	if (vlist[VertexIndex.y][VertexIndex.x].GetWall_South() == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_South()->mazeCoordinate)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_South()->SStatus)
 		{
 			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_South()->mazeCoordinate);
 		}
@@ -539,7 +539,7 @@ std::vector<Coordinate> Graph::GetConnectionVertex(Coordinate VertexIndex)
 
 	if (vlist[VertexIndex.y][VertexIndex.x].GetWall_NorthEast() == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_NorthEast()->mazeCoordinate)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_NorthEast()->SStatus)
 		{
 			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_NorthEast()->mazeCoordinate);
 		}
@@ -547,7 +547,7 @@ std::vector<Coordinate> Graph::GetConnectionVertex(Coordinate VertexIndex)
 
 	if (vlist[VertexIndex.y][VertexIndex.x].GetWall_EastSouth() == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_EastSouth()->mazeCoordinate)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_EastSouth()->SStatus)
 		{
 			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_EastSouth()->mazeCoordinate);
 		}
@@ -555,7 +555,7 @@ std::vector<Coordinate> Graph::GetConnectionVertex(Coordinate VertexIndex)
 
 	if (vlist[VertexIndex.y][VertexIndex.x].GetWall_WestNorth() == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_WestNorth()->mazeCoordinate)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_WestNorth()->SStatus)
 		{
 			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_WestNorth()->mazeCoordinate);
 		}
@@ -563,7 +563,7 @@ std::vector<Coordinate> Graph::GetConnectionVertex(Coordinate VertexIndex)
 
 	if (vlist[VertexIndex.y][VertexIndex.x].GetWall_SouthWest() == WallStatus::E_KS_WallNothing)
 	{
-		if (vlist[VertexIndex.y][VertexIndex.x].pSearchFromVertexIndex != vlist[VertexIndex.y][VertexIndex.x].GetVertex_SouthWest()->mazeCoordinate)
+		if (SearchStatus::E_Status_UnExplored == vlist[VertexIndex.y][VertexIndex.x].GetVertex_SouthWest()->SStatus)
 		{
 			VertexList.push_back(vlist[VertexIndex.y][VertexIndex.x].GetVertex_SouthWest()->mazeCoordinate);
 		}
